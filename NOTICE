@@ -1,0 +1,18 @@
+Buddy Agent
+Copyright (c) 2026 Cody Sumpter
+
+Buddy Agent is a Prismtek-owned project scaffold intended to integrate selected concepts and code from multiple upstream and related repositories.
+
+Hermes Agent attribution
+------------------------
+Portions of this project may be derived from or adapted from Hermes Agent by Nous Research.
+
+Original project: https://github.com/NousResearch/hermes-agent
+Original copyright: Copyright (c) 2025 Nous Research
+Original license: MIT License
+
+The MIT license text for Hermes Agent is preserved in THIRD_PARTY_NOTICES.md and must remain with any copied or substantially adapted Hermes source files.
+
+Prismtek related repositories
+-----------------------------
+Buddy Brain, Omni Buddy, Prismtek Apps, and Knowledge Vault are Cody/Prismtek-owned repositories. Their code, docs, and concepts must keep their original notices and licensing terms when imported.
