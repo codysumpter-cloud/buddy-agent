@@ -15,6 +15,7 @@ class RuntimeEngine:
 
     session_id: str = field(default_factory=lambda: str(uuid4()))
     tools: ToolRegistry = field(default_factory=ToolRegistry)
+    state: RuntimeState = field(init=False)
 
     def __post_init__(self) -> None:
         self.state = RuntimeState(session_id=self.session_id)
