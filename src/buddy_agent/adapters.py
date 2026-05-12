@@ -36,9 +36,11 @@ class BuddyBrainAdapter(Protocol):
 
     def health(self) -> AdapterHealth:
         """Return adapter health without mutating external state."""
+        ...
 
     def load_startup_context(self) -> Mapping[str, str]:
         """Load startup context documents needed by the runtime."""
+        ...
 
 
 @runtime_checkable
@@ -47,9 +49,11 @@ class OmniBuddyAdapter(Protocol):
 
     def health(self) -> AdapterHealth:
         """Return adapter health without mutating external state."""
+        ...
 
     def route_text(self, prompt: str, *, metadata: Mapping[str, str] | None = None) -> str:
         """Route a text prompt through the configured Omni/local backend."""
+        ...
 
 
 @runtime_checkable
@@ -58,9 +62,11 @@ class PrismtekAppBridge(Protocol):
 
     def health(self) -> AdapterHealth:
         """Return adapter health without mutating external state."""
+        ...
 
     def publish_event(self, event_name: str, payload: Mapping[str, object]) -> None:
         """Publish a sanitized app-facing event."""
+        ...
 
 
 @runtime_checkable
@@ -69,6 +75,8 @@ class KnowledgeVaultProvider(Protocol):
 
     def health(self) -> AdapterHealth:
         """Return adapter health without mutating external state."""
+        ...
 
     def search(self, query: str, *, limit: int = 5) -> Sequence[RetrievedSource]:
         """Search the vault and return provenance-preserving sources."""
+        ...
