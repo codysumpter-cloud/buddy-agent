@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Default Buddy</title>
+  <desc id="desc">Default tama-style Buddy creature, not a device.</desc>
+  <style>
+    svg{image-rendering:pixelated}.o{fill:#121b4f}.b{fill:#89e6df}.f{fill:#c9fff2}.h{fill:#ffd66b}.s{fill:#b8c7ef}.a{fill:#55c8c7}.p{fill:#f8fbff}
+  </style>
+  <rect class="p" width="128" height="128" rx="12" />
+  <ellipse class="s" cx="64" cy="111" rx="34" ry="6" />
+  <path class="o" d="M28 63C28 32 43 21 64 21s36 11 36 42c0 33-14 48-36 48S28 96 28 63z" />
+  <path class="b" d="M33 63c0-27 13-37 31-37s31 10 31 37c0 29-12 43-31 43S33 92 33 63z" />
+  <path class="a" d="M36 74c5 23 16 29 28 29 19 0 29-16 28-43-3 31-18 39-37 38-13-1-19-10-19-24z" opacity=".48" />
+  <path class="o" d="M42 32c-8-17 2-23 14-15 1 10-4 16-14 15zM86 32c8-17-2-23-14-15-1 10 4 16 14 15zM60 25l4-10 4 10z" />
+  <path class="b" d="M46 29c-4-9 2-12 8-8 0 6-3 9-8 8zM82 29c4-9-2-12-8-8 0 6 3 9 8 8z" />
+  <ellipse class="o" cx="64" cy="59" rx="30" ry="23" />
+  <ellipse class="f" cx="64" cy="59" rx="25" ry="19" />
+  <rect class="o" x="49" y="54" width="7" height="8" rx="2" />
+  <rect class="o" x="72" y="54" width="7" height="8" rx="2" />
+  <rect class="p" x="52" y="55" width="2" height="2" />
+  <rect class="p" x="75" y="55" width="2" height="2" />
+  <path d="M59 68q5 5 10 0" fill="none" stroke="#121b4f" stroke-width="3" stroke-linecap="round" />
+  <ellipse class="o" cx="30" cy="72" rx="7" ry="9" /><ellipse class="b" cx="31" cy="72" rx="4" ry="6" />
+  <ellipse class="o" cx="98" cy="72" rx="7" ry="9" /><ellipse class="b" cx="97" cy="72" rx="4" ry="6" />
+  <ellipse class="o" cx="50" cy="106" rx="9" ry="6" /><ellipse class="b" cx="50" cy="105" rx="6" ry="4" />
+  <ellipse class="o" cx="78" cy="106" rx="9" ry="6" /><ellipse class="b" cx="78" cy="105" rx="6" ry="4" />
+  <path class="o" d="M64 92l-10-9c-8-7 2-17 10-8 8-9 18 1 10 8z" />
+  <path class="h" d="M64 89l-7-6c-5-4 1-10 7-4 6-6 12 0 7 4z" />
+</svg>
