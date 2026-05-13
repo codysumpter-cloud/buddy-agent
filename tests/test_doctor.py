@@ -11,4 +11,5 @@ def test_run_doctor_returns_passing_checks():
         "omni-adapter",
         "app-bridge",
         "vault-provider",
+        "surface-parity",
     }

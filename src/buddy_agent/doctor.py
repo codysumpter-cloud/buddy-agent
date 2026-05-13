@@ -10,6 +10,7 @@ from .local_adapters import (
     LocalOmniBuddyAdapter,
     LocalPrismtekAppBridge,
 )
+from .parity import validate_required_surface_parity
 from .runtime import RuntimeEngine
 
 
@@ -31,6 +32,7 @@ def run_doctor() -> tuple[DoctorCheck, ...]:
     omni = LocalOmniBuddyAdapter()
     app = LocalPrismtekAppBridge()
     vault = LocalKnowledgeVaultProvider()
+    parity_problems = validate_required_surface_parity()
 
     return (
         DoctorCheck(
@@ -42,6 +44,11 @@ def run_doctor() -> tuple[DoctorCheck, ...]:
         DoctorCheck(name="omni-adapter", ok=omni.health().ok, detail=omni.route_text("ready")),
         DoctorCheck(name="app-bridge", ok=app.health().ok, detail="local events"),
         DoctorCheck(name="vault-provider", ok=vault.health().ok, detail="local index"),
+        DoctorCheck(
+            name="surface-parity",
+            ok=not parity_problems,
+            detail="complete" if not parity_problems else "; ".join(parity_problems),
+        ),
     )
 
 
