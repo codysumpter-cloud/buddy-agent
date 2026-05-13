@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 
+from .buddy.generate import write_default_buddy
 from .doctor import doctor_ok, run_doctor
 from .metadata import PROJECT_NAME, VERSION
 
@@ -22,8 +24,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "command",
         nargs="?",
-        choices=("doctor", "status"),
+        choices=("doctor", "status", "generate"),
         help="Run a scaffold command.",
+    )
+    parser.add_argument(
+        "--output",
+        default="generated_buddies/default-buddy",
+        help="Output directory for `buddy generate`.",
     )
     return parser
 
@@ -46,6 +53,11 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "status":
         print("Buddy Agent scaffold status: initialized")
+        return 0
+
+    if args.command == "generate":
+        manifest_path = write_default_buddy(Path(args.output))
+        print(f"Generated Buddy template: {manifest_path}")
         return 0
 
     parser.print_help()
