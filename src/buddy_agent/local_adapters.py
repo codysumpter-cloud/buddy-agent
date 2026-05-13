@@ -14,7 +14,7 @@ from .memory import NoteIndex
 class LocalBuddyBrainAdapter:
     """Static startup context adapter for local development."""
 
-    context: Mapping[str, str] = field(default_factory=dict)
+    context: dict[str, str] = field(default_factory=dict)
 
     def health(self) -> AdapterHealth:
         """Return local adapter health."""
