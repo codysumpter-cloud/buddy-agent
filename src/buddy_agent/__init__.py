@@ -9,6 +9,7 @@ from .local_adapters import (
     LocalPrismtekAppBridge,
 )
 from .metadata import PROJECT_NAME, VERSION
+from .parity import SurfaceCapability, SurfaceParity, all_surface_parity
 
 __all__ = [
     "BuddyAgentConfig",
@@ -18,5 +19,8 @@ __all__ = [
     "LocalOmniBuddyAdapter",
     "LocalPrismtekAppBridge",
     "PROJECT_NAME",
+    "SurfaceCapability",
+    "SurfaceParity",
     "VERSION",
+    "all_surface_parity",
 ]
