@@ -133,7 +133,7 @@ class BuddyAgentConfig:
     def from_env(cls) -> BuddyAgentConfig:
         """Load config from environment variables."""
         home = Path(os.getenv("BUDDY_HOME", "~/.buddy-agent")).expanduser()
-        memory_path = Path(os.getenv("BUDDY_MEMORY_FILE", str(home / "memory.json"))).expanduser()
+        memory_path = Path(os.getenv("BUDDY_MEMORY_FILE", "~/.buddy_agent/memory.json")).expanduser()
         omni = OmniConfig(
             enabled=_env_bool("BUDDY_OMNI_ENABLED", default=False),
             base_url=os.getenv("BUDDY_OMNI_BASE_URL", "http://127.0.0.1:8799/api/omni"),
