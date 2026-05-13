@@ -28,6 +28,54 @@ source .venv/bin/activate
 pip install -e .[dev]
 buddy doctor
 buddy smoke
+buddy alpha
+```
+
+## Alpha Runtime
+
+```bash
+buddy chat "hello buddy"
+buddy remember "Prismtek likes clean runtime seams"
+buddy recall "runtime"
+buddy skill --skill caps "buddy alpha"
+```
+
+The Alpha Runtime wires local chat routing, persistent memory, built-in skills, Buddy template validation, local model routing, retrieval, Buddy Brain operator context, one app bridge chat route, and companion permission policy into one runnable path.
+
+## Alpha Runtime Plus Slice
+
+This repo is still a runnable alpha runtime, not a complete all-repository feature-equivalent Hermes/Buddy port.
+
+The current Alpha Runtime Plus slice adds:
+
+- config loading from environment variables or JSON files
+- a `BuddyRuntimeEntrypoint` facade for configured runtime execution
+- callable local Omni routing for testable local model backend paths
+- retrieval through the persistent memory provider using source-shaped results
+- Buddy Brain-style operator/runbook context in the runtime path
+- an app-native `buddy app-chat` route that publishes sanitized bridge events
+- a companion shell loader for `templates/default-buddy/buddy.json`
+- explicit restricted-integration gates that stay disabled by default
+
+Configured local run example:
+
+```bash
+cat > buddy.local.json <<'JSON'
+{
+  "home": ".buddy-local",
+  "memory_path": ".buddy-local/memory.json",
+  "operator_profile": "buddy-alpha-plus",
+  "retrieval_enabled": true,
+  "restricted_integrations_enabled": false,
+  "omni": {
+    "enabled": true,
+    "model": "local-test-model"
+  }
+}
+JSON
+
+buddy run --config buddy.local.json "hello from config"
+buddy app-chat --config buddy.local.json --buddy-id default-buddy "hello from app"
 ```
 
 ## Generate a Buddy
@@ -63,14 +111,21 @@ Buddy is being designed as a persistent companion layer for desktop, browser, wi
 
 | Track | Status |
 | --- | --- |
-| Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> testable scaffold |
-| Package | `0.1.0` scaffold |
+| Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> runnable alpha plus slice |
+| Package | `0.1.0` alpha scaffold |
 | CLI | `buddy` |
 | Smoke test | `buddy smoke` |
+| Alpha path | `buddy alpha`, `chat`, `remember`, `recall`, `skill` |
+| Configured entrypoint | `buddy run --config ...` |
+| App bridge | `buddy app-chat --config ...` local bridge route |
+| Memory | persistent JSON-backed local memory |
+| Retrieval | local Knowledge Vault-shaped provider over persistent memory |
+| Buddy Brain layer | local operator/runbook context adapter |
+| Omni/local routing | deterministic local route plus callable backend seam |
 | Appearance template | Default Buddy supports pixel and ASCII modes |
-| Companion shell | Contracts and consent-first policy started |
+| Companion shell | Loads and validates default Buddy template manifest |
 | iBeMore bridge | Typed app bridge contracts started |
-| Hermes reference | Planned import from `NousResearch/hermes-agent` |
+| Hermes reference | Planned import from `NousResearch/hermes-agent`; not full parity |
 | Discovery input | `awesome-hermes-agent` |
 | Compression input | `caveman` |
 | Restricted experiments | Disabled by default |
@@ -81,17 +136,32 @@ Buddy Agent tracks Hermes Agent, Buddy Brain, Omni Buddy, Prismtek Apps, Knowled
 
 ## Current Status
 
-Implemented scaffold pieces:
+Implemented alpha pieces:
 
-- `buddy` CLI with status, doctor, smoke, and generate commands
+- `buddy` CLI with status, doctor, smoke, alpha, chat, remember, recall, skill, run, app-chat, and generate commands
+- runnable local Alpha Runtime composition
+- config-loaded runtime entrypoint
+- persistent JSON-backed local memory
+- local retrieval provider shaped like Knowledge Vault results
+- local Buddy Brain operator/runbook context adapter
+- local Omni-style routing adapter with callable backend seam
+- app bridge chat route and sanitized event publishing
 - app icon asset, README mascot asset, and default Buddy asset
 - app-safe Buddy appearance contract for pixel/ascii modes and 64x64 animation states
-- companion contracts, consent-first policy, and iBeMore app bridge contracts
+- companion contracts, consent-first policy, template loader, and iBeMore app bridge contracts
 - runtime engine, message state, tool calls, and tool registry
 - Buddy profile, care, and training domain helpers
-- local adapters for Buddy Brain, Omni, Prismtek app events, and vault-style retrieval
 - note index, skill registry, automation registry, sandbox policy, app bridge contracts, gateway contracts, and Omni config
 - ecosystem integration registry and CI scaffolding
+
+Not yet implemented:
+
+- full Hermes Agent feature parity
+- full source-port of every reference repo
+- live remote Omni transport
+- screen, mic, clipboard, browser, or app observation
+- iOS system-wide control
+- betting, monetization, gambling, affiliate, publishing, or money automation
 
 ## Development
 
@@ -102,6 +172,9 @@ pytest
 buddy --help
 buddy doctor
 buddy smoke
+buddy alpha
+buddy run "hello from entrypoint"
+buddy app-chat --buddy-id default-buddy "hello from app"
 buddy generate --output my-buddy
 ```
 
