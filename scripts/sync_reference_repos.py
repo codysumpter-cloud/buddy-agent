@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Clone or update Buddy Agent reference repositories locally.
 
-This script intentionally writes into `.buddy-agent/references/`, which is ignored by git.
-It does not vendor source into Buddy Agent. Use it to inspect, audit, diff, and port
-small pieces behind native Buddy Agent boundaries.
+This script writes into `reference_repos/`, which is ignored by git. It does not
+vendor source into Buddy Agent. Use it to inspect, audit, diff, and port small
+pieces behind native Buddy Agent boundaries.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from pathlib import Path
 from buddy_agent.references import REFERENCE_REPOS, ReferenceRepo
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DEST = ROOT / ".buddy-agent" / "references"
+DEFAULT_DEST = ROOT / "reference_repos"
 
 
 def run(command: list[str], *, cwd: Path | None = None, dry_run: bool = False) -> None:
@@ -58,7 +58,7 @@ def write_report(destination: Path) -> Path:
     for repo in REFERENCE_REPOS:
         target = repo_dir(destination, repo)
         status = "present" if target.exists() else "missing"
-        lines.append(f"- `{repo.repository}` — {repo.role} — {status}")
+        lines.append(f"- `{repo.repository}` - {repo.role} - {status}")
     report.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return report
 
