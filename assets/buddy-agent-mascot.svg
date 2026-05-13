@@ -1,62 +1,116 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" style="background:transparent;image-rendering:pixelated;text-rendering:geometricPrecision" role="img" aria-labelledby="title desc">
-  <title id="title">Buddy Agent animated ASCII mascot</title>
-  <desc id="desc">Animated transparent-background ASCII pixel art of Buddy: a mint round mascot with heart antennae, navy pixel outline, face panel, tiny limbs, sparkles, and gold heart charm cycling through idle, happy, thinking, and sleepy states.</desc>
-  <style>
-    .row{font-weight:700;font-size:6.9px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;letter-spacing:.28px;white-space:pre}
-    .label{font-weight:800;font-size:20px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;letter-spacing:2px;fill:#12184f}
-    .sub{font-weight:800;font-size:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;letter-spacing:1px;fill:#5978bf}
-    .c-space{fill:transparent}.c-outline{fill:#12184f}.c-body{fill:#95eee5}.c-shade{fill:#48c7c5}.c-face{fill:#d9fff5}.c-accent{fill:#3fb8b7}.c-heart{fill:#ffd76d}.c-highlight{fill:#f6fffb}.c-blush{fill:#ff8ca3}.c-note{fill:#7fa0d9}
-  </style>
-  <text class="label" x="160" y="28" text-anchor="middle">buddy</text>
-  <g>
-    <animateTransform attributeName="transform" type="translate" values="0 0;0 -4;0 0" dur="2.2s" repeatCount="indefinite"/>
-    <g class="idle" opacity="1">
-      <animate attributeName="opacity" values="1;1;0;0;0" keyTimes="0;0.249;0.25;0.999;1" dur="8s" repeatCount="indefinite"/>
-      <text class="row" x="58" y="44.0" xml:space="preserve"><tspan class="c-space">     </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space"> </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space">             </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space"> </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space">   </tspan></text>
-      <text class="row" x="58" y="50.0" xml:space="preserve"><tspan class="c-space">     </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">             </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">   </tspan></text>
-      <text class="row" x="58" y="56.0" xml:space="preserve"><tspan class="c-space">    </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">           </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">  </tspan></text>
-      <text class="row" x="58" y="62.0" xml:space="preserve"><tspan class="c-space">    </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooo</tspan><tspan class="c-highlight">..</tspan><tspan class="c-body">oooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">           </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">oo</tspan><tspan class="c-highlight">..</tspan><tspan class="c-body">ooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">  </tspan></text>
-      <text class="row" x="58" y="68.0" xml:space="preserve"><tspan class="c-space">    </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">oo</tspan><tspan class="c-highlight">.</tspan><tspan class="c-body">oooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">           </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">o</tspan><tspan class="c-highlight">.</tspan><tspan class="c-body">ooooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">  </tspan></text>
-      <text class="row" x="58" y="74.0" xml:space="preserve"><tspan class="c-space">     </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">             </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">   </tspan></text>
-      <text class="row" x="58" y="80.0" xml:space="preserve"><tspan class="c-space">     </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooo</tspan><tspan class="c-highlight">.</tspan><tspan class="c-body">ooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">             </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooo</tspan><tspan class="c-highlight">.</tspan><tspan class="c-body">ooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">   </tspan></text>
-      <text class="row" x="58" y="86.0" xml:space="preserve"><tspan class="c-space">      </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">       </tspan><tspan class="c-outline">#</tspan><tspan class="c-space">       </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">    </tspan></text>
-      <text class="row" x="58" y="92.0" xml:space="preserve"><tspan class="c-space">      </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">               </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">    </tspan></text>
-      <text class="row" x="58" y="98.0" xml:space="preserve"><tspan class="c-space">       </tspan><tspan class="c-outline">##</tspan><tspan class="c-body">ooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">       </tspan><tspan class="c-outline">#</tspan><tspan class="c-space"> </tspan><tspan class="c-outline">#</tspan><tspan class="c-space">       </tspan><tspan class="c-outline">##</tspan><tspan class="c-body">ooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-heart">*</tspan><tspan class="c-space">  </tspan></text>
-      <text class="row" x="58" y="104.0" xml:space="preserve"><tspan class="c-space"> </tspan><tspan class="c-accent">+</tspan><tspan class="c-space">       </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">o</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">       </tspan><tspan class="c-outline">##</tspan><tspan class="c-body">o</tspan><tspan class="c-outline">#</tspan><tspan class="c-body">o</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">       </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">o</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">   </tspan><tspan class="c-heart">*</tspan><tspan class="c-space"> </tspan></text>
-      <text class="row" x="58" y="110.0" xml:space="preserve"><tspan class="c-accent">+</tspan><tspan class="c-space"> </tspan><tspan class="c-accent">+</tspan><tspan class="c-space">              </tspan><tspan class="c-outline">###</tspan><tspan class="c-body">o</tspan><tspan class="c-outline">###</tspan><tspan class="c-body">o</tspan><tspan class="c-outline">###</tspan><tspan class="c-space">         </tspan><tspan class="c-heart">*</tspan><tspan class="c-space">   </tspan></text>
-      <text class="row" x="58" y="116.0" xml:space="preserve"><tspan class="c-space"> </tspan><tspan class="c-accent">+</tspan><tspan class="c-space">             </tspan><tspan class="c-outline">###</tspan><tspan class="c-body">ooooooooo</tspan><tspan class="c-outline">###</tspan><tspan class="c-space">            </tspan></text>
-      <text class="row" x="58" y="122.0" xml:space="preserve"><tspan class="c-space">               </tspan><tspan class="c-outline">###</tspan><tspan class="c-body">ooooooooooooo</tspan><tspan class="c-outline">###</tspan><tspan class="c-space">         </tspan></text>
-      <text class="row" x="58" y="128.0" xml:space="preserve"><tspan class="c-space">              </tspan><tspan class="c-outline">##</tspan><tspan class="c-body">ooooooooooooooooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">          </tspan><tspan class="c-accent">+</tspan><tspan class="c-space"> </tspan></text>
-      <text class="row" x="58" y="134.0" xml:space="preserve"><tspan class="c-space">             </tspan><tspan class="c-outline">#</tspan><tspan class="c-highlight">..</tspan><tspan class="c-body">oooooooooooooooooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">        </tspan><tspan class="c-accent">+</tspan><tspan class="c-space"> </tspan><tspan class="c-accent">+</tspan></text>
-      <text class="row" x="58" y="140.0" xml:space="preserve"><tspan class="c-space">            </tspan><tspan class="c-outline">#</tspan><tspan class="c-highlight">..</tspan><tspan class="c-body">oo</tspan><tspan class="c-highlight">.</tspan><tspan class="c-body">oooo</tspan><tspan class="c-accent">+++++</tspan><tspan class="c-body">oooooooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">        </tspan><tspan class="c-accent">+</tspan></text>
-      <text class="row" x="58" y="146.0" xml:space="preserve"><tspan class="c-space">         </tspan><tspan class="c-outline">##</tspan><tspan class="c-body">oooo</tspan><tspan class="c-accent">+++</tspan><tspan class="c-face">---------</tspan><tspan class="c-accent">+++</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">         </tspan></text>
-      <text class="row" x="58" y="152.0" xml:space="preserve"><tspan class="c-space">        </tspan><tspan class="c-outline">##</tspan><tspan class="c-highlight">..</tspan><tspan class="c-body">o</tspan><tspan class="c-highlight">.</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">---------------</tspan><tspan class="c-accent">++</tspan><tspan class="c-body">ooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">        </tspan></text>
-      <text class="row" x="58" y="158.0" xml:space="preserve"><tspan class="c-space">        </tspan><tspan class="c-outline">#</tspan><tspan class="c-highlight">.</tspan><tspan class="c-body">oo</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">----</tspan><tspan class="c-outline">@</tspan><tspan class="c-face">---------</tspan><tspan class="c-outline">@</tspan><tspan class="c-face">----</tspan><tspan class="c-accent">+</tspan><tspan class="c-body">oo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">        </tspan></text>
-      <text class="row" x="58" y="164.0" xml:space="preserve"><tspan class="c-space">       </tspan><tspan class="c-outline">#</tspan><tspan class="c-highlight">.</tspan><tspan class="c-body">oo</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">----</tspan><tspan class="c-outline">@</tspan><tspan class="c-highlight">.</tspan><tspan class="c-outline">@</tspan><tspan class="c-face">-------</tspan><tspan class="c-outline">@</tspan><tspan class="c-highlight">.</tspan><tspan class="c-outline">@</tspan><tspan class="c-face">----</tspan><tspan class="c-accent">+</tspan><tspan class="c-body">oo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">       </tspan></text>
-      <text class="row" x="58" y="170.0" xml:space="preserve"><tspan class="c-space">       </tspan><tspan class="c-outline">##</tspan><tspan class="c-body">o</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">-----</tspan><tspan class="c-outline">@@@</tspan><tspan class="c-face">-------</tspan><tspan class="c-outline">@@@</tspan><tspan class="c-face">-----</tspan><tspan class="c-accent">+</tspan><tspan class="c-body">o</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">       </tspan></text>
-      <text class="row" x="58" y="176.0" xml:space="preserve"><tspan class="c-space">   </tspan><tspan class="c-outline">#####</tspan><tspan class="c-body">oo</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">-----</tspan><tspan class="c-outline">@@@</tspan><tspan class="c-face">-------</tspan><tspan class="c-outline">@@@</tspan><tspan class="c-face">-----</tspan><tspan class="c-accent">+</tspan><tspan class="c-body">oo</tspan><tspan class="c-outline">#####</tspan><tspan class="c-space">   </tspan></text>
-      <text class="row" x="58" y="182.0" xml:space="preserve"><tspan class="c-space">  </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-body">o</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">------</tspan><tspan class="c-outline">@</tspan><tspan class="c-face">---------</tspan><tspan class="c-outline">@</tspan><tspan class="c-face">------</tspan><tspan class="c-accent">+</tspan><tspan class="c-body">o</tspan><tspan class="c-outline">##</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">  </tspan></text>
-      <text class="row" x="58" y="188.0" xml:space="preserve"><tspan class="c-space">  </tspan><tspan class="c-body">ooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-shade">%%</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">----------</tspan><tspan class="c-outline">___</tspan><tspan class="c-face">----------</tspan><tspan class="c-accent">+</tspan><tspan class="c-body">oo</tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooo</tspan><tspan class="c-space">  </tspan></text>
-      <text class="row" x="58" y="194.0" xml:space="preserve"><tspan class="c-space"> </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%</tspan><tspan class="c-outline">#</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">--</tspan><tspan class="c-accent">++</tspan><tspan class="c-face">---------------</tspan><tspan class="c-accent">++</tspan><tspan class="c-face">--</tspan><tspan class="c-accent">+</tspan><tspan class="c-outline">#</tspan><tspan class="c-shade">%</tspan><tspan class="c-outline">##</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space"> </tspan></text>
-      <text class="row" x="58" y="200.0" xml:space="preserve"><tspan class="c-space">  </tspan><tspan class="c-body">ooooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-shade">%%</tspan><tspan class="c-body">o</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">-</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">-----------------</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">-</tspan><tspan class="c-accent">+</tspan><tspan class="c-body">o</tspan><tspan class="c-shade">%%</tspan><tspan class="c-outline">#</tspan><tspan class="c-body">ooooo</tspan><tspan class="c-space">  </tspan></text>
-      <text class="row" x="58" y="206.0" xml:space="preserve"><tspan class="c-space">  </tspan><tspan class="c-outline">#</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%</tspan><tspan class="c-body">oo</tspan><tspan class="c-accent">+</tspan><tspan class="c-face">-------------------</tspan><tspan class="c-accent">+</tspan><tspan class="c-body">oo</tspan><tspan class="c-shade">%</tspan><tspan class="c-outline">##</tspan><tspan class="c-body">oooo</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">  </tspan></text>
-      <text class="row" x="58" y="212.0" xml:space="preserve"><tspan class="c-space">   </tspan><tspan class="c-outline">#####</tspan><tspan class="c-shade">%%</tspan><tspan class="c-body">ooo</tspan><tspan class="c-accent">++</tspan><tspan class="c-face">---------------</tspan><tspan class="c-accent">++</tspan><tspan class="c-body">ooo</tspan><tspan class="c-shade">%%</tspan><tspan class="c-outline">#####</tspan><tspan class="c-space">   </tspan></text>
-      <text class="row" x="58" y="218.0" xml:space="preserve"><tspan class="c-space">       </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%</tspan><tspan class="c-body">ooooo</tspan><tspan class="c-accent">+++</tspan><tspan class="c-face">---------</tspan><tspan class="c-accent">+++</tspan><tspan class="c-body">ooooo</tspan><tspan class="c-shade">%</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">       </tspan></text>
-      <text class="row" x="58" y="224.0" xml:space="preserve"><tspan class="c-space">       </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%%%%%%%%%%</tspan><tspan class="c-outline">###</tspan><tspan class="c-accent">+</tspan><tspan class="c-outline">###</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-body">oo</tspan><tspan class="c-shade">%</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">       </tspan></text>
-      <text class="row" x="58" y="230.0" xml:space="preserve"><tspan class="c-space">        </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%%%%%%%%%</tspan><tspan class="c-outline">#</tspan><tspan class="c-heart">**</tspan><tspan class="c-outline">#</tspan><tspan class="c-heart">**</tspan><tspan class="c-outline">#</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-body">oo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">        </tspan></text>
-      <text class="row" x="58" y="236.0" xml:space="preserve"><tspan class="c-space">        </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%%%%%%%%</tspan><tspan class="c-outline">#</tspan><tspan class="c-heart">*******</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-body">oo</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">        </tspan></text>
-      <text class="row" x="58" y="242.0" xml:space="preserve"><tspan class="c-space">         </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%%%%%%%%</tspan><tspan class="c-outline">#</tspan><tspan class="c-heart">*</tspan><tspan class="c-highlight">.</tspan><tspan class="c-heart">*</tspan><tspan class="c-highlight">.</tspan><tspan class="c-heart">*</tspan><tspan class="c-outline">#</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-body">o</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">         </tspan></text>
-      <text class="row" x="58" y="248.0" xml:space="preserve"><tspan class="c-space">          </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-outline">#</tspan><tspan class="c-heart">**</tspan><tspan class="c-highlight">.</tspan><tspan class="c-heart">**</tspan><tspan class="c-outline">#</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">          </tspan></text>
-      <text class="row" x="58" y="254.0" xml:space="preserve"><tspan class="c-space">           </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-outline">#</tspan><tspan class="c-heart">***</tspan><tspan class="c-outline">#</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">           </tspan></text>
-      <text class="row" x="58" y="260.0" xml:space="preserve"><tspan class="c-space">            </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-outline">#</tspan><tspan class="c-heart">*</tspan><tspan class="c-outline">#</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">      </tspan><tspan class="c-accent">+</tspan><tspan class="c-space">    </tspan></text>
-      <text class="row" x="58" y="266.0" xml:space="preserve"><tspan class="c-space">  </tspan><tspan class="c-accent">+</tspan><tspan class="c-space">       </tspan><tspan class="c-outline">#####</tspan><tspan class="c-shade">%%%%%%%%%%%</tspan><tspan class="c-outline">#####</tspan><tspan class="c-space">          </tspan></text>
-      <text class="row" x="58" y="272.0" xml:space="preserve"><tspan class="c-space">        </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%</tspan><tspan class="c-highlight">.</tspan><tspan class="c-shade">%</tspan><tspan class="c-outline">####</tspan><tspan class="c-shade">%%%%%%%</tspan><tspan class="c-outline">###</tspan><tspan class="c-highlight">.</tspan><tspan class="c-shade">%%%</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">        </tspan></text>
-      <text class="row" x="58" y="278.0" xml:space="preserve"><tspan class="c-space">        </tspan><tspan class="c-outline">#</tspan><tspan class="c-shade">%%%%%%</tspan><tspan class="c-outline">###########</tspan><tspan class="c-shade">%%%%%%</tspan><tspan class="c-outline">#</tspan><tspan class="c-space">        </tspan></text>
-      <text class="row" x="58" y="284.0" xml:space="preserve"><tspan class="c-space">        </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%%%%%</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">   </tspan><tspan class="c-outline">#</tspan><tspan class="c-space">   </tspan><tspan class="c-outline">##</tspan><tspan class="c-shade">%%%%%</tspan><tspan class="c-outline">##</tspan><tspan class="c-space">        </tspan></text>
-      <text class="row" x="58" y="290.0" xml:space="preserve"><tspan class="c-space">          </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space">           </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space">          </tspan></text>
-    </g>
-    <g class="happy" opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.249;0.25;0.499;0.5;1" dur="8s" repeatCount="indefinite"/>
-      <text class="row" x="58" y="44.0" xml:space="preserve"><tspan class="c-space">     </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space"> </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space">             </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space"> </tspan><tspan class="c-outline">#####</tspan><tspan class="c-space">   </tspan></text>
-<!-- truncated for commit payload in this environment -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" role="img" aria-labelledby="title desc" style="background:transparent;image-rendering:pixelated;text-rendering:geometricPrecision">
+<title id="title">Buddy Agent animated ASCII mascot</title>
+<desc id="desc">Transparent animated ASCII pixel-art Buddy mascot with heart antennae, navy pixel outline, rounded body, face panel, tiny limbs, sparkles, gold heart charm, and idle, happy, thinking, and sleepy states.</desc>
+<style>
+  .label,.caption,.ascii{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-weight:800;letter-spacing:0}
+  .label{font-size:30px;fill:#12184f}
+  .caption{font-size:12px;fill:#5fc8c5}
+  .ascii{font-size:9.4px;white-space:pre;fill:#12184f}
+  @media (prefers-color-scheme:dark){
+    .label,.ascii{fill:#bffff5}
+    .caption{fill:#7fe7df}
+  }
+</style>
+<text class="label" x="180" y="34" text-anchor="middle">buddy</text>
+<text class="caption" x="180" y="52" text-anchor="middle">..... &lt;3 .....</text>
+<g>
+  <animateTransform attributeName="transform" type="translate" values="0 0;0 -4;0 0" dur="2.2s" repeatCount="indefinite"/>
+  <g opacity="1">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="1;0;0;0" keyTimes="0;.25;.5;.75" calcMode="discrete"/>
+  <text class="ascii" x="40" y="66" xml:space="preserve">
+  <tspan x="40">          .&lt;3.                 .&lt;3.</tspan>
+  <tspan x="40" dy="10.7">        .&#x27;    &#x27;.             .&#x27;    &#x27;.</tspan>
+  <tspan x="40" dy="10.7">       /  ooo  \           /  ooo  \</tspan>
+  <tspan x="40" dy="10.7">       \ o..o /     _^_     \ o..o /</tspan>
+  <tspan x="40" dy="10.7">         &#x27;---&#x27;    _/###\_    &#x27;---&#x27;</tspan>
+  <tspan x="40" dy="10.7">             ___/##ooooo##\___</tspan>
+  <tspan x="40" dy="10.7">          .-##ooooooooooooo##-.</tspan>
+  <tspan x="40" dy="10.7">        .##ooooooooooooooooooo##.</tspan>
+  <tspan x="40" dy="10.7">       /##oo+++-----------+++oo##\</tspan>
+  <tspan x="40" dy="10.7">      /##oo+---.-----------.---+oo##\</tspan>
+  <tspan x="40" dy="10.7">  o  |##oo+---|  @     @  |---+oo##|  o</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---|  @.   .@  |---+oo##|</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---|     _     |---+oo##|</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---&#x27;----___----&#x27;---+oo##|</tspan>
+  <tspan x="40" dy="10.7">      \##ooo+---------------+ooo##/</tspan>
+  <tspan x="40" dy="10.7">        &#x27;##oooo+++-----+++oooo##&#x27;</tspan>
+  <tspan x="40" dy="10.7">           &#x27;##%%%%##&lt;3##%%%%##&#x27;</tspan>
+  <tspan x="40" dy="10.7">             &#x27;##%%#***#%%##&#x27;</tspan>
+  <tspan x="40" dy="10.7">                ##     ##</tspan>
+</text>
+</g>
+  <g opacity="0">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;0;0" keyTimes="0;.25;.5;.75" calcMode="discrete"/>
+  <text class="ascii" x="40" y="66" xml:space="preserve">
+  <tspan x="40">          .&lt;3.                 .&lt;3.</tspan>
+  <tspan x="40" dy="10.7">        .&#x27;    &#x27;.             .&#x27;    &#x27;.</tspan>
+  <tspan x="40" dy="10.7">       /  ooo  \           /  ooo  \</tspan>
+  <tspan x="40" dy="10.7">       \ o..o /     _^_     \ o..o /     ///</tspan>
+  <tspan x="40" dy="10.7">         &#x27;---&#x27;    _/###\_    &#x27;---&#x27;      //</tspan>
+  <tspan x="40" dy="10.7">             ___/##ooooo##\___</tspan>
+  <tspan x="40" dy="10.7">          .-##ooooooooooooo##-.</tspan>
+  <tspan x="40" dy="10.7">        .##ooooooooooooooooooo##.</tspan>
+  <tspan x="40" dy="10.7">       /##oo+++-----------+++oo##\</tspan>
+  <tspan x="40" dy="10.7">      /##oo+---.-----------.---+oo##\</tspan>
+  <tspan x="40" dy="10.7">  o  |##oo+---|   ^     ^   |---+oo##|  o</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---|  blush blush |---+oo##|</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---|     \_/     |---+oo##|</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---&#x27;----- @ -----&#x27;---+oo##|</tspan>
+  <tspan x="40" dy="10.7">      \##ooo+---------------+ooo##/</tspan>
+  <tspan x="40" dy="10.7">        &#x27;##oooo+++-----+++oooo##&#x27;</tspan>
+  <tspan x="40" dy="10.7">           &#x27;##%%%%##&lt;3##%%%%##&#x27;</tspan>
+  <tspan x="40" dy="10.7">             &#x27;##%%#***#%%##&#x27;</tspan>
+  <tspan x="40" dy="10.7">                ##     ##</tspan>
+</text>
+</g>
+  <g opacity="0">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0" keyTimes="0;.25;.5;.75" calcMode="discrete"/>
+  <text class="ascii" x="40" y="66" xml:space="preserve">
+  <tspan x="40">          .&lt;3.                 .&lt;3.     ?</tspan>
+  <tspan x="40" dy="10.7">        .&#x27;    &#x27;.             .&#x27;    &#x27;.</tspan>
+  <tspan x="40" dy="10.7">       /  ooo  \           /  ooo  \</tspan>
+  <tspan x="40" dy="10.7">       \ o..o /     _^_     \ o..o /</tspan>
+  <tspan x="40" dy="10.7">         &#x27;---&#x27;    _/###\_    &#x27;---&#x27;</tspan>
+  <tspan x="40" dy="10.7">             ___/##ooooo##\___</tspan>
+  <tspan x="40" dy="10.7">          .-##ooooooooooooo##-.</tspan>
+  <tspan x="40" dy="10.7">        .##ooooooooooooooooooo##.</tspan>
+  <tspan x="40" dy="10.7">       /##oo+++-----------+++oo##\</tspan>
+  <tspan x="40" dy="10.7">      /##oo+---.-----------.---+oo##\</tspan>
+  <tspan x="40" dy="10.7">  o  |##oo+---|   @     @   |---+oo##|  o</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---|  @.     .@  |---+oo##|</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---|     -     |---+oo##|</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---&#x27;-----------&#x27;---+oo##|</tspan>
+  <tspan x="40" dy="10.7">      \##ooo+---o?-------+ooo##/</tspan>
+  <tspan x="40" dy="10.7">        &#x27;##oooo+/-----+++oooo##&#x27;</tspan>
+  <tspan x="40" dy="10.7">           &#x27;##%%%%##&lt;3##%%%%##&#x27;</tspan>
+  <tspan x="40" dy="10.7">             &#x27;##%%#***#%%##&#x27;</tspan>
+  <tspan x="40" dy="10.7">                ##     ##</tspan>
+</text>
+</g>
+  <g opacity="0">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;0;1" keyTimes="0;.25;.5;.75" calcMode="discrete"/>
+  <text class="ascii" x="40" y="66" xml:space="preserve">
+  <tspan x="40">          .&lt;3.                 .&lt;3.     z</tspan>
+  <tspan x="40" dy="10.7">        .&#x27;    &#x27;.             .&#x27;    &#x27;.      z</tspan>
+  <tspan x="40" dy="10.7">       /  ooo  \        ___ /  ooo  \</tspan>
+  <tspan x="40" dy="10.7">       \ o..o /     _^_/___\  o..o /</tspan>
+  <tspan x="40" dy="10.7">         &#x27;---&#x27;    _/###\___/  &#x27;---&#x27;</tspan>
+  <tspan x="40" dy="10.7">             ___/##ooooo##\___</tspan>
+  <tspan x="40" dy="10.7">          .-##ooooooooooooo##-.</tspan>
+  <tspan x="40" dy="10.7">        .##ooooooooooooooooooo##.</tspan>
+  <tspan x="40" dy="10.7">       /##oo+++-----------+++oo##\</tspan>
+  <tspan x="40" dy="10.7">      /##oo+---.-----------.---+oo##\</tspan>
+  <tspan x="40" dy="10.7">  o  |##oo+---|   _     _   |---+oo##|  o</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---|             |---+oo##|</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---|     o      |---+oo##|</tspan>
+  <tspan x="40" dy="10.7">     |##oo+---&#x27;-----------&#x27;---+oo##|</tspan>
+  <tspan x="40" dy="10.7">      \##ooo+---------------+ooo##/</tspan>
+  <tspan x="40" dy="10.7">        &#x27;##oooo+++-----+++oooo##&#x27;</tspan>
+  <tspan x="40" dy="10.7">           &#x27;##%%%%##&lt;3##%%%%##&#x27;</tspan>
+  <tspan x="40" dy="10.7">             &#x27;##%%#***#%%##&#x27;</tspan>
+  <tspan x="40" dy="10.7">                ##     ##</tspan>
+</text>
+</g>
+</g>
+<text class="caption" x="180" y="278" text-anchor="middle">&gt; idle / happy / thinking / sleepy</text>
 </svg>
