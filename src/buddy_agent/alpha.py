@@ -1,17 +1,18 @@
 """Buddy Agent Alpha Runtime.
 
-This module composes the scaffold pieces into a runnable local runtime. It is not full
+This module composes scaffold pieces into a runnable local runtime. It is not full
 feature parity with every reference repository yet, but it gives one tested path for
-chat, memory, skills, template validation, local routing, and companion permission policy.
+chat, memory, skills, template validation, local routing, and companion policy.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import cast
 
 from .buddy.generate import default_manifest
 from .buddy.render_contract import validate_buddy_manifest
-from .companion import CompanionPermissionPolicy, PermissionRequest
+from .companion import CompanionCapability, CompanionPermissionPolicy, PermissionRequest
 from .local_adapters import LocalOmniBuddyAdapter
 from .memory import NoteIndex
 from .runtime import RuntimeEngine
@@ -93,7 +94,11 @@ class BuddyAlphaRuntime:
 
     def request_companion_capability(self, capability: str, *, reason: str) -> AlphaRuntimeResult:
         """Check companion permission policy for a capability name."""
-        request = PermissionRequest(capability=capability, reason=reason, user_initiated=True)  # type: ignore[arg-type]
+        request = PermissionRequest(
+            capability=cast(CompanionCapability, capability),
+            reason=reason,
+            user_initiated=True,
+        )
         decision = self.permissions.decide(request)
         return AlphaRuntimeResult(ok=True, message=decision.decision, detail=decision.reason)
 
