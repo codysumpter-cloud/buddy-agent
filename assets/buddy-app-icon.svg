@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Buddy Agent App Icon</title>
+  <desc id="desc">A rounded app icon using the Buddy Agent pocket-pet device mark.</desc>
+  <style>
+    .bg { fill: url(#bg); }
+    .shell { fill: #83e5df; stroke: #121b4f; stroke-width: 8; }
+    .screen { fill: #c9fff2; stroke: #121b4f; stroke-width: 6; }
+    .ink { fill: #121b4f; }
+    .accent { fill: #55c8c7; }
+    .gold { fill: #ffd66b; stroke: #121b4f; stroke-width: 5; }
+    .pink { fill: #ff7f9b; stroke: #121b4f; stroke-width: 5; }
+    .shadow { fill: #9fb1e4; opacity: .55; }
+  </style>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eff8ff" />
+      <stop offset="1" stop-color="#d9fff7" />
+    </linearGradient>
+  </defs>
+  <rect class="bg" x="8" y="8" width="240" height="240" rx="54" />
+  <ellipse class="shadow" cx="128" cy="217" rx="76" ry="14" />
+  <path class="shell" d="M56 116 C56 52 86 30 128 30 C170 30 200 52 200 116 C200 189 174 218 128 218 C82 218 56 189 56 116 Z" />
+  <path class="accent" d="M66 135 C74 197 99 212 128 212 C171 212 195 174 193 111 C186 184 154 202 111 198 C83 196 66 175 66 135 Z" opacity=".45" />
+  <circle class="gold" cx="128" cy="28" r="15" />
+  <rect class="ink" x="115" y="48" width="26" height="8" rx="3" />
+  <rect class="screen" x="79" y="67" width="98" height="69" rx="18" />
+  <circle class="ink" cx="108" cy="101" r="7" />
+  <circle class="ink" cx="148" cy="101" r="7" />
+  <path d="M117 117 Q128 127 139 117" fill="none" stroke="#121b4f" stroke-width="5" stroke-linecap="round" />
+  <path class="ink" d="M82 160 h18 v-18 h18 v18 h18 v18 h-18 v18 h-18 v-18 h-18z" opacity=".9" />
+  <circle class="gold" cx="158" cy="166" r="14" />
+  <circle class="pink" cx="183" cy="154" r="12" />
+  <circle class="pink" cx="178" cy="187" r="9" />
+  <rect class="ink" x="111" y="165" width="7" height="7" />
+  <rect class="ink" x="127" y="165" width="7" height="7" />
+  <rect class="ink" x="111" y="181" width="7" height="7" />
+  <rect class="ink" x="127" y="181" width="7" height="7" />
+</svg>
