@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-labelledby="title desc">
+  <title id="title">Buddy Agent Mascot</title>
+  <desc id="desc">A small BMO-inspired ASCII-style Buddy Agent mascot with blinking face and glowing status lights.</desc>
+  <style>
+    .bg { fill: #07111f; }
+    .body { fill: #79d8c7; stroke: #d8fff7; stroke-width: 5; }
+    .screen { fill: #c7fff4; stroke: #17364a; stroke-width: 4; }
+    .line { fill: #17364a; font: 700 17px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .label { fill: #d8fff7; font: 700 15px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 1px; }
+    .button-red { fill: #ff5f6d; }
+    .button-blue { fill: #60a5fa; }
+    .button-yellow { fill: #facc15; }
+    .button-green { fill: #34d399; }
+    .leg { stroke: #d8fff7; stroke-width: 8; stroke-linecap: round; }
+    .arm { stroke: #d8fff7; stroke-width: 7; stroke-linecap: round; }
+    .eye { fill: #17364a; animation: blink 4s infinite; transform-origin: center; }
+    .status { animation: pulse 1.8s infinite ease-in-out; }
+    .cursor { animation: flicker 1s infinite; }
+    @keyframes blink { 0%, 88%, 100% { transform: scaleY(1); } 92%, 96% { transform: scaleY(0.12); } }
+    @keyframes pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+    @keyframes flicker { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+  </style>
+  <rect class="bg" width="360" height="260" rx="28" />
+  <text class="label" x="98" y="34">BUDDY AGENT</text>
+  <line class="arm" x1="66" y1="108" x2="34" y2="142" />
+  <line class="arm" x1="294" y1="108" x2="326" y2="142" />
+  <rect class="body" x="76" y="48" width="208" height="178" rx="22" />
+  <rect class="screen" x="102" y="72" width="156" height="76" rx="12" />
+  <circle class="eye" cx="146" cy="106" r="8" />
+  <circle class="eye" cx="214" cy="106" r="8" />
+  <path d="M158 126 Q180 140 202 126" fill="none" stroke="#17364a" stroke-width="5" stroke-linecap="round" />
+  <text class="line" x="122" y="168">&gt; buddy</text>
+  <text class="line cursor" x="204" y="168">_</text>
+  <circle class="button-red status" cx="122" cy="196" r="11" />
+  <circle class="button-blue status" cx="156" cy="196" r="11" style="animation-delay:.2s" />
+  <circle class="button-yellow status" cx="198" cy="196" r="8" style="animation-delay:.4s" />
+  <circle class="button-green status" cx="224" cy="196" r="8" style="animation-delay:.6s" />
+  <line class="leg" x1="132" y1="226" x2="120" y2="246" />
+  <line class="leg" x1="228" y1="226" x2="240" y2="246" />
+</svg>
