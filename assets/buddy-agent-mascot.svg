@@ -1,40 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-labelledby="title desc">
-  <title id="title">Buddy Agent Mascot</title>
-  <desc id="desc">A small BMO-inspired ASCII-style Buddy Agent mascot with blinking face and glowing status lights.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 380" role="img" aria-labelledby="title desc">
+  <title id="title">Buddy Agent Animated Buddy Mascot</title>
+  <desc id="desc">A mobile-friendly animated pixel and ASCII inspired Buddy creature with idle, happy, thinking, and sleepy states.</desc>
   <style>
-    .bg { fill: #07111f; }
-    .body { fill: #79d8c7; stroke: #d8fff7; stroke-width: 5; }
-    .screen { fill: #c7fff4; stroke: #17364a; stroke-width: 4; }
-    .line { fill: #17364a; font: 700 17px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-    .label { fill: #d8fff7; font: 700 15px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 1px; }
-    .button-red { fill: #ff5f6d; }
-    .button-blue { fill: #60a5fa; }
-    .button-yellow { fill: #facc15; }
-    .button-green { fill: #34d399; }
-    .leg { stroke: #d8fff7; stroke-width: 8; stroke-linecap: round; }
-    .arm { stroke: #d8fff7; stroke-width: 7; stroke-linecap: round; }
-    .eye { fill: #17364a; animation: blink 4s infinite; transform-origin: center; }
-    .status { animation: pulse 1.8s infinite ease-in-out; }
-    .cursor { animation: flicker 1s infinite; }
-    @keyframes blink { 0%, 88%, 100% { transform: scaleY(1); } 92%, 96% { transform: scaleY(0.12); } }
-    @keyframes pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
-    @keyframes flicker { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+    svg { max-width: 100%; height: auto; }
+    .bg { fill: #f8fbff; }
+    .ink { fill: #121b4f; }
+    .line { stroke: #121b4f; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    .shell { fill: #89e6df; stroke: #121b4f; stroke-width: 5; }
+    .face { fill: #c9fff2; stroke: #42bdb7; stroke-width: 3; }
+    .shade { fill: #55c8c7; opacity: .55; }
+    .heart { fill: #ffd66b; stroke: #121b4f; stroke-width: 4; }
+    .accent { fill: #69d5d0; }
+    .spark { fill: #60a5fa; animation: pulse 1.8s infinite ease-in-out; }
+    .spark2 { fill: #f6d365; animation: pulse 1.8s infinite ease-in-out .3s; }
+    .label { fill: #121b4f; font: 700 18px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 1px; }
+    .tiny { fill: #121b4f; font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .eye-open { animation: eyeOpen 5.2s infinite steps(1); transform-origin: center; }
+    .eye-happy { opacity: 0; animation: eyeHappy 5.2s infinite steps(1); }
+    .eye-sleepy { opacity: 0; animation: eyeSleepy 5.2s infinite steps(1); }
+    .mouth-smile { animation: smile 5.2s infinite steps(1); }
+    .mouth-happy { opacity: 0; animation: mouthHappy 5.2s infinite steps(1); }
+    .mouth-sleep { opacity: 0; animation: mouthSleep 5.2s infinite steps(1); }
+    .thinking { opacity: 0; animation: thinking 5.2s infinite steps(1); }
+    .sleepy { opacity: 0; animation: sleepy 5.2s infinite steps(1); }
+    .bob { animation: bob 1.4s infinite ease-in-out; transform-origin: 150px 160px; }
+    .cursor { animation: flicker 1s infinite steps(1); }
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes pulse { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+    @keyframes flicker { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+    @keyframes eyeOpen { 0%,24%,50%,74%,100% { opacity: 1; } 25%,49%,75%,99% { opacity: 0; } }
+    @keyframes eyeHappy { 0%,24%,50%,100% { opacity: 0; } 25%,49% { opacity: 1; } }
+    @keyframes eyeSleepy { 0%,74%,100% { opacity: 0; } 75%,99% { opacity: 1; } }
+    @keyframes smile { 0%,24%,50%,74%,100% { opacity: 1; } 25%,49%,75%,99% { opacity: 0; } }
+    @keyframes mouthHappy { 0%,24%,50%,100% { opacity: 0; } 25%,49% { opacity: 1; } }
+    @keyframes mouthSleep { 0%,74%,100% { opacity: 0; } 75%,99% { opacity: 1; } }
+    @keyframes thinking { 0%,49%,75%,100% { opacity: 0; } 50%,74% { opacity: 1; } }
+    @keyframes sleepy { 0%,74%,100% { opacity: 0; } 75%,99% { opacity: 1; } }
   </style>
-  <rect class="bg" width="360" height="260" rx="28" />
-  <text class="label" x="98" y="34">BUDDY AGENT</text>
-  <line class="arm" x1="66" y1="108" x2="34" y2="142" />
-  <line class="arm" x1="294" y1="108" x2="326" y2="142" />
-  <rect class="body" x="76" y="48" width="208" height="178" rx="22" />
-  <rect class="screen" x="102" y="72" width="156" height="76" rx="12" />
-  <circle class="eye" cx="146" cy="106" r="8" />
-  <circle class="eye" cx="214" cy="106" r="8" />
-  <path d="M158 126 Q180 140 202 126" fill="none" stroke="#17364a" stroke-width="5" stroke-linecap="round" />
-  <text class="line" x="122" y="168">&gt; buddy</text>
-  <text class="line cursor" x="204" y="168">_</text>
-  <circle class="button-red status" cx="122" cy="196" r="11" />
-  <circle class="button-blue status" cx="156" cy="196" r="11" style="animation-delay:.2s" />
-  <circle class="button-yellow status" cx="198" cy="196" r="8" style="animation-delay:.4s" />
-  <circle class="button-green status" cx="224" cy="196" r="8" style="animation-delay:.6s" />
-  <line class="leg" x1="132" y1="226" x2="120" y2="246" />
-  <line class="leg" x1="228" y1="226" x2="240" y2="246" />
+  <rect class="bg" width="300" height="380" rx="24" />
+  <text class="label" x="103" y="34">buddy</text>
+  <rect class="accent" x="89" y="45" width="9" height="3" />
+  <rect class="accent" x="113" y="45" width="9" height="3" />
+  <rect class="accent" x="137" y="45" width="9" height="3" />
+  <rect class="accent" x="161" y="45" width="9" height="3" />
+  <rect class="accent" x="185" y="45" width="9" height="3" />
+  <path class="accent" d="M150 52 l8 -8 h8 l4 6 -20 18 -20 -18 4 -6 h8z" />
+  <g class="bob">
+    <ellipse cx="150" cy="244" rx="58" ry="11" fill="#b8c7ef" opacity=".8" />
+    <path class="shell" d="M86 143 C86 86 112 66 150 66 C188 66 214 86 214 143 C214 205 191 239 150 239 C109 239 86 205 86 143 Z" />
+    <path class="shade" d="M96 165 C103 218 124 234 150 234 C189 234 211 198 209 141 C203 206 175 223 137 222 C111 221 96 200 96 165 Z" />
+    <path class="shell" d="M104 78 C93 52 106 40 126 50 C131 66 126 78 104 78 Z" />
+    <path class="shell" d="M196 78 C207 52 194 40 174 50 C169 66 174 78 196 78 Z" />
+    <path class="line" d="M145 69 L150 58 L155 69" fill="none" />
+    <ellipse class="face" cx="150" cy="137" rx="52" ry="40" />
+    <circle class="ink eye-open" cx="128" cy="133" r="6" />
+    <circle class="ink eye-open" cx="172" cy="133" r="6" />
+    <path class="line eye-happy" d="M122 132 q6 8 12 0" fill="none" />
+    <path class="line eye-happy" d="M166 132 q6 8 12 0" fill="none" />
+    <path class="line eye-sleepy" d="M122 134 h14" fill="none" />
+    <path class="line eye-sleepy" d="M164 134 h14" fill="none" />
+    <path class="line mouth-smile" d="M141 151 q9 10 18 0" fill="none" />
+    <circle class="ink mouth-happy" cx="150" cy="153" r="7" />
+    <circle fill="#ff8aa0" class="mouth-happy" cx="150" cy="156" r="3" />
+    <circle class="ink mouthSleep" cx="150" cy="153" r="5" />
+    <circle class="ink mouth-sleep" cx="150" cy="153" r="5" />
+    <rect class="accent" x="113" y="154" width="8" height="4" />
+    <rect class="accent" x="179" y="154" width="8" height="4" />
+    <path class="heart" d="M150 190 l-18 -16 c-14 -13 2 -32 18 -16 c16 -16 32 3 18 16z" />
+    <ellipse class="shell" cx="101" cy="165" rx="12" ry="16" />
+    <ellipse class="shell" cx="199" cy="165" rx="12" ry="16" />
+    <ellipse class="shell" cx="123" cy="234" rx="16" ry="12" />
+    <ellipse class="shell" cx="177" cy="234" rx="16" ry="12" />
+    <text class="label thinking" x="202" y="118">?</text>
+    <text class="label sleepy" x="204" y="101">z</text>
+    <text class="label sleepy" x="216" y="122">z</text>
+    <path class="sleepy" d="M155 77 q36 20 20 52 q-12 -12 -37 -12 q14 -19 17 -40z" fill="#7ad3df" stroke="#121b4f" stroke-width="4" />
+    <circle class="sleepy" cx="179" cy="127" r="6" fill="#f8fbff" stroke="#121b4f" stroke-width="3" />
+  </g>
+  <rect class="spark" x="42" y="96" width="8" height="26" />
+  <rect class="spark" x="33" y="105" width="26" height="8" />
+  <rect class="spark2" x="235" y="83" width="7" height="22" />
+  <rect class="spark2" x="227" y="90" width="22" height="7" />
+  <text class="label" x="93" y="294">&gt; buddy</text>
+  <text class="label cursor" x="191" y="294">_</text>
+  <text class="tiny" x="87" y="325">idle</text>
+  <text class="tiny" x="132" y="325">happy</text>
+  <text class="tiny" x="188" y="325">sleepy</text>
+  <text class="tiny" x="86" y="350">pixel + ascii template</text>
 </svg>
