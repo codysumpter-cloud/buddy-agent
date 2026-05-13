@@ -53,6 +53,10 @@ Generated Buddies must support:
 
 The app icon can be a pocket-pet device mark. The actual Buddy is the animated pet inside the app.
 
+## Companion Direction
+
+Buddy is being designed as a persistent companion layer for desktop, browser, widgets, and the iBeMore iOS app. See `docs/IBE_MORE_COMPANION_SPEC.md`.
+
 ## Version Tracker
 
 | Track | Status |
@@ -60,6 +64,8 @@ The app icon can be a pocket-pet device mark. The actual Buddy is the animated p
 | Package | `0.1.0` scaffold |
 | CLI | `buddy` |
 | Appearance template | Default Buddy supports pixel and ASCII modes |
+| Companion shell | Contracts and consent-first policy started |
+| iBeMore bridge | Typed app bridge contracts started |
 | Runtime | Native scaffold, not full Hermes port yet |
 | Hermes reference | Planned import from `NousResearch/hermes-agent` |
 | Discovery input | `awesome-hermes-agent` |
@@ -77,6 +83,7 @@ Implemented scaffold pieces:
 - `buddy` CLI with status, doctor, and generate commands
 - app icon asset, README mascot asset, and default Buddy asset
 - app-safe Buddy appearance contract for pixel/ascii modes and 64x64 animation states
+- companion contracts, consent-first policy, and iBeMore app bridge contracts
 - runtime engine, message state, tool calls, and tool registry
 - Buddy profile, care, and training domain helpers
 - local adapters for Buddy Brain, Omni, Prismtek app events, and vault-style retrieval
