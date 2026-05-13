@@ -17,9 +17,11 @@ Every repository listed here is an integration candidate, not automatically impo
 | Group | Repositories | Native Buddy Agent landing zone | Notes |
 | --- | --- | --- | --- |
 | Hermes runtime ecosystem | `hermes-ecosystem`, `hermes-workspace`, `Hermes-Wiki` | `buddy_agent.runtime`, `buddy_agent.skills`, `buddy_agent.memory`, `docs/` | Runtime, workspace, docs, and agent operating patterns. |
+| Discovery and ecosystem index | `awesome-hermes-agent` | `docs/`, future discovery registry | Curated ecosystem discovery, maturity tags, release references, and integration ideas. |
 | Control and operator UI | `hermes-control-interface`, `hermes-webui`, `hermes-hudui` | `buddy_agent.gateway`, `buddy_agent.app_bridge`, future `buddy_agent.ui` | Build native contracts first; avoid coupling runtime to a specific UI framework. |
 | Product app layer | `prismtek-apps` | `buddy_agent.buddy`, `buddy_agent.app_bridge` | Buddy lifecycle, care, training, appearance, sparring, trade packages, OAuth relay. |
 | Memory and knowledge | `agentmemory`, `knowledge-vault` | `buddy_agent.memory`, `LocalKnowledgeVaultProvider` | Retrieval, source records, recall, memory write policy. |
+| Skills and compression | `caveman` | `buddy_agent.skills` | Terse-output skill ideas, memory compression, statusline concepts, and agent brevity modes. |
 | Tools and MCP | `arcade-mcp`, `pixellab-mcp` | `buddy_agent.skills`, future `buddy_agent.mcp` | Tool registry, MCP adapters, permission boundaries. |
 | Pixel and creative systems | `LibreSprite`, `pixellab-js`, `tamagoscii` | `buddy_agent.buddy`, future `buddy_agent.creative` | Pixel/avatar/ASCII appearance workflows and Buddy customization. |
 | Mythos and narrative layer | `OpenMythos`, `symphony` | future `buddy_agent.mythos` | Lore, archetypes, orchestration, narrative context. |
@@ -32,6 +34,7 @@ Every repository listed here is an integration candidate, not automatically impo
 - Any workflow that touches money, ads, betting, affiliate content, or account automation needs explicit policy gates and documentation.
 - UI repos should contribute contracts and UX ideas before runtime code imports.
 - Creative repos should contribute asset pipelines and schemas before native rendering is attempted.
+- Compression/terse-output integrations should preserve technical accuracy and never hide safety-critical detail.
 
 ## Suggested phase sequence
 
