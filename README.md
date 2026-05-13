@@ -28,7 +28,19 @@ source .venv/bin/activate
 pip install -e .[dev]
 buddy doctor
 buddy smoke
+buddy alpha
 ```
+
+## Alpha Runtime
+
+```bash
+buddy chat "hello buddy"
+buddy remember "Prismtek likes clean runtime seams"
+buddy recall "runtime"
+buddy skill --skill caps "buddy alpha"
+```
+
+The Alpha Runtime wires local chat routing, persistent memory, built-in skills, Buddy template validation, and companion permission policy into one runnable path.
 
 ## Generate a Buddy
 
@@ -63,10 +75,12 @@ Buddy is being designed as a persistent companion layer for desktop, browser, wi
 
 | Track | Status |
 | --- | --- |
-| Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> testable scaffold |
-| Package | `0.1.0` scaffold |
+| Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> runnable alpha |
+| Package | `0.1.0` alpha scaffold |
 | CLI | `buddy` |
 | Smoke test | `buddy smoke` |
+| Alpha path | `buddy alpha`, `chat`, `remember`, `recall`, `skill` |
+| Memory | persistent JSON-backed local memory |
 | Appearance template | Default Buddy supports pixel and ASCII modes |
 | Companion shell | Contracts and consent-first policy started |
 | iBeMore bridge | Typed app bridge contracts started |
@@ -81,9 +95,13 @@ Buddy Agent tracks Hermes Agent, Buddy Brain, Omni Buddy, Prismtek Apps, Knowled
 
 ## Current Status
 
-Implemented scaffold pieces:
+Implemented alpha pieces:
 
-- `buddy` CLI with status, doctor, smoke, and generate commands
+- `buddy` CLI with status, doctor, smoke, alpha, chat, remember, recall, skill, and generate commands
+- runnable local Alpha Runtime composition
+- persistent JSON-backed local memory
+- local Omni-style routing adapter
+- built-in summarize and caps skills
 - app icon asset, README mascot asset, and default Buddy asset
 - app-safe Buddy appearance contract for pixel/ascii modes and 64x64 animation states
 - companion contracts, consent-first policy, and iBeMore app bridge contracts
@@ -102,6 +120,7 @@ pytest
 buddy --help
 buddy doctor
 buddy smoke
+buddy alpha
 buddy generate --output my-buddy
 ```
 
