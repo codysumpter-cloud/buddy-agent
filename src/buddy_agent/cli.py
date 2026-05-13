@@ -12,6 +12,18 @@ from .doctor import doctor_ok, run_doctor
 from .metadata import PROJECT_NAME, VERSION
 from .runtime import RuntimeEngine
 
+COMMANDS = (
+    "doctor",
+    "status",
+    "generate",
+    "smoke",
+    "alpha",
+    "chat",
+    "remember",
+    "recall",
+    "skill",
+)
+
 
 def build_parser() -> argparse.ArgumentParser:
     """Build the Buddy Agent CLI parser."""
@@ -27,10 +39,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "command",
         nargs="?",
-        choices=("doctor", "status", "generate", "smoke", "alpha", "chat", "remember", "recall", "skill"),
+        choices=COMMANDS,
         help="Run a Buddy command.",
     )
-    parser.add_argument("text", nargs="*", help="Text input for chat, memory, recall, or skill commands.")
+    parser.add_argument(
+        "text",
+        nargs="*",
+        help="Text input for chat, memory, recall, or skill commands.",
+    )
     parser.add_argument(
         "--output",
         default="generated_buddies/default-buddy",
