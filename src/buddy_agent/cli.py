@@ -8,7 +8,9 @@ from pathlib import Path
 from .alpha import BuddyAlphaRuntime
 from .buddy.generate import default_manifest, write_default_buddy
 from .buddy.render_contract import validate_buddy_manifest
+from .config import BuddyAgentConfig
 from .doctor import doctor_ok, run_doctor
+from .entrypoint import BuddyRuntimeEntrypoint
 from .metadata import PROJECT_NAME, VERSION
 from .parity import parity_summary_lines, validate_required_surface_parity
 from .runtime import RuntimeEngine
@@ -24,6 +26,8 @@ COMMANDS = (
     "recall",
     "skill",
     "parity",
+    "run",
+    "app-chat",
 )
 
 
@@ -47,7 +51,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "text",
         nargs="*",
-        help="Text input for chat, memory, recall, or skill commands.",
+        help="Text input for chat, memory, recall, app-chat, run, or skill commands.",
     )
     parser.add_argument(
         "--output",
@@ -55,6 +59,16 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output directory for `buddy generate`.",
     )
     parser.add_argument("--skill", default="summarize", help="Skill name for `buddy skill`.")
+    parser.add_argument(
+        "--config",
+        default="",
+        help="Optional JSON config path for `buddy run`, `buddy alpha`, or `buddy app-chat`.",
+    )
+    parser.add_argument(
+        "--buddy-id",
+        default="default-buddy",
+        help="Buddy id for app bridge commands.",
+    )
     return parser
 
 
@@ -62,6 +76,13 @@ def joined_text(parts: list[str], *, fallback: str = "hello") -> str:
     """Return positional text joined into one prompt."""
     value = " ".join(parts).strip()
     return value or fallback
+
+
+def configured_runtime(config_path: str) -> BuddyAlphaRuntime:
+    """Create a runtime from config path or environment."""
+    if config_path:
+        return BuddyAlphaRuntime.from_config(BuddyAgentConfig.from_file(config_path))
+    return BuddyAlphaRuntime.from_config(BuddyAgentConfig.from_env())
 
 
 def run_smoke_command() -> int:
@@ -74,9 +95,9 @@ def run_smoke_command() -> int:
     return 0
 
 
-def run_alpha_command() -> int:
+def run_alpha_command(config_path: str = "") -> int:
     """Run the richer Alpha Runtime smoke path."""
-    runtime = BuddyAlphaRuntime()
+    runtime = configured_runtime(config_path)
     for result in runtime.smoke():
         status = "ok" if result.ok else "fail"
         detail = f": {result.detail}" if result.detail else ""
@@ -126,7 +147,7 @@ def main(argv: list[str] | None = None) -> int:
         return run_smoke_command()
 
     if args.command == "alpha":
-        return run_alpha_command()
+        return run_alpha_command(args.config)
 
     if args.command == "parity":
         return run_parity_command()
@@ -153,6 +174,24 @@ def main(argv: list[str] | None = None) -> int:
         result = BuddyAlphaRuntime().run_skill(args.skill, joined_text(args.text))
         print(result.message)
         return 0 if result.ok else 1
+
+    if args.command == "run":
+        if args.config:
+            entrypoint = BuddyRuntimeEntrypoint.from_config_file(args.config)
+        else:
+            entrypoint = BuddyRuntimeEntrypoint.from_env()
+        result = entrypoint.execute("chat", joined_text(args.text))
+        print(result.message)
+        if result.detail:
+            print(result.detail)
+        return 0 if result.ok else 1
+
+    if args.command == "app-chat":
+        response = configured_runtime(args.config).app_chat(args.buddy_id, joined_text(args.text))
+        print(response.message)
+        if response.detail:
+            print(response.detail)
+        return 0 if response.ok else 1
 
     parser.print_help()
     return 0
