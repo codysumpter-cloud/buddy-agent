@@ -5,10 +5,13 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+from typing import Any, cast
 
 from .index import NoteIndex, NoteRecord
 
-DEFAULT_MEMORY_PATH = Path(os.getenv("BUDDY_MEMORY_FILE", "~/.buddy_agent/memory.json")).expanduser()
+DEFAULT_MEMORY_PATH = Path(
+    os.getenv("BUDDY_MEMORY_FILE", "~/.buddy_agent/memory.json")
+).expanduser()
 
 
 class PersistentNoteIndex(NoteIndex):
@@ -17,6 +20,8 @@ class PersistentNoteIndex(NoteIndex):
     This keeps the Alpha Runtime useful across separate CLI calls without requiring a
     database or external service.
     """
+
+    path: Path
 
     def __init__(self, path: Path | None = None) -> None:
         super().__init__()
@@ -27,14 +32,15 @@ class PersistentNoteIndex(NoteIndex):
         """Load notes from disk if the file exists."""
         if not self.path.exists():
             return
-        payload = json.loads(self.path.read_text(encoding="utf-8"))
+        payload = cast(dict[str, Any], json.loads(self.path.read_text(encoding="utf-8")))
+        records = cast(list[dict[str, Any]], payload.get("records", []))
         self.records = [
             NoteRecord(
                 note_id=str(item["note_id"]),
                 text=str(item["text"]),
                 tags=tuple(str(tag) for tag in item.get("tags", [])),
             )
-            for item in payload.get("records", [])
+            for item in records
         ]
 
     def save(self) -> None:
@@ -42,7 +48,11 @@ class PersistentNoteIndex(NoteIndex):
         self.path.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "records": [
-                {"note_id": record.note_id, "text": record.text, "tags": list(record.tags)}
+                {
+                    "note_id": record.note_id,
+                    "text": record.text,
+                    "tags": list(record.tags),
+                }
                 for record in self.records
             ]
         }
