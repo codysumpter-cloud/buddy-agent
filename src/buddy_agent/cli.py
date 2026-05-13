@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 
+from .doctor import doctor_ok, run_doctor
 from .metadata import PROJECT_NAME, VERSION
 
 
@@ -37,8 +38,11 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "doctor":
-        print("Buddy Agent scaffold doctor: ok")
-        return 0
+        checks = run_doctor()
+        for check in checks:
+            status = "ok" if check.ok else "fail"
+            print(f"{status} {check.name}: {check.detail}")
+        return 0 if doctor_ok(checks) else 1
 
     if args.command == "status":
         print("Buddy Agent scaffold status: initialized")
