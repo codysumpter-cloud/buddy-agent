@@ -68,7 +68,9 @@ class BuddyAppearanceTemplate:
         "ascii_style",
     )
     frames: tuple[BuddyFrameSpec, ...] = field(
-        default_factory=lambda: tuple(BuddyFrameSpec(state=state) for state in BUDDY_ANIMATION_STATES)
+        default_factory=lambda: tuple(
+            BuddyFrameSpec(state=state) for state in BUDDY_ANIMATION_STATES
+        )
     )
 
     def validate(self) -> None:

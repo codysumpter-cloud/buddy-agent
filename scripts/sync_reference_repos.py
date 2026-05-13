@@ -46,7 +46,16 @@ def sync_repo(destination: Path, repo: ReferenceRepo, *, dry_run: bool = False) 
     print(f"Cloning {repo.repository}")
     destination.mkdir(parents=True, exist_ok=True)
     run(
-        ["git", "clone", "--branch", repo.default_branch, "--depth", "1", repo.clone_url, str(target)],
+        [
+            "git",
+            "clone",
+            "--branch",
+            repo.default_branch,
+            "--depth",
+            "1",
+            repo.clone_url,
+            str(target),
+        ],
         dry_run=dry_run,
     )
 

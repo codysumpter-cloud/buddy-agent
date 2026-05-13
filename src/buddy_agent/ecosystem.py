@@ -138,9 +138,17 @@ ECOSYSTEM_INTEGRATIONS: tuple[EcosystemIntegration, ...] = (
 
 def integrations_by_group(group: str) -> tuple[EcosystemIntegration, ...]:
     """Return integrations in a group."""
-    return tuple(integration for integration in ECOSYSTEM_INTEGRATIONS if integration.group == group)
+    return tuple(
+        integration
+        for integration in ECOSYSTEM_INTEGRATIONS
+        if integration.group == group
+    )
 
 
 def restricted_integrations() -> tuple[EcosystemIntegration, ...]:
     """Return integrations that require explicit review before enablement."""
-    return tuple(integration for integration in ECOSYSTEM_INTEGRATIONS if integration.risk_tier == "restricted")
+    return tuple(
+        integration
+        for integration in ECOSYSTEM_INTEGRATIONS
+        if integration.risk_tier == "restricted"
+    )
