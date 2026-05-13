@@ -14,7 +14,7 @@ from .buddy.generate import default_manifest
 from .buddy.render_contract import validate_buddy_manifest
 from .companion import CompanionCapability, CompanionPermissionPolicy, PermissionRequest
 from .local_adapters import LocalOmniBuddyAdapter
-from .memory import NoteIndex
+from .memory import PersistentNoteIndex
 from .runtime import RuntimeEngine
 from .skills import SkillDefinition, SkillRegistry
 
@@ -33,7 +33,7 @@ class BuddyAlphaRuntime:
     """Runnable local Buddy Agent alpha runtime."""
 
     engine: RuntimeEngine = field(default_factory=RuntimeEngine)
-    memory: NoteIndex = field(default_factory=NoteIndex)
+    memory: PersistentNoteIndex = field(default_factory=PersistentNoteIndex)
     skills: SkillRegistry = field(default_factory=SkillRegistry)
     omni: LocalOmniBuddyAdapter = field(default_factory=LocalOmniBuddyAdapter)
     permissions: CompanionPermissionPolicy = field(default_factory=CompanionPermissionPolicy)
