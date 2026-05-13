@@ -6,12 +6,13 @@ import json
 from pathlib import Path
 
 from .appearance import BUDDY_ANIMATION_STATES, BUDDY_CANVAS_SIZE, default_buddy_template
+from .render_contract import validate_buddy_manifest
 
 
 def default_manifest() -> dict[str, object]:
     """Return the default Buddy generation manifest."""
     template = default_buddy_template()
-    return {
+    manifest: dict[str, object] = {
         "schema_version": 1,
         "template": template.key,
         "display_name": template.display_name,
@@ -35,6 +36,8 @@ def default_manifest() -> dict[str, object]:
             "readme_mascot": "assets/buddy-agent-mascot.svg",
         },
     }
+    validate_buddy_manifest(manifest)
+    return manifest
 
 
 def default_ascii_frames() -> dict[str, str]:
