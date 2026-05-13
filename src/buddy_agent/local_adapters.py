@@ -6,7 +6,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 
 from .adapters import AdapterHealth, RetrievedSource
-from .app_bridge import BuddyEvent
+from .app_bridge import BuddyEvent, normalize_buddy_event_name
 from .memory import NoteIndex
 
 
@@ -55,7 +55,9 @@ class LocalPrismtekAppBridge:
         """Record a sanitized event name and string payload."""
         buddy_id = str(payload.get("buddy_id", "unknown"))
         body = {str(key): str(value) for key, value in payload.items() if key != "buddy_id"}
-        self.events.append(BuddyEvent(name="buddy.updated", buddy_id=buddy_id, body=body))
+        self.events.append(
+            BuddyEvent(name=normalize_buddy_event_name(event_name), buddy_id=buddy_id, body=body)
+        )
 
 
 @dataclass
