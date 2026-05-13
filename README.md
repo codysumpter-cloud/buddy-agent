@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="https://github.com/codysumpter-cloud/buddy-agent/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-ZIP-22c55e?style=for-the-badge" alt="Download ZIP"></a>
-  <a href="https://github.com/codysumpter-cloud/buddy-agent"><img src="https://img.shields.io/badge/Clone-Repo-0ea5e9?style=for-the-badge" alt="Clone Repo"></a>
+  <a href="https://github.com/codysumpter-cloud/buddy-agent.git"><img src="https://img.shields.io/badge/Clone-Repo-0ea5e9?style=for-the-badge" alt="Clone Repo"></a>
   <a href="https://github.com/codysumpter-cloud/buddy-agent/issues"><img src="https://img.shields.io/badge/Roadmap-Issues-f59e0b?style=for-the-badge" alt="Roadmap Issues"></a>
 </p>
 
@@ -27,6 +27,7 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -e .[dev]
 buddy doctor
+buddy smoke
 ```
 
 ## Generate a Buddy
@@ -50,6 +51,7 @@ Generated Buddies must support:
 | README animated mascot | `assets/buddy-agent-mascot.svg` |
 | App icon | `assets/buddy-app-icon.svg` |
 | Default Buddy appearance | `assets/default-buddy.svg` |
+| Reference image manifest | `assets/references/REFERENCE_IMAGES.md` |
 
 The app icon can be a pocket-pet device mark. The actual Buddy is the animated pet inside the app.
 
@@ -61,12 +63,13 @@ Buddy is being designed as a persistent companion layer for desktop, browser, wi
 
 | Track | Status |
 | --- | --- |
+| Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> testable scaffold |
 | Package | `0.1.0` scaffold |
 | CLI | `buddy` |
+| Smoke test | `buddy smoke` |
 | Appearance template | Default Buddy supports pixel and ASCII modes |
 | Companion shell | Contracts and consent-first policy started |
 | iBeMore bridge | Typed app bridge contracts started |
-| Runtime | Native scaffold, not full Hermes port yet |
 | Hermes reference | Planned import from `NousResearch/hermes-agent` |
 | Discovery input | `awesome-hermes-agent` |
 | Compression input | `caveman` |
@@ -80,7 +83,7 @@ Buddy Agent tracks Hermes Agent, Buddy Brain, Omni Buddy, Prismtek Apps, Knowled
 
 Implemented scaffold pieces:
 
-- `buddy` CLI with status, doctor, and generate commands
+- `buddy` CLI with status, doctor, smoke, and generate commands
 - app icon asset, README mascot asset, and default Buddy asset
 - app-safe Buddy appearance contract for pixel/ascii modes and 64x64 animation states
 - companion contracts, consent-first policy, and iBeMore app bridge contracts
@@ -98,6 +101,7 @@ mypy src
 pytest
 buddy --help
 buddy doctor
+buddy smoke
 buddy generate --output my-buddy
 ```
 
