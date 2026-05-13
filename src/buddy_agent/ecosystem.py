@@ -35,6 +35,12 @@ ECOSYSTEM_INTEGRATIONS: tuple[EcosystemIntegration, ...] = (
     ),
     EcosystemIntegration("Hermes Wiki", "codysumpter-cloud/Hermes-Wiki", "runtime", "docs"),
     EcosystemIntegration(
+        "Awesome Hermes Agent",
+        "codysumpter-cloud/awesome-hermes-agent",
+        "discovery",
+        "docs",
+    ),
+    EcosystemIntegration(
         "Hermes Control Interface",
         "codysumpter-cloud/hermes-control-interface",
         "ui",
@@ -63,6 +69,12 @@ ECOSYSTEM_INTEGRATIONS: tuple[EcosystemIntegration, ...] = (
         "codysumpter-cloud/agentmemory",
         "memory",
         "buddy_agent.memory",
+    ),
+    EcosystemIntegration(
+        "Caveman",
+        "codysumpter-cloud/caveman",
+        "skills",
+        "buddy_agent.skills",
     ),
     EcosystemIntegration(
         "Arcade MCP",
