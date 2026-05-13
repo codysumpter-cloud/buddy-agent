@@ -11,9 +11,11 @@ A repository being public or open source does not by itself mean Buddy Agent can
 | Repository | Planned use | Status | Default enablement |
 | --- | --- | --- | --- |
 | `codysumpter-cloud/hermes-ecosystem` | Runtime ecosystem patterns | Pending license/file audit | Disabled |
+| `codysumpter-cloud/awesome-hermes-agent` | Ecosystem discovery and release tracking | Pending license/file audit | Disabled |
 | `codysumpter-cloud/prismtek-apps` | Product contracts and Buddy lifecycle | Known Prismtek source-available from existing audit | Disabled |
 | `codysumpter-cloud/agentmemory` | Memory and recall patterns | Pending license/file audit | Disabled |
 | `codysumpter-cloud/hermes-control-interface` | Operator/control UI contracts | Pending license/file audit | Disabled |
+| `codysumpter-cloud/caveman` | Brevity/compression skill ideas | README indicates MIT, repo/file audit still required before import | Disabled |
 | `codysumpter-cloud/MoneyPrinterV2` | Experimental monetization workflows | Pending license/file audit and safety review | Disabled, restricted |
 | `erikbohne/bettingAI` | Experimental betting/forecasting reference | Pending license/file audit and safety review | Disabled, restricted |
 | `codysumpter-cloud/hermes-workspace` | Workspace layout and runtime patterns | Pending license/file audit | Disabled |
