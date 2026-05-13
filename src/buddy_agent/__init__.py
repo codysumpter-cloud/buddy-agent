@@ -1,6 +1,7 @@
 """Buddy Agent package."""
 
 from .config import BuddyAgentConfig
+from .entrypoint import BuddyRuntimeEntrypoint
 from .local_adapters import (
     LocalBuddyBrainAdapter,
     LocalKnowledgeVaultProvider,
@@ -12,6 +13,7 @@ from .parity import SurfaceCapability, SurfaceParity, all_surface_parity
 
 __all__ = [
     "BuddyAgentConfig",
+    "BuddyRuntimeEntrypoint",
     "LocalBuddyBrainAdapter",
     "LocalKnowledgeVaultProvider",
     "LocalOmniBuddyAdapter",
