@@ -1,0 +1,6 @@
+{
+  "idle": "default buddy idle ascii frame",
+  "happy": "default buddy happy ascii frame",
+  "thinking": "default buddy thinking ascii frame",
+  "sleepy": "default buddy sleepy ascii frame"
+}
