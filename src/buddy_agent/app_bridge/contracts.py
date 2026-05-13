@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Literal, cast
 
 BuddyEventName = Literal[
     "buddy.created",
@@ -12,6 +12,21 @@ BuddyEventName = Literal[
     "buddy.care_changed",
     "buddy.trade_exported",
 ]
+
+BUDDY_EVENT_NAMES: tuple[BuddyEventName, ...] = (
+    "buddy.created",
+    "buddy.updated",
+    "buddy.trained",
+    "buddy.care_changed",
+    "buddy.trade_exported",
+)
+
+
+def normalize_buddy_event_name(value: str) -> BuddyEventName:
+    """Return a supported Buddy event name, falling back to a safe update event."""
+    if value in BUDDY_EVENT_NAMES:
+        return cast(BuddyEventName, value)
+    return "buddy.updated"
 
 
 @dataclass(frozen=True)
