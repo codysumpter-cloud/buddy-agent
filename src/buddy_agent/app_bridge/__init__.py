@@ -1,5 +1,6 @@
 """Prismtek app bridge boundaries for Buddy Agent."""
 
+from .chat import BuddyAppChatRequest, BuddyAppChatResponse
 from .contracts import (
     BUDDY_EVENT_NAMES,
     BuddyEvent,
@@ -11,6 +12,8 @@ from .ibe_more import IBeMoreAction, IBeMoreRequest, IBeMoreResponse, IBeMoreSur
 
 __all__ = [
     "BUDDY_EVENT_NAMES",
+    "BuddyAppChatRequest",
+    "BuddyAppChatResponse",
     "BuddyEvent",
     "BuddyEventName",
     "IBeMoreAction",
