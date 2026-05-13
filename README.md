@@ -23,9 +23,14 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/codysumpter-cloud/buddy-agent/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-ZIP-22c55e?style=for-the-badge" alt="Download ZIP"></a>
+  <a href="https://github.com/codysumpter-cloud/buddy-agent"><img src="https://img.shields.io/badge/Clone-Repo-0ea5e9?style=for-the-badge" alt="Clone Repo"></a>
+  <a href="https://github.com/codysumpter-cloud/buddy-agent/issues"><img src="https://img.shields.io/badge/Roadmap-Issues-f59e0b?style=for-the-badge" alt="Roadmap Issues"></a>
+</p>
+
+<p align="center">
   <a href="#download--install">Download</a> •
   <a href="#version-tracker">Version Tracker</a> •
-  <a href="#what-it-is">What It Is</a> •
   <a href="#ecosystem-scope">Ecosystem Scope</a> •
   <a href="#development">Development</a>
 </p>
@@ -34,7 +39,7 @@
 
 ## Download / Install
 
-Buddy Agent is not published as a package yet. Install from source for now:
+Buddy Agent is not published as a package yet. Install from source:
 
 ```bash
 git clone https://github.com/codysumpter-cloud/buddy-agent.git
@@ -45,12 +50,6 @@ pip install -e .[dev]
 buddy doctor
 ```
 
-One-line source install:
-
-```bash
-git clone https://github.com/codysumpter-cloud/buddy-agent.git && cd buddy-agent && python -m venv .venv && source .venv/bin/activate && pip install -e .[dev] && buddy doctor
-```
-
 ## Version Tracker
 
 | Track | Version / status |
@@ -59,22 +58,10 @@ git clone https://github.com/codysumpter-cloud/buddy-agent.git && cd buddy-agent
 | CLI | `buddy` |
 | Runtime status | Native scaffold, not full Hermes port yet |
 | Hermes reference | Planned import from `NousResearch/hermes-agent` |
+| Awesome index | `awesome-hermes-agent` tracked as discovery input |
+| Brevity/compression | `caveman` tracked as skill input |
 | Ecosystem registry | Expanded Prismtek/Hermes repo set tracked in `buddy_agent.ecosystem` |
 | Restricted experiments | Disabled by default |
-
-## What It Is
-
-Buddy Agent is a Buddy-branded agent runtime scaffold for Prismtek.
-
-The project is intended to combine a Hermes Agent-derived runtime with Buddy Brain operator contracts, Omni Buddy local/offline capabilities, Prismtek Apps product contracts, Knowledge Vault retrieval patterns, and the broader Prismtek/Hermes creative/runtime ecosystem.
-
-## Goals
-
-- Rebrand the Hermes Agent reference runtime as `buddy-agent` and `buddy` while preserving upstream notices.
-- Keep runtime, app UI, operator policy, and knowledge storage behind explicit adapter boundaries.
-- Add Buddy lifecycle concepts such as care, training, appearance, sparring, trade packages, and app relay contracts.
-- Support local/offline and Omni-backed operation without forcing every install into one runtime mode.
-- Provide native landing zones for UI, MCP, pixel/creative, mythos, model, discovery, compression, and restricted experiment integrations.
 
 ## Ecosystem Scope
 
@@ -93,26 +80,15 @@ The project is intended to combine a Hermes Agent-derived runtime with Buddy Bra
 
 ```text
 buddy_agent/
-  runtime/
-  memory/
-  skills/
-  automations/
-  gateway/
-  sandbox/
-  omni/
-  buddy/
-  app_bridge/
-  ui/
-  mcp/
-  creative/
-  mythos/
-  models/
-  experiments/
+  runtime/       memory/       skills/       automations/
+  gateway/       sandbox/      omni/         buddy/
+  app_bridge/    ui/           mcp/          creative/
+  mythos/        models/       experiments/
 ```
 
 ## Current Status
 
-This repository is initialized as a provenance-safe native scaffold. It does not yet vendor the full Hermes source or claim full feature parity.
+This repository is a provenance-safe native scaffold. It does not yet vendor the full Hermes source or claim full feature parity.
 
 Implemented scaffold pieces include:
 
@@ -123,16 +99,6 @@ Implemented scaffold pieces include:
 - note index, skill registry, automation registry, sandbox policy, app bridge contracts, gateway contracts, and Omni config
 - ecosystem integration registry for the expanded repo set
 - CI for install, lint, type checking, and tests
-
-See:
-
-- `docs/HERMES_PROVENANCE.md`
-- `docs/LICENSE_MATRIX.md`
-- `docs/BUDDY_FEATURE_PARITY.md`
-- `docs/ARCHITECTURE.md`
-- `docs/IMPORT_PLAN.md`
-- `docs/ECOSYSTEM_INTEGRATION_MAP.md`
-- `docs/ECOSYSTEM_LICENSE_AUDIT.md`
 
 ## Development
 
@@ -147,6 +113,16 @@ buddy --help
 buddy doctor
 ```
 
+## Docs
+
+- `docs/HERMES_PROVENANCE.md`
+- `docs/LICENSE_MATRIX.md`
+- `docs/BUDDY_FEATURE_PARITY.md`
+- `docs/ARCHITECTURE.md`
+- `docs/IMPORT_PLAN.md`
+- `docs/ECOSYSTEM_INTEGRATION_MAP.md`
+- `docs/ECOSYSTEM_LICENSE_AUDIT.md`
+
 ## Licensing
 
-Repository-owned code uses the license in `LICENSE` unless a file or directory states otherwise. Hermes-derived code remains governed by the original MIT license and notices. Expanded ecosystem integrations must be audited before code is copied or substantially adapted. See `NOTICE`, `THIRD_PARTY_NOTICES.md`, `docs/LICENSE_MATRIX.md`, and `docs/ECOSYSTEM_LICENSE_AUDIT.md`.
+Repository-owned code uses the license in `LICENSE` unless a file or directory states otherwise. Hermes-derived code remains governed by the original MIT license and notices. Expanded ecosystem integrations must be audited before code is copied or substantially adapted.
