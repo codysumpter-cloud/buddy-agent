@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/buddy-agent-mascot.svg" alt="Buddy Agent animated mascot" width="280">
+  <img src="assets/buddy-agent-mascot.svg" alt="Buddy Agent animated tama-style Buddy mascot" width="280">
 </p>
 
 <h1 align="center">Buddy Agent</h1>
@@ -29,40 +29,54 @@ pip install -e .[dev]
 buddy doctor
 ```
 
+## Generate a Buddy
+
+```bash
+buddy generate --output my-buddy
+```
+
+This writes an app-safe starter template with `buddy.json` and `ascii_frames.json`.
+
+Generated Buddies must support:
+
+- render modes: `pixel` and `ascii`
+- animation states: `idle`, `happy`, `thinking`, `sleepy`
+- frame contract: `64x64`, centered, equal padding
+
+## Visual Roles
+
+| Role | Asset |
+| --- | --- |
+| README animated mascot | `assets/buddy-agent-mascot.svg` |
+| App icon | `assets/buddy-app-icon.svg` |
+| Default Buddy appearance | `assets/default-buddy.svg` |
+
+The app icon can be a pocket-pet device mark. The actual Buddy is the animated pet inside the app.
+
 ## Version Tracker
 
 | Track | Status |
 | --- | --- |
 | Package | `0.1.0` scaffold |
 | CLI | `buddy` |
+| Appearance template | Default Buddy supports pixel and ASCII modes |
 | Runtime | Native scaffold, not full Hermes port yet |
 | Hermes reference | Planned import from `NousResearch/hermes-agent` |
 | Discovery input | `awesome-hermes-agent` |
 | Compression input | `caveman` |
 | Restricted experiments | Disabled by default |
 
-## ASCII Buddy fallback
-
-```text
-+------------+
-|  o    o    |
-|     --     |
-+------------+
-| > buddy_   |
-| O O   * *  |
-+--+----+----+
-   |    |
-```
-
 ## Ecosystem Scope
 
-Buddy Agent tracks Hermes Agent, Buddy Brain, Omni Buddy, Prismtek Apps, Knowledge Vault, Awesome Hermes Agent, Caveman, and the expanded Prismtek/Hermes ecosystem. See `docs/ECOSYSTEM_INTEGRATION_MAP.md` and `docs/ECOSYSTEM_LICENSE_AUDIT.md`.
+Buddy Agent tracks Hermes Agent, Buddy Brain, Omni Buddy, Prismtek Apps, Knowledge Vault, Awesome Hermes Agent, Caveman, and the expanded Prismtek/Hermes ecosystem. See `docs/ECOSYSTEM_INTEGRATION_MAP.md`, `docs/ECOSYSTEM_LICENSE_AUDIT.md`, and `docs/BUDDY_APPEARANCE_SPEC.md`.
 
 ## Current Status
 
 Implemented scaffold pieces:
 
-- `buddy` CLI with status and doctor commands
+- `buddy` CLI with status, doctor, and generate commands
+- app icon asset, README mascot asset, and default Buddy asset
+- app-safe Buddy appearance contract for pixel/ascii modes and 64x64 animation states
 - runtime engine, message state, tool calls, and tool registry
 - Buddy profile, care, and training domain helpers
 - local adapters for Buddy Brain, Omni, Prismtek app events, and vault-style retrieval
@@ -77,6 +91,7 @@ mypy src
 pytest
 buddy --help
 buddy doctor
+buddy generate --output my-buddy
 ```
 
 ## Licensing
