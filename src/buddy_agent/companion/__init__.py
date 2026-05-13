@@ -7,11 +7,13 @@ from .permissions import (
     PermissionRequest,
     PermissionResult,
 )
+from .shell import CompanionShell
 
 __all__ = [
     "CompanionCapability",
     "CompanionEvent",
     "CompanionPermissionPolicy",
+    "CompanionShell",
     "CompanionState",
     "PermissionDecision",
     "PermissionRequest",
