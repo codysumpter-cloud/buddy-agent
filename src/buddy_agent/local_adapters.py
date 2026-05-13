@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from .adapters import AdapterHealth, RetrievedSource
 from .app_bridge import BuddyEvent, normalize_buddy_event_name
 from .memory import NoteIndex
+from .omni import OmniConfig, TextRouteBackend
 
 
 @dataclass
@@ -27,17 +28,39 @@ class LocalBuddyBrainAdapter:
 
 @dataclass
 class LocalOmniBuddyAdapter:
-    """Local text router used when no remote Omni service is configured."""
+    """Local text router used when no remote Omni service is configured.
+
+    A callable backend can be injected for real local model tests. Without one, the
+    adapter keeps the deterministic local response used by the Alpha Runtime.
+    """
 
     prefix: str = "Buddy local reply"
+    backend: TextRouteBackend | None = None
+    backend_name: str = "deterministic-local"
+
+    @classmethod
+    def from_config(
+        cls,
+        config: OmniConfig,
+        *,
+        backend: TextRouteBackend | None = None,
+    ) -> LocalOmniBuddyAdapter:
+        """Build a local adapter from Omni config without enabling network access."""
+        prefix = f"Buddy {config.model} local reply" if config.enabled else "Buddy local reply"
+        backend_name = config.model if backend is not None else "deterministic-local"
+        return cls(prefix=prefix, backend=backend, backend_name=backend_name)
 
     def health(self) -> AdapterHealth:
         """Return local adapter health."""
-        return AdapterHealth(name="omni-local", ok=True, detail="local echo router")
+        if self.backend is not None:
+            return AdapterHealth(name="omni-local", ok=True, detail=f"callable {self.backend_name}")
+        return AdapterHealth(name="omni-local", ok=True, detail="local deterministic router")
 
     def route_text(self, prompt: str, *, metadata: Mapping[str, str] | None = None) -> str:
-        """Return a deterministic local response."""
-        del metadata
+        """Route a text prompt through the configured local backend path."""
+        safe_metadata = dict(metadata or {})
+        if self.backend is not None:
+            return self.backend(prompt, safe_metadata)
         return f"{self.prefix}: {prompt}"
 
 
