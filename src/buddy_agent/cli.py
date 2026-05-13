@@ -5,18 +5,32 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from .alpha import BuddyAlphaRuntime
 from .buddy.generate import default_manifest, write_default_buddy
 from .buddy.render_contract import validate_buddy_manifest
 from .doctor import doctor_ok, run_doctor
 from .metadata import PROJECT_NAME, VERSION
 from .runtime import RuntimeEngine
 
+COMMANDS = (
+    "doctor",
+    "status",
+    "generate",
+    "smoke",
+    "alpha",
+    "chat",
+    "remember",
+    "recall",
+    "skill",
+    "app-chat",
+)
+
 
 def build_parser() -> argparse.ArgumentParser:
     """Build the Buddy Agent CLI parser."""
     parser = argparse.ArgumentParser(
         prog="buddy",
-        description="Buddy Agent runtime scaffold.",
+        description="Buddy Agent Alpha Runtime Plus.",
     )
     parser.add_argument(
         "--version",
@@ -26,15 +40,28 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "command",
         nargs="?",
-        choices=("doctor", "status", "generate", "smoke"),
-        help="Run a scaffold command.",
+        choices=COMMANDS,
+        help="Run a Buddy command.",
+    )
+    parser.add_argument(
+        "text",
+        nargs="*",
+        help="Text input for chat, memory, recall, or skill commands.",
     )
     parser.add_argument(
         "--output",
         default="generated_buddies/default-buddy",
         help="Output directory for `buddy generate`.",
     )
+    parser.add_argument("--skill", default="summarize", help="Skill name for `buddy skill`.")
+    parser.add_argument("--surface", default="local", help="Surface name for `buddy app-chat`.")
     return parser
+
+
+def joined_text(parts: list[str], *, fallback: str = "hello") -> str:
+    """Return positional text joined into one prompt."""
+    value = " ".join(parts).strip()
+    return value or fallback
 
 
 def run_smoke_command() -> int:
@@ -44,6 +71,16 @@ def run_smoke_command() -> int:
     validate_buddy_manifest(default_manifest())
     print("ok runtime: " + response)
     print("ok buddy-template: default manifest valid")
+    return 0
+
+
+def run_alpha_command() -> int:
+    """Run the richer Alpha Runtime Plus smoke path."""
+    runtime = BuddyAlphaRuntime()
+    for result in runtime.smoke():
+        status = "ok" if result.ok else "fail"
+        detail = f": {result.detail}" if result.detail else ""
+        print(f"{status} {result.message}{detail}")
     return 0
 
 
@@ -64,7 +101,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if doctor_ok(checks) else 1
 
     if args.command == "status":
-        print("Buddy Agent scaffold status: initialized")
+        print("Buddy Agent Alpha Runtime Plus status: initialized")
         return 0
 
     if args.command == "generate":
@@ -74,6 +111,39 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "smoke":
         return run_smoke_command()
+
+    if args.command == "alpha":
+        return run_alpha_command()
+
+    if args.command == "chat":
+        result = BuddyAlphaRuntime().chat(joined_text(args.text))
+        print(result.message)
+        if result.detail:
+            print(result.detail)
+        return 0 if result.ok else 1
+
+    if args.command == "remember":
+        result = BuddyAlphaRuntime().remember(joined_text(args.text))
+        print(result.message)
+        print(result.detail)
+        return 0 if result.ok else 1
+
+    if args.command == "recall":
+        result = BuddyAlphaRuntime().recall(joined_text(args.text))
+        print(result.message)
+        return 0 if result.ok else 1
+
+    if args.command == "skill":
+        result = BuddyAlphaRuntime().run_skill(args.skill, joined_text(args.text))
+        print(result.message)
+        return 0 if result.ok else 1
+
+    if args.command == "app-chat":
+        result = BuddyAlphaRuntime().route_app_chat(joined_text(args.text), surface=str(args.surface))
+        print(result.message)
+        if result.detail:
+            print(result.detail)
+        return 0 if result.ok else 1
 
     parser.print_help()
     return 0
