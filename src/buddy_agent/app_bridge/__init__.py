@@ -7,11 +7,16 @@ from .contracts import (
     TradePackageSummary,
     normalize_buddy_event_name,
 )
+from .ibe_more import IBeMoreAction, IBeMoreRequest, IBeMoreResponse, IBeMoreSurface
 
 __all__ = [
     "BUDDY_EVENT_NAMES",
     "BuddyEvent",
     "BuddyEventName",
+    "IBeMoreAction",
+    "IBeMoreRequest",
+    "IBeMoreResponse",
+    "IBeMoreSurface",
     "TradePackageSummary",
     "normalize_buddy_event_name",
 ]
