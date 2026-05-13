@@ -12,6 +12,7 @@ from .config import BuddyAgentConfig
 from .doctor import doctor_ok, run_doctor
 from .entrypoint import BuddyRuntimeEntrypoint
 from .metadata import PROJECT_NAME, VERSION
+from .parity import parity_summary_lines, validate_required_surface_parity
 from .runtime import RuntimeEngine
 
 COMMANDS = (
@@ -24,6 +25,7 @@ COMMANDS = (
     "remember",
     "recall",
     "skill",
+    "parity",
     "run",
     "app-chat",
 )
@@ -103,6 +105,19 @@ def run_alpha_command(config_path: str = "") -> int:
     return 0
 
 
+def run_parity_command() -> int:
+    """Print the cross-surface parity contract summary."""
+    problems = validate_required_surface_parity()
+    for line in parity_summary_lines():
+        print(line)
+    if problems:
+        for problem in problems:
+            print(f"fail parity: {problem}")
+        return 1
+    print("ok parity: all required surfaces covered")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the Buddy Agent CLI."""
     parser = build_parser()
@@ -133,6 +148,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "alpha":
         return run_alpha_command(args.config)
+
+    if args.command == "parity":
+        return run_parity_command()
 
     if args.command == "chat":
         result = BuddyAlphaRuntime().chat(joined_text(args.text))
