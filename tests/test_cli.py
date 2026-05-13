@@ -10,7 +10,8 @@ def test_version_command(capsys):
 def test_doctor_command(capsys):
     assert main(["doctor"]) == 0
     captured = capsys.readouterr()
-    assert "doctor: ok" in captured.out
+    assert "ok runtime" in captured.out
+    assert "ok vault-provider" in captured.out
 
 
 def test_status_command(capsys):
