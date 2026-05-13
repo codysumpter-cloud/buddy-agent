@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from typing import cast
 
 from .appearance import BUDDY_ANIMATION_STATES, BUDDY_CANVAS_SIZE, BUDDY_RENDER_MODES
 
@@ -15,20 +16,22 @@ def require_mapping(value: object, *, name: str) -> Mapping[str, object]:
     """Return a mapping or raise a contract error."""
     if not isinstance(value, Mapping):
         raise BuddyRenderContractError(f"{name} must be an object")
-    return value
+    return cast(Mapping[str, object], value)
 
 
 def require_sequence(value: object, *, name: str) -> Sequence[object]:
     """Return a sequence or raise a contract error."""
     if isinstance(value, str) or not isinstance(value, Sequence):
         raise BuddyRenderContractError(f"{name} must be a list")
-    return value
+    return cast(Sequence[object], value)
 
 
 def validate_buddy_manifest(manifest: Mapping[str, object]) -> None:
     """Validate the app-facing Buddy appearance manifest."""
     canvas = require_mapping(manifest.get("canvas"), name="canvas")
-    if canvas.get("width") != BUDDY_CANVAS_SIZE or canvas.get("height") != BUDDY_CANVAS_SIZE:
+    canvas_ok = canvas.get("width") == BUDDY_CANVAS_SIZE
+    canvas_ok = canvas_ok and canvas.get("height") == BUDDY_CANVAS_SIZE
+    if not canvas_ok:
         raise BuddyRenderContractError("canvas must be 64x64")
 
     render_modes = tuple(require_sequence(manifest.get("render_modes"), name="render_modes"))
