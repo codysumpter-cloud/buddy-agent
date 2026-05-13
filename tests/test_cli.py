@@ -53,7 +53,17 @@ def test_app_chat_command_uses_bridge_route(tmp_path, capsys):
         encoding="utf-8",
     )
 
-    assert main(["--config", str(config_path), "--buddy-id", "buddy-1", "app-chat", "hello"]) == 0
+    exit_code = main(
+        [
+            "--config",
+            str(config_path),
+            "--buddy-id",
+            "buddy-1",
+            "app-chat",
+            "hello",
+        ]
+    )
     captured = capsys.readouterr()
 
+    assert exit_code == 0
     assert "Buddy local reply" in captured.out
