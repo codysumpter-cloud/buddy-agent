@@ -1,5 +1,6 @@
 """Buddy Agent package."""
 
+from .config import BuddyAgentConfig
 from .local_adapters import (
     LocalBuddyBrainAdapter,
     LocalKnowledgeVaultProvider,
@@ -9,6 +10,7 @@ from .local_adapters import (
 from .metadata import PROJECT_NAME, VERSION
 
 __all__ = [
+    "BuddyAgentConfig",
     "LocalBuddyBrainAdapter",
     "LocalKnowledgeVaultProvider",
     "LocalOmniBuddyAdapter",
