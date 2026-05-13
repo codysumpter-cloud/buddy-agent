@@ -44,6 +44,32 @@ These repositories are related Prismtek/Cody-owned sources and should keep their
 - `codysumpter-cloud/prismtek-apps`
 - `codysumpter-cloud/knowledge-vault`
 
+## Expanded ecosystem candidates
+
+The following repositories are planned integration candidates. They are not yet vendored source in this scaffold unless a later import branch says otherwise:
+
+- `codysumpter-cloud/hermes-ecosystem`
+- `codysumpter-cloud/agentmemory`
+- `codysumpter-cloud/hermes-control-interface`
+- `codysumpter-cloud/MoneyPrinterV2`
+- `erikbohne/bettingAI`
+- `codysumpter-cloud/hermes-workspace`
+- `codysumpter-cloud/arcade-mcp`
+- `codysumpter-cloud/hermes-webui`
+- `codysumpter-cloud/hermes-hudui`
+- `codysumpter-cloud/gemma`
+- `codysumpter-cloud/symphony`
+- `codysumpter-cloud/LibreSprite`
+- `codysumpter-cloud/Hermes-Wiki`
+- `codysumpter-cloud/OpenMythos`
+- `codysumpter-cloud/tamagoscii`
+- `codysumpter-cloud/pixellab-mcp`
+- `codysumpter-cloud/pixellab-js`
+
+See `docs/ECOSYSTEM_INTEGRATION_MAP.md` and `docs/ECOSYSTEM_LICENSE_AUDIT.md` for the planned native landing zones and audit status.
+
 ## Import rule
 
-Do not paste upstream code into Buddy Agent without updating this file, `NOTICE`, and `docs/LICENSE_MATRIX.md`.
+Do not paste upstream or ecosystem code into Buddy Agent without updating this file, `NOTICE`, `docs/LICENSE_MATRIX.md`, and any relevant source-specific notice files.
+
+A public or open-source repository may still require attribution, license preservation, source disclosure, notice text, or other obligations. Verify the license before copying or substantially adapting code.
