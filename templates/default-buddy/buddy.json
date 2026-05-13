@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "template": "default-buddy",
+  "display_name": "Default Buddy",
+  "canvas": {
+    "width": 64,
+    "height": 64
+  },
+  "render_modes": [
+    "pixel",
+    "ascii"
+  ],
+  "states": [
+    "idle",
+    "happy",
+    "thinking",
+    "sleepy"
+  ],
+  "palette": [
+    "#121b4f",
+    "#89e6df",
+    "#c9fff2",
+    "#ffd66b",
+    "#ff8aa0",
+    "#b8c7ef"
+  ],
+  "traits": [
+    "tama-like",
+    "pet",
+    "cute",
+    "trainable"
+  ],
+  "customization_options": [
+    "palette",
+    "ears",
+    "tuft",
+    "face",
+    "belly_charm",
+    "accessory",
+    "idle_animation",
+    "ascii_style"
+  ],
+  "rules": {
+    "buddy_is_pet": true,
+    "device_shape_allowed": false,
+    "centered": true,
+    "equal_padding": true,
+    "transparent_background": true,
+    "pixel_format": "indexed-color png recommended"
+  },
+  "assets": {
+    "app_icon": "assets/buddy-app-icon.svg",
+    "default_pixel": "assets/default-buddy.svg",
+    "readme_mascot": "assets/buddy-agent-mascot.svg"
+  }
+}
