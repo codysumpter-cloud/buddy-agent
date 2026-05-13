@@ -12,6 +12,9 @@ htmlcov/
 .venv/
 venv/
 
+# Local synced reference repos
+reference_repos/
+
 # Local config and secrets
 .env
 .env.*
