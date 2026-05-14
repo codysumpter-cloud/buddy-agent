@@ -1,10 +1,34 @@
 <p align="center">
-  <img src="assets/buddy-agent-mascot.svg" alt="Buddy Agent animated tama-style Buddy mascot" width="280">
+  <img src="assets/buddy-agent-mascot.svg" alt="Buddy Agent animated ASCII mascot" width="280">
 </p>
 
 <h1 align="center">Buddy Agent</h1>
 
 <p align="center"><strong>Native Buddy runtime for the Prismtek / Hermes ecosystem.</strong></p>
+
+<p align="center">
+  <a href="#ascii-buddy"><strong>ASCII Buddy</strong></a>
+  &nbsp;•&nbsp;
+  <a href="#pixel-buddy"><strong>Pixel Buddy</strong></a>
+</p>
+
+<details open id="ascii-buddy">
+<summary><strong>View ASCII Buddy mascot</strong></summary>
+
+<p align="center">
+  <img src="assets/buddy-agent-mascot.svg" alt="Animated ASCII Buddy mascot" width="280">
+</p>
+
+</details>
+
+<details id="pixel-buddy">
+<summary><strong>View Pixel Buddy mascot</strong></summary>
+
+<p align="center">
+  <img src="assets/default-buddy.svg" alt="Default pixel Buddy mascot" width="220">
+</p>
+
+</details>
 
 <p align="center">
   <img src="assets/badges/runtime.svg" alt="Runtime: runnable alpha"><br>
@@ -35,8 +59,8 @@ buddy alpha
 
 ```bash
 buddy chat "hello buddy"
-buddy remember "Prismtek likes clean runtime seams"
-buddy recall "runtime"
+buddy remember "Buddy can keep local notes"
+buddy recall "local"
 buddy skill --skill caps "buddy alpha"
 ```
 
@@ -48,28 +72,7 @@ The Alpha Runtime wires local chat routing, persistent memory, built-in skills, 
 buddy generate --output my-buddy
 ```
 
-This writes an app-safe starter template with `buddy.json` and `ascii_frames.json`.
-
-Generated Buddies must support:
-
-- render modes: `pixel` and `ascii`
-- animation states: `idle`, `happy`, `thinking`, `sleepy`
-- frame contract: `64x64`, centered, equal padding
-
-## Visual Roles
-
-| Role | Asset |
-| --- | --- |
-| README animated mascot | `assets/buddy-agent-mascot.svg` |
-| App icon | `assets/buddy-app-icon.svg` |
-| Default Buddy appearance | `assets/default-buddy.svg` |
-| Reference image manifest | `assets/references/REFERENCE_IMAGES.md` |
-
-The app icon can be a pocket-pet device mark. The actual Buddy is the animated pet inside the app.
-
-## Companion Direction
-
-Buddy is being designed as a persistent companion layer for desktop, browser, widgets, and the iBeMore iOS app. See `docs/IBE_MORE_COMPANION_SPEC.md`.
+Generated Buddies support pixel and ASCII render modes, idle/happy/thinking/sleepy states, and a centered 64x64 frame contract.
 
 ## Version Tracker
 
@@ -78,38 +81,10 @@ Buddy is being designed as a persistent companion layer for desktop, browser, wi
 | Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> runnable alpha |
 | Package | `0.1.0` alpha scaffold |
 | CLI | `buddy` |
-| Smoke test | `buddy smoke` |
-| Alpha path | `buddy alpha`, `chat`, `remember`, `recall`, `skill` |
 | Memory | persistent JSON-backed local memory |
-| Appearance template | Default Buddy supports pixel and ASCII modes |
-| Companion shell | Contracts and consent-first policy started |
-| iBeMore bridge | Typed app bridge contracts started |
-| Hermes reference | Planned import from `NousResearch/hermes-agent` |
-| Discovery input | `awesome-hermes-agent` |
-| Compression input | `caveman` |
-| Restricted experiments | Disabled by default |
-
-## Ecosystem Scope
-
-Buddy Agent tracks Hermes Agent, Buddy Brain, Omni Buddy, Prismtek Apps, Knowledge Vault, Awesome Hermes Agent, Caveman, and the expanded Prismtek/Hermes ecosystem. See `docs/ECOSYSTEM_INTEGRATION_MAP.md`, `docs/ECOSYSTEM_LICENSE_AUDIT.md`, and `docs/BUDDY_APPEARANCE_SPEC.md`.
-
-## Current Status
-
-Implemented alpha pieces:
-
-- `buddy` CLI with status, doctor, smoke, alpha, chat, remember, recall, skill, and generate commands
-- runnable local Alpha Runtime composition
-- persistent JSON-backed local memory
-- local Omni-style routing adapter
-- built-in summarize and caps skills
-- app icon asset, README mascot asset, and default Buddy asset
-- app-safe Buddy appearance contract for pixel/ascii modes and 64x64 animation states
-- companion contracts, consent-first policy, and iBeMore app bridge contracts
-- runtime engine, message state, tool calls, and tool registry
-- Buddy profile, care, and training domain helpers
-- local adapters for Buddy Brain, Omni, Prismtek app events, and vault-style retrieval
-- note index, skill registry, automation registry, sandbox policy, app bridge contracts, gateway contracts, and Omni config
-- ecosystem integration registry and CI scaffolding
+| Appearance | pixel and ASCII Buddy modes |
+| Companion | consent-first contracts started |
+| iBeMore | typed app bridge contracts started |
 
 ## Development
 
@@ -123,7 +98,3 @@ buddy smoke
 buddy alpha
 buddy generate --output my-buddy
 ```
-
-## Licensing
-
-Repository-owned code uses `LICENSE` unless a file or directory states otherwise. Hermes-derived code remains governed by the original MIT license and notices. Expanded ecosystem integrations must be audited before code is copied or substantially adapted.
