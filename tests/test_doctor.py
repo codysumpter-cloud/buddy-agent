@@ -7,8 +7,10 @@ def test_run_doctor_returns_passing_checks():
     assert doctor_ok(checks) is True
     assert {check.name for check in checks} == {
         "runtime",
+        "runtime-config",
         "buddy-brain-adapter",
         "omni-adapter",
         "app-bridge",
         "vault-provider",
+        "companion-shell",
     }
