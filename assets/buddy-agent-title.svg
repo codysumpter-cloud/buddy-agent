@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="108" viewBox="0 0 460 108" role="img" aria-labelledby="title desc">
+  <title id="title">Buddy Agent</title>
+  <desc id="desc">Animated ASCII-style Buddy Agent title lockup.</desc>
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <style>
+    svg{max-width:100%;height:auto}.title{font:700 28px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:3px;fill:#d7fff8}.sub{font:700 13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:2px;fill:#9ff3e8}.dim{fill:#7de7dd;opacity:.75;font:700 12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:1.5px}.glow{filter:url(#glow)}.cursor{animation:blink 1s steps(1,end) infinite}.scan{fill:#b9fff5;opacity:.1;animation:scan 4s linear infinite}@keyframes blink{50%{opacity:0}}@keyframes scan{0%{transform:translateY(-24px)}100%{transform:translateY(108px)}}
+  </style>
+  <rect width="460" height="108" fill="none"/>
+  <text class="dim" x="230" y="18" text-anchor="middle">. . . . . . . . . . . . . . . . . . . .</text>
+  <text class="title glow" x="230" y="46" text-anchor="middle">BUDDY AGENT</text>
+  <text class="sub" x="214" y="76" text-anchor="middle">&gt; alpha_runtime</text>
+  <text class="sub cursor" x="318" y="76" text-anchor="start">_</text>
+  <text class="dim" x="230" y="98" text-anchor="middle">[ pixel buddy • local memory • companion shell ]</text>
+  <rect class="scan" x="0" y="0" width="460" height="10"/>
+</svg>
