@@ -11,6 +11,8 @@ from typing import cast
 from buddy_agent.buddy.render_contract import validate_buddy_manifest
 from buddy_agent.runtime.config import DEFAULT_TEMPLATE_PATH
 
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+
 
 @dataclass(frozen=True)
 class CompanionShell:
@@ -32,9 +34,22 @@ class CompanionShell:
         return tuple(str(state) for state in states)
 
 
+def resolve_template_path(template_path: str | Path = DEFAULT_TEMPLATE_PATH) -> Path:
+    """Resolve template paths independently of the caller's current directory."""
+    path = Path(template_path).expanduser()
+    if path.is_absolute() or path.exists():
+        return path
+
+    repo_relative = PROJECT_ROOT / path
+    if repo_relative.exists():
+        return repo_relative
+
+    return path
+
+
 def load_companion_shell(template_path: str | Path = DEFAULT_TEMPLATE_PATH) -> CompanionShell:
     """Load and validate a Buddy template for companion app surfaces."""
-    path = Path(template_path)
+    path = resolve_template_path(template_path)
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, Mapping):
         raise ValueError("Buddy companion template must be a JSON object")
