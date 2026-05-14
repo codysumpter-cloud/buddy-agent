@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="assets/buddy-agent-mascot.svg" alt="Buddy Agent animated tama-style Buddy mascot" width="280">
+  <img src="assets/buddy-agent-mascot.svg" alt="Buddy Agent animated ASCII mascot" width="280">
 </p>
 
 <h1 align="center">Buddy Agent</h1>
 
-<p align="center"><strong>Native Buddy runtime for the Prismtek / Hermes ecosystem.</strong></p>
+<p align="center"><strong>Guarded execution layer for Prismtek's Agentic OS.</strong></p>
 
 <p align="center">
   <img src="assets/badges/runtime.svg" alt="Runtime: runnable alpha"><br>
@@ -12,35 +12,88 @@
   <img src="assets/badges/license.svg" alt="License: Prismtek Source Available">
 </p>
 
-<p align="center">
-  <a href="https://github.com/codysumpter-cloud/buddy-agent/archive/refs/heads/main.zip"><img src="assets/badges/download.svg" alt="Download Source ZIP"></a><br>
-  <a href="https://github.com/codysumpter-cloud/buddy-agent"><img src="assets/badges/repository.svg" alt="View Repository"></a><br>
-  <a href="https://github.com/codysumpter-cloud/buddy-agent/issues"><img src="assets/badges/roadmap.svg" alt="View Roadmap"></a>
-</p>
+## What Buddy-Agent is
 
-## Install
+Buddy-Agent is the guarded execution layer for Prismtek's Agentic OS. It connects the runtime shell, skills, memory, policies, adapters, and receipts so the ecosystem has one safe local execution boundary to harden over time.
+
+The current project is a **runnable alpha**. It is designed to be installed locally, inspected, tested, and extended behind conservative defaults.
+
+## What Buddy-Agent is not
+
+Buddy-Agent is not a finished autonomous production operator. It is not a live-account browser bot, trading bot, gambling bot, wallet signer, credential manager, or unsupervised agent runtime.
+
+Public defaults do not include signed-in Safari automation, browser session automation, live social posting, credential inventory, gambling, trading, prediction-market execution, wallet signing, deposits, withdrawals, or money-action instructions.
+
+## Alpha warning
+
+This is alpha software. Expect rough edges, incomplete adapters, local-only defaults, and explicit approval boundaries. Use it for guarded development and review, not production automation.
+
+## Safety model summary
+
+Buddy-Agent defaults to local/offline execution:
 
 ```bash
-git clone https://github.com/codysumpter-cloud/buddy-agent.git
+BUDDY_PROVIDER=local
+BUDDY_NETWORK_ENABLED=false
+BUDDY_APPROVAL_MODE=manual
+BUDDY_SKILLS_PATH=skills/public
+```
+
+Unknown providers fall back to the local provider while network execution is disabled. Receipts are local sanitized summaries and should not contain prompts, secrets, tokens, cookies, private keys, OAuth material, account identifiers, or browser session data.
+
+Read the full model in [`docs/SAFETY_MODEL.md`](docs/SAFETY_MODEL.md).
+
+## Skill approval model
+
+Skills are described by `SKILL.md` manifests. Manifest parsing is metadata-only and does not execute arbitrary code.
+
+Default policy:
+
+| Risk class | Default |
+| --- | --- |
+| `read-only` | allow |
+| `draft-only` | allow |
+| `write` | confirm |
+| `external-action` | confirm |
+| `destructive` | deny-by-default |
+| `money` | deny-by-default |
+| `identity` | deny-by-default |
+| `location` | confirm |
+| `credential` | deny |
+| `repo-mutation` | confirm |
+
+Read the full policy in [`docs/SKILL_POLICY.md`](docs/SKILL_POLICY.md).
+
+## Public-safe install
+
+```bash
+git clone <access-granted Buddy-Agent repository URL>
 cd buddy-agent
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .[dev]
-buddy doctor
-buddy smoke
-buddy alpha
+cp .env.example .env.local
 ```
 
-## Alpha Runtime
+`.env.local` is ignored. Do not commit real API keys, tokens, cookies, passwords, OAuth secrets, account IDs, private keys, or private local paths.
+
+## Public-safe quickstart
 
 ```bash
+buddy --version
+buddy doctor
+buddy status
+buddy smoke
+buddy alpha
 buddy chat "hello buddy"
-buddy remember "Prismtek likes clean runtime seams"
-buddy recall "runtime"
+buddy remember "Buddy can keep local notes"
+buddy recall "Buddy"
 buddy skill --skill caps "buddy alpha"
+buddy skills validate
+buddy providers list
+buddy receipts path
+buddy parity
 ```
-
-The Alpha Runtime wires local chat routing, persistent memory, built-in skills, Buddy template validation, and companion permission policy into one runnable path.
 
 ## Generate a Buddy
 
@@ -48,68 +101,45 @@ The Alpha Runtime wires local chat routing, persistent memory, built-in skills, 
 buddy generate --output my-buddy
 ```
 
-This writes an app-safe starter template with `buddy.json` and `ascii_frames.json`.
+Generated Buddies support pixel and ASCII render modes, idle/happy/thinking/sleepy states, and a centered 64x64 frame contract.
 
-Generated Buddies must support:
+## CLI docs
 
-- render modes: `pixel` and `ascii`
-- animation states: `idle`, `happy`, `thinking`, `sleepy`
-- frame contract: `64x64`, centered, equal padding
+See [`docs/CLI.md`](docs/CLI.md) for the public-alpha command surface.
 
-## Visual Roles
+## Known limitations
 
-| Role | Asset |
+- The default provider is local echo only.
+- Network providers are not enabled by default.
+- Public skills are demos and placeholders, not a complete skill registry.
+- KnowledgeVault, Buddy-Brain, Omni, and app bridges are contract/future-work areas unless explicitly implemented and audited.
+- Receipts are local files and are not a complete audit/compliance system.
+- This repo is source-available and commercially restricted, not open-source under a permissive license.
+
+## Ecosystem relationships
+
+| Project/surface | Relationship |
 | --- | --- |
-| README animated mascot | `assets/buddy-agent-mascot.svg` |
-| App icon | `assets/buddy-app-icon.svg` |
-| Default Buddy appearance | `assets/default-buddy.svg` |
-| Reference image manifest | `assets/references/REFERENCE_IMAGES.md` |
+| Buddy-Brain | Future bridge for startup/context handoff; not a public default live brain dependency. |
+| KnowledgeVault | Future read-only retrieval adapter; public alpha includes a placeholder skill manifest only. |
+| Omni-Buddy | Local bridge/fallback concepts exist; network bridge remains explicit future/audited work. |
+| Prismtek Apps | Buddy-Agent can define app bridge contracts; live app/account actions are not public defaults. |
+| Hermes | Buddy-Agent may preserve Hermes-compatible concepts and must preserve MIT notices for Hermes-derived code. |
 
-The app icon can be a pocket-pet device mark. The actual Buddy is the animated pet inside the app.
-
-## Companion Direction
-
-Buddy is being designed as a persistent companion layer for desktop, browser, widgets, and the iBeMore iOS app. See `docs/IBE_MORE_COMPANION_SPEC.md`.
-
-## Version Tracker
+## Version tracker
 
 | Track | Status |
 | --- | --- |
 | Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> runnable alpha |
 | Package | `0.1.0` alpha scaffold |
 | CLI | `buddy` |
-| Smoke test | `buddy smoke` |
-| Alpha path | `buddy alpha`, `chat`, `remember`, `recall`, `skill` |
+| Provider | local/offline default |
 | Memory | persistent JSON-backed local memory |
-| Appearance template | Default Buddy supports pixel and ASCII modes |
-| Companion shell | Contracts and consent-first policy started |
-| iBeMore bridge | Typed app bridge contracts started |
-| Hermes reference | Planned import from `NousResearch/hermes-agent` |
-| Discovery input | `awesome-hermes-agent` |
-| Compression input | `caveman` |
-| Restricted experiments | Disabled by default |
-
-## Ecosystem Scope
-
-Buddy Agent tracks Hermes Agent, Buddy Brain, Omni Buddy, Prismtek Apps, Knowledge Vault, Awesome Hermes Agent, Caveman, and the expanded Prismtek/Hermes ecosystem. See `docs/ECOSYSTEM_INTEGRATION_MAP.md`, `docs/ECOSYSTEM_LICENSE_AUDIT.md`, and `docs/BUDDY_APPEARANCE_SPEC.md`.
-
-## Current Status
-
-Implemented alpha pieces:
-
-- `buddy` CLI with status, doctor, smoke, alpha, chat, remember, recall, skill, and generate commands
-- runnable local Alpha Runtime composition
-- persistent JSON-backed local memory
-- local Omni-style routing adapter
-- built-in summarize and caps skills
-- app icon asset, README mascot asset, and default Buddy asset
-- app-safe Buddy appearance contract for pixel/ascii modes and 64x64 animation states
-- companion contracts, consent-first policy, and iBeMore app bridge contracts
-- runtime engine, message state, tool calls, and tool registry
-- Buddy profile, care, and training domain helpers
-- local adapters for Buddy Brain, Omni, Prismtek app events, and vault-style retrieval
-- note index, skill registry, automation registry, sandbox policy, app bridge contracts, gateway contracts, and Omni config
-- ecosystem integration registry and CI scaffolding
+| Skills | public manifest validation and built-in demos |
+| Receipts | local sanitized JSONL/JSON primitives |
+| Appearance | pixel and ASCII Buddy modes |
+| Companion | consent-first contracts started |
+| iBeMore | typed app bridge contracts started |
 
 ## Development
 
@@ -121,9 +151,12 @@ buddy --help
 buddy doctor
 buddy smoke
 buddy alpha
+buddy skills validate
 buddy generate --output my-buddy
 ```
 
-## Licensing
+## License summary
 
-Repository-owned code uses `LICENSE` unless a file or directory states otherwise. Hermes-derived code remains governed by the original MIT license and notices. Expanded ecosystem integrations must be audited before code is copied or substantially adapted.
+Buddy-Agent is source-available under the Prismtek Source Available License. Personal, educational, and non-commercial use is allowed under the repository license. Commercial use requires a separate written commercial license agreement from the copyright holder.
+
+This summary is not a replacement for [`LICENSE`](LICENSE). Review [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) before public release or redistribution.
