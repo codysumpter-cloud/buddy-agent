@@ -7,17 +7,15 @@
 <p align="center"><strong>Native Buddy runtime for the Prismtek / Hermes ecosystem.</strong></p>
 
 <p align="center">
-  <strong>Runtime:</strong> runnable alpha<br>
-  <strong>Version:</strong> 0.1.0 alpha<br>
-  <strong>License:</strong> Prismtek Source Available
+  <img src="assets/badges/runtime.svg" alt="Runtime: runnable alpha"><br>
+  <img src="assets/badges/version.svg" alt="Version: 0.1.0 alpha"><br>
+  <img src="assets/badges/license.svg" alt="License: Prismtek Source Available">
 </p>
 
 <p align="center">
-  <strong><a href="https://github.com/codysumpter-cloud/buddy-agent/archive/refs/heads/main.zip">Download Source ZIP</a></strong>
-  &nbsp;•&nbsp;
-  <strong><a href="https://github.com/codysumpter-cloud/buddy-agent">View Repository</a></strong>
-  &nbsp;•&nbsp;
-  <strong><a href="https://github.com/codysumpter-cloud/buddy-agent/issues">View Roadmap</a></strong>
+  <a href="https://github.com/codysumpter-cloud/buddy-agent/archive/refs/heads/main.zip"><img src="assets/badges/download.svg" alt="Download Source ZIP"></a><br>
+  <a href="https://github.com/codysumpter-cloud/buddy-agent"><img src="assets/badges/repository.svg" alt="View Repository"></a><br>
+  <a href="https://github.com/codysumpter-cloud/buddy-agent/issues"><img src="assets/badges/roadmap.svg" alt="View Roadmap"></a>
 </p>
 
 ## Install
