@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="224" height="38" viewBox="0 0 224 38" role="img" aria-labelledby="title desc">
+  <title id="title">View roadmap</title>
+  <desc id="desc">View roadmap button.</desc>
+  <style>.label{fill:#3f3f46}.value{fill:#f59e0b}.text{font:700 13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:1.8px;fill:#fff}</style>
+  <rect class="label" width="118" height="38" rx="8"/>
+  <rect class="value" x="110" width="114" height="38" rx="8"/>
+  <rect class="value" x="110" width="12" height="38"/>
+  <text class="text" x="18" y="24">ROADMAP</text>
+  <text class="text" x="140" y="24">ISSUES</text>
+</svg>
