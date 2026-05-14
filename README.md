@@ -7,15 +7,17 @@
 <p align="center"><strong>Native Buddy runtime for the Prismtek / Hermes ecosystem.</strong></p>
 
 <p align="center">
-  <a href="https://github.com/codysumpter-cloud/buddy-agent/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/codysumpter-cloud/buddy-agent/ci.yml?branch=main&label=CI&style=for-the-badge" alt="CI"></a>
-  <a href="https://github.com/codysumpter-cloud/buddy-agent/releases"><img src="https://img.shields.io/github/v/release/codysumpter-cloud/buddy-agent?include_prereleases&label=Release&style=for-the-badge" alt="Release"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Prismtek%20Source%20Available-blueviolet?style=for-the-badge" alt="License"></a>
+  <strong>Runtime:</strong> runnable alpha<br>
+  <strong>Version:</strong> 0.1.0 alpha<br>
+  <strong>License:</strong> Prismtek Source Available
 </p>
 
 <p align="center">
-  <a href="https://github.com/codysumpter-cloud/buddy-agent/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-ZIP-22c55e?style=for-the-badge" alt="Download ZIP"></a>
-  <a href="https://github.com/codysumpter-cloud/buddy-agent.git"><img src="https://img.shields.io/badge/Clone-Repo-0ea5e9?style=for-the-badge" alt="Clone Repo"></a>
-  <a href="https://github.com/codysumpter-cloud/buddy-agent/issues"><img src="https://img.shields.io/badge/Roadmap-Issues-f59e0b?style=for-the-badge" alt="Roadmap Issues"></a>
+  <strong><a href="https://github.com/codysumpter-cloud/buddy-agent/archive/refs/heads/main.zip">Download Source ZIP</a></strong>
+  &nbsp;•&nbsp;
+  <strong><a href="https://github.com/codysumpter-cloud/buddy-agent">View Repository</a></strong>
+  &nbsp;•&nbsp;
+  <strong><a href="https://github.com/codysumpter-cloud/buddy-agent/issues">View Roadmap</a></strong>
 </p>
 
 ## Install
