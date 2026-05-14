@@ -16,6 +16,11 @@ from typing import Literal
 
 IntegrationId = Literal["hermes-agent", "symphony", "openmythos"]
 IntegrationStatus = Literal["mapped", "adapter-ready", "native-runtime"]
+ALLOWED_INTEGRATION_IDS: tuple[IntegrationId, ...] = (
+    "hermes-agent",
+    "symphony",
+    "openmythos",
+)
 
 
 @dataclass(frozen=True)
@@ -78,3 +83,15 @@ class IntegrationTarget:
             if capability.capability_id == capability_id:
                 return capability
         raise KeyError(f"Unknown capability for {self.integration_id}: {capability_id}")
+
+
+def parse_integration_id(value: str) -> IntegrationId:
+    """Parse a user-facing integration id."""
+    if value == "hermes-agent":
+        return "hermes-agent"
+    if value == "symphony":
+        return "symphony"
+    if value == "openmythos":
+        return "openmythos"
+    supported = ", ".join(ALLOWED_INTEGRATION_IDS)
+    raise ValueError(f"Unsupported integration target: {value}. Supported: {supported}")
