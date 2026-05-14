@@ -59,7 +59,7 @@ def _as_path_tuple(value: object) -> tuple[Path, ...]:
     if isinstance(value, str):
         parts = [part for part in value.split(os.pathsep) if part]
         return tuple(Path(part).expanduser() for part in parts)
-    if isinstance(value, Sequence) and not isinstance(value, bytes):
+    if isinstance(value, Sequence) and not isinstance(value, (bytes, bytearray)):
         return tuple(Path(str(part)).expanduser() for part in value)
     raise ValueError("knowledge_paths must be a string or list")
 
@@ -102,7 +102,9 @@ class BuddyAgentConfig:
         omni_data = _as_mapping(mapping.get("omni"), name="omni")
         omni = OmniConfig(
             enabled=_as_bool(omni_data.get("enabled"), default=False),
-            base_url=str(omni_data.get("base_url", "http://127.0.0.1:8799/api/omni")),
+            base_url=str(
+                omni_data.get("base_url", "http://127.0.0.1:8799/api/omni")
+            ),
             token_env=str(omni_data.get("token_env", "PRISMBOT_API_TOKEN")),
             model=str(omni_data.get("model", "omni-core:phase2")),
             timeout_seconds=_as_int(omni_data.get("timeout_seconds"), default=90),
@@ -138,7 +140,10 @@ class BuddyAgentConfig:
         ).expanduser()
         omni = OmniConfig(
             enabled=_env_bool("BUDDY_OMNI_ENABLED", default=False),
-            base_url=os.getenv("BUDDY_OMNI_BASE_URL", "http://127.0.0.1:8799/api/omni"),
+            base_url=os.getenv(
+                "BUDDY_OMNI_BASE_URL",
+                "http://127.0.0.1:8799/api/omni",
+            ),
             token_env=os.getenv("BUDDY_OMNI_TOKEN_ENV", "PRISMBOT_API_TOKEN"),
             model=os.getenv("BUDDY_OMNI_MODEL", "omni-core:phase2"),
             timeout_seconds=_env_int("BUDDY_OMNI_TIMEOUT_SECONDS", default=90),
