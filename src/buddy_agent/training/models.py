@@ -67,8 +67,15 @@ class BuddyTrainingStats:
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> "BuddyTrainingStats":
         """Load stats from a JSON object, tolerating missing fields."""
-        values = {name: _int_value(data.get(name), default=1) for name in STAT_NAMES}
-        stats = cls(**values)
+        stats = cls(
+            bond=_int_value(data.get("bond"), default=1),
+            focus=_int_value(data.get("focus"), default=1),
+            curiosity=_int_value(data.get("curiosity"), default=1),
+            discipline=_int_value(data.get("discipline"), default=1),
+            creativity=_int_value(data.get("creativity"), default=1),
+            reliability=_int_value(data.get("reliability"), default=1),
+            autonomy=_int_value(data.get("autonomy"), default=1),
+        )
         stats.clamp()
         return stats
 
