@@ -12,7 +12,7 @@ import json
 import os
 from pathlib import Path
 import re
-from typing import Any, Literal
+from typing import Any, Literal, cast
 from urllib.error import URLError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
@@ -243,7 +243,7 @@ def parse_event_type(value: str) -> AgentCraftEventType:
     if value not in ALLOWED_EVENT_TYPES:
         supported = ", ".join(ALLOWED_EVENT_TYPES)
         raise ValueError(f"Unsupported AgentCraft event type: {value}. Supported: {supported}")
-    return value  # type: ignore[return-value]
+    return cast(AgentCraftEventType, value)
 
 
 def parse_payload_json(raw: str | None) -> dict[str, JsonValue]:
@@ -253,4 +253,4 @@ def parse_payload_json(raw: str | None) -> dict[str, JsonValue]:
     value: Any = json.loads(raw)
     if not isinstance(value, dict):
         raise ValueError("AgentCraft payload must be a JSON object")
-    return value
+    return cast(dict[str, JsonValue], value)
