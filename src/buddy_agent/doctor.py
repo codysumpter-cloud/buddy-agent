@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .companion import load_companion_shell
+from .integrations import validate_integration_targets
 from .local_adapters import (
     LocalBuddyBrainAdapter,
     LocalKnowledgeVaultProvider,
@@ -37,6 +38,7 @@ def run_doctor() -> tuple[DoctorCheck, ...]:
     vault = LocalKnowledgeVaultProvider(index=memory)
     shell = load_companion_shell()
     parity_problems = validate_required_surface_parity()
+    integration_problems = validate_integration_targets()
 
     return (
         DoctorCheck(
@@ -58,6 +60,11 @@ def run_doctor() -> tuple[DoctorCheck, ...]:
             name="surface-parity",
             ok=not parity_problems,
             detail="complete" if not parity_problems else "; ".join(parity_problems),
+        ),
+        DoctorCheck(
+            name="integration-targets",
+            ok=not integration_problems,
+            detail="complete" if not integration_problems else "; ".join(integration_problems),
         ),
     )
 
