@@ -1,14 +1,33 @@
-from buddy_agent.runtime import RuntimeEngine, ToolDefinition, ToolResult
+from buddy_agent.runtime import RuntimeConfig, RuntimeEngine, ToolDefinition, ToolResult
 
 
-def test_runtime_records_messages():
+def test_runtime_records_messages_through_backend():
     engine = RuntimeEngine(session_id="session-1")
 
     response = engine.receive("hello")
 
-    assert response == "Buddy Agent runtime scaffold received your message."
+    assert response.startswith("Buddy runtime [buddy-alpha-plus] processed: hello")
     assert engine.state.session_id == "session-1"
     assert [message.role for message in engine.state.messages] == ["user", "assistant"]
+
+
+def test_runtime_passes_context_to_backend():
+    engine = RuntimeEngine(session_id="session-1")
+
+    response = engine.receive("hello", context=("Local note: clean runtime seams",))
+
+    assert "Context: Local note: clean runtime seams" in response
+
+
+def test_runtime_accepts_explicit_config():
+    engine = RuntimeEngine(
+        session_id="session-1",
+        config=RuntimeConfig(name="test-runtime"),
+    )
+
+    response = engine.receive("hello")
+
+    assert "[test-runtime]" in response
 
 
 def test_tool_registry_calls_registered_tool():
