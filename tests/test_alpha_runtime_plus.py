@@ -47,5 +47,5 @@ def test_alpha_runtime_smoke_exercises_plus_path(tmp_path):
 
     assert all(result.ok for result in results)
     assert any("default Buddy template valid" in result.message for result in results)
-    assert any("HELLO" not in result.message for result in results)
+    assert any(result.message == "BUDDY" for result in results)
     assert runtime.app_bridge.events
