@@ -51,7 +51,13 @@ class OmniBuddyAdapter(Protocol):
         """Return adapter health without mutating external state."""
         ...
 
-    def route_text(self, prompt: str, *, metadata: Mapping[str, str] | None = None) -> str:
+    def route_text(
+        self,
+        prompt: str,
+        *,
+        metadata: Mapping[str, str] | None = None,
+        context: Sequence[str] = (),
+    ) -> str:
         """Route a text prompt through the configured Omni/local backend."""
         ...
 
