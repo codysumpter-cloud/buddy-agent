@@ -1,22 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-labelledby="title desc" style="background:transparent;image-rendering:pixelated">
-<title id="title">Buddy Agent animated header mascot</title>
-<desc id="desc">Mobile friendly pixel ASCII style Buddy Agent header and mascot.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-labelledby="title desc">
+<title id="title">Buddy Agent ASCII mascot</title>
+<desc id="desc">Animated ASCII Buddy mascot with animated Buddy Agent text.</desc>
 <style>
-.t{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:900;letter-spacing:2px}.title{font-size:28px;fill:#12184f}.sub{font-size:12px;fill:#5fc8c5}.line{stroke:#12184f;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.body{fill:#8be7df;stroke:#12184f;stroke-width:5}.face{fill:#c9fff2;stroke:#46bdb8;stroke-width:3}.heart{fill:#ffd66b;stroke:#12184f;stroke-width:4}.eye{fill:#12184f;animation:blink 4s steps(1,end) infinite}.bob{animation:bob 2s ease-in-out infinite}@media (prefers-color-scheme:dark){.title,.eye{fill:#bffff5}.line{stroke:#bffff5}.sub{fill:#7fe7df}}@keyframes blink{0%,88%,100%{opacity:1}89%,96%{opacity:0}}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}.cursor{animation:cursor 1s steps(1,end) infinite}@keyframes cursor{50%{opacity:0}}</style>
-<text class="t title" x="180" y="36" text-anchor="middle">BUDDY AGENT</text>
-<text class="t sub" x="180" y="56" text-anchor="middle">..... &lt;3 .....  &gt; alpha_runtime<tspan class="cursor">_</tspan></text>
+.txt{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:800}.head{font-size:25px;letter-spacing:2px;fill:#12184f;animation:glow 2s ease-in-out infinite}.sub{font-size:12px;fill:#5fc8c5}.art{font-size:12px;fill:#12184f;white-space:pre}.blink{animation:blink 1s steps(1,end) infinite}.bob{animation:bob 2.2s ease-in-out infinite}@media (prefers-color-scheme:dark){.head,.art{fill:#bffff5}.sub{fill:#7fe7df}}@keyframes glow{0%,100%{opacity:.82}50%{opacity:1}}@keyframes blink{50%{opacity:0}}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+</style>
+<text class="txt head" x="180" y="34" text-anchor="middle">BUDDY AGENT<tspan class="blink">_</tspan></text>
+<text class="txt sub" x="180" y="54" text-anchor="middle">..... heart .....  alpha runtime</text>
 <g class="bob">
-<ellipse cx="180" cy="220" rx="70" ry="12" fill="#b8c7ef" opacity=".7"/>
-<path class="body" d="M104 136C104 72 137 54 180 54s76 18 76 82c0 67-30 92-76 92s-76-25-76-92z"/>
-<path class="body" d="M128 70c-13-30 7-43 31-25 2 20-11 31-31 25z"/>
-<path class="body" d="M232 70c13-30-7-43-31-25-2 20 11 31 31 25z"/>
-<path class="line" d="M170 61l10-18 10 18" fill="none"/>
-<ellipse class="face" cx="180" cy="129" rx="58" ry="42"/>
-<circle class="eye" cx="154" cy="123" r="7"/><circle class="eye" cx="206" cy="123" r="7"/>
-<path class="line" d="M169 143q11 10 22 0" fill="none"/>
-<ellipse class="body" cx="98" cy="152" rx="13" ry="18"/><ellipse class="body" cx="262" cy="152" rx="13" ry="18"/>
-<ellipse class="body" cx="145" cy="224" rx="19" ry="12"/><ellipse class="body" cx="215" cy="224" rx="19" ry="12"/>
-<path class="heart" d="M180 191l-21-19c-17-15 4-37 21-18 17-19 38 3 21 18z"/>
+<text class="txt art" x="76" y="82" xml:space="preserve">
+<tspan x="76">        .vv.          .vv.</tspan>
+<tspan x="76" dy="14">      .'    '.      .'    '.</tspan>
+<tspan x="76" dy="14">     /  o  o \____/ o  o  \</tspan>
+<tspan x="76" dy="14">     \  ..  /    \  ..  /</tspan>
+<tspan x="76" dy="14">       '--'  .----. '--'</tspan>
+<tspan x="76" dy="14">          .-'      '-.</tspan>
+<tspan x="76" dy="14">        .'  .------.  '.</tspan>
+<tspan x="76" dy="14">       /   | o    o |   \</tspan>
+<tspan x="76" dy="14">   o  |    |   __   |    |  o</tspan>
+<tspan x="76" dy="14">      |    '---vv---'    |</tspan>
+<tspan x="76" dy="14">       \      ----      /</tspan>
+<tspan x="76" dy="14">        '.            .'</tspan>
+<tspan x="76" dy="14">          '--.____.--'</tspan>
+<tspan x="76" dy="14">             d    b</tspan>
+</text>
 </g>
-<text class="t sub" x="180" y="248" text-anchor="middle">&gt; idle / happy / thinking / sleepy</text>
+<text class="txt sub" x="180" y="244" text-anchor="middle">&gt; idle / happy / thinking / sleepy</text>
 </svg>
