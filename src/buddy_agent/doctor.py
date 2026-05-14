@@ -44,7 +44,11 @@ def run_doctor() -> tuple[DoctorCheck, ...]:
             ok=response.startswith("Buddy runtime"),
             detail=f"messages={len(engine.state.messages)} backend={engine.config.backend}",
         ),
-        DoctorCheck(name="runtime-config", ok=engine.config.backend != "", detail=engine.config.name),
+        DoctorCheck(
+            name="runtime-config",
+            ok=engine.config.backend != "",
+            detail=engine.config.name,
+        ),
         DoctorCheck(name="buddy-brain-adapter", ok=brain.health().ok, detail="local context"),
         DoctorCheck(name="omni-adapter", ok=omni.health().ok, detail=omni.route_text("ready")),
         DoctorCheck(name="app-bridge", ok=app.health().ok, detail="local events"),
