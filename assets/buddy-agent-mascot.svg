@@ -1,116 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" role="img" aria-labelledby="title desc" style="background:transparent;image-rendering:pixelated;text-rendering:geometricPrecision">
-<title id="title">Buddy Agent animated ASCII mascot</title>
-<desc id="desc">Transparent animated ASCII pixel-art Buddy mascot with heart antennae, navy pixel outline, rounded body, face panel, tiny limbs, sparkles, gold heart charm, and idle, happy, thinking, and sleepy states.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-labelledby="title desc" style="background:transparent;image-rendering:pixelated">
+<title id="title">Buddy Agent animated header mascot</title>
+<desc id="desc">Mobile friendly pixel ASCII style Buddy Agent header and mascot.</desc>
 <style>
-  .label,.caption,.ascii{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-weight:800;letter-spacing:0}
-  .label{font-size:30px;fill:#12184f}
-  .caption{font-size:12px;fill:#5fc8c5}
-  .ascii{font-size:9.4px;white-space:pre;fill:#12184f}
-  @media (prefers-color-scheme:dark){
-    .label,.ascii{fill:#bffff5}
-    .caption{fill:#7fe7df}
-  }
-</style>
-<text class="label" x="180" y="34" text-anchor="middle">buddy</text>
-<text class="caption" x="180" y="52" text-anchor="middle">..... &lt;3 .....</text>
-<g>
-  <animateTransform attributeName="transform" type="translate" values="0 0;0 -4;0 0" dur="2.2s" repeatCount="indefinite"/>
-  <g opacity="1">
-  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="1;0;0;0" keyTimes="0;.25;.5;.75" calcMode="discrete"/>
-  <text class="ascii" x="40" y="66" xml:space="preserve">
-  <tspan x="40">          .&lt;3.                 .&lt;3.</tspan>
-  <tspan x="40" dy="10.7">        .&#x27;    &#x27;.             .&#x27;    &#x27;.</tspan>
-  <tspan x="40" dy="10.7">       /  ooo  \           /  ooo  \</tspan>
-  <tspan x="40" dy="10.7">       \ o..o /     _^_     \ o..o /</tspan>
-  <tspan x="40" dy="10.7">         &#x27;---&#x27;    _/###\_    &#x27;---&#x27;</tspan>
-  <tspan x="40" dy="10.7">             ___/##ooooo##\___</tspan>
-  <tspan x="40" dy="10.7">          .-##ooooooooooooo##-.</tspan>
-  <tspan x="40" dy="10.7">        .##ooooooooooooooooooo##.</tspan>
-  <tspan x="40" dy="10.7">       /##oo+++-----------+++oo##\</tspan>
-  <tspan x="40" dy="10.7">      /##oo+---.-----------.---+oo##\</tspan>
-  <tspan x="40" dy="10.7">  o  |##oo+---|  @     @  |---+oo##|  o</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---|  @.   .@  |---+oo##|</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---|     _     |---+oo##|</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---&#x27;----___----&#x27;---+oo##|</tspan>
-  <tspan x="40" dy="10.7">      \##ooo+---------------+ooo##/</tspan>
-  <tspan x="40" dy="10.7">        &#x27;##oooo+++-----+++oooo##&#x27;</tspan>
-  <tspan x="40" dy="10.7">           &#x27;##%%%%##&lt;3##%%%%##&#x27;</tspan>
-  <tspan x="40" dy="10.7">             &#x27;##%%#***#%%##&#x27;</tspan>
-  <tspan x="40" dy="10.7">                ##     ##</tspan>
-</text>
+.t{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:900;letter-spacing:2px}.title{font-size:28px;fill:#12184f}.sub{font-size:12px;fill:#5fc8c5}.line{stroke:#12184f;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.body{fill:#8be7df;stroke:#12184f;stroke-width:5}.face{fill:#c9fff2;stroke:#46bdb8;stroke-width:3}.heart{fill:#ffd66b;stroke:#12184f;stroke-width:4}.eye{fill:#12184f;animation:blink 4s steps(1,end) infinite}.bob{animation:bob 2s ease-in-out infinite}@media (prefers-color-scheme:dark){.title,.eye{fill:#bffff5}.line{stroke:#bffff5}.sub{fill:#7fe7df}}@keyframes blink{0%,88%,100%{opacity:1}89%,96%{opacity:0}}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}.cursor{animation:cursor 1s steps(1,end) infinite}@keyframes cursor{50%{opacity:0}}</style>
+<text class="t title" x="180" y="36" text-anchor="middle">BUDDY AGENT</text>
+<text class="t sub" x="180" y="56" text-anchor="middle">..... &lt;3 .....  &gt; alpha_runtime<tspan class="cursor">_</tspan></text>
+<g class="bob">
+<ellipse cx="180" cy="220" rx="70" ry="12" fill="#b8c7ef" opacity=".7"/>
+<path class="body" d="M104 136C104 72 137 54 180 54s76 18 76 82c0 67-30 92-76 92s-76-25-76-92z"/>
+<path class="body" d="M128 70c-13-30 7-43 31-25 2 20-11 31-31 25z"/>
+<path class="body" d="M232 70c13-30-7-43-31-25-2 20 11 31 31 25z"/>
+<path class="line" d="M170 61l10-18 10 18" fill="none"/>
+<ellipse class="face" cx="180" cy="129" rx="58" ry="42"/>
+<circle class="eye" cx="154" cy="123" r="7"/><circle class="eye" cx="206" cy="123" r="7"/>
+<path class="line" d="M169 143q11 10 22 0" fill="none"/>
+<ellipse class="body" cx="98" cy="152" rx="13" ry="18"/><ellipse class="body" cx="262" cy="152" rx="13" ry="18"/>
+<ellipse class="body" cx="145" cy="224" rx="19" ry="12"/><ellipse class="body" cx="215" cy="224" rx="19" ry="12"/>
+<path class="heart" d="M180 191l-21-19c-17-15 4-37 21-18 17-19 38 3 21 18z"/>
 </g>
-  <g opacity="0">
-  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;1;0;0" keyTimes="0;.25;.5;.75" calcMode="discrete"/>
-  <text class="ascii" x="40" y="66" xml:space="preserve">
-  <tspan x="40">          .&lt;3.                 .&lt;3.</tspan>
-  <tspan x="40" dy="10.7">        .&#x27;    &#x27;.             .&#x27;    &#x27;.</tspan>
-  <tspan x="40" dy="10.7">       /  ooo  \           /  ooo  \</tspan>
-  <tspan x="40" dy="10.7">       \ o..o /     _^_     \ o..o /     ///</tspan>
-  <tspan x="40" dy="10.7">         &#x27;---&#x27;    _/###\_    &#x27;---&#x27;      //</tspan>
-  <tspan x="40" dy="10.7">             ___/##ooooo##\___</tspan>
-  <tspan x="40" dy="10.7">          .-##ooooooooooooo##-.</tspan>
-  <tspan x="40" dy="10.7">        .##ooooooooooooooooooo##.</tspan>
-  <tspan x="40" dy="10.7">       /##oo+++-----------+++oo##\</tspan>
-  <tspan x="40" dy="10.7">      /##oo+---.-----------.---+oo##\</tspan>
-  <tspan x="40" dy="10.7">  o  |##oo+---|   ^     ^   |---+oo##|  o</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---|  blush blush |---+oo##|</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---|     \_/     |---+oo##|</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---&#x27;----- @ -----&#x27;---+oo##|</tspan>
-  <tspan x="40" dy="10.7">      \##ooo+---------------+ooo##/</tspan>
-  <tspan x="40" dy="10.7">        &#x27;##oooo+++-----+++oooo##&#x27;</tspan>
-  <tspan x="40" dy="10.7">           &#x27;##%%%%##&lt;3##%%%%##&#x27;</tspan>
-  <tspan x="40" dy="10.7">             &#x27;##%%#***#%%##&#x27;</tspan>
-  <tspan x="40" dy="10.7">                ##     ##</tspan>
-</text>
-</g>
-  <g opacity="0">
-  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0" keyTimes="0;.25;.5;.75" calcMode="discrete"/>
-  <text class="ascii" x="40" y="66" xml:space="preserve">
-  <tspan x="40">          .&lt;3.                 .&lt;3.     ?</tspan>
-  <tspan x="40" dy="10.7">        .&#x27;    &#x27;.             .&#x27;    &#x27;.</tspan>
-  <tspan x="40" dy="10.7">       /  ooo  \           /  ooo  \</tspan>
-  <tspan x="40" dy="10.7">       \ o..o /     _^_     \ o..o /</tspan>
-  <tspan x="40" dy="10.7">         &#x27;---&#x27;    _/###\_    &#x27;---&#x27;</tspan>
-  <tspan x="40" dy="10.7">             ___/##ooooo##\___</tspan>
-  <tspan x="40" dy="10.7">          .-##ooooooooooooo##-.</tspan>
-  <tspan x="40" dy="10.7">        .##ooooooooooooooooooo##.</tspan>
-  <tspan x="40" dy="10.7">       /##oo+++-----------+++oo##\</tspan>
-  <tspan x="40" dy="10.7">      /##oo+---.-----------.---+oo##\</tspan>
-  <tspan x="40" dy="10.7">  o  |##oo+---|   @     @   |---+oo##|  o</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---|  @.     .@  |---+oo##|</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---|     -     |---+oo##|</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---&#x27;-----------&#x27;---+oo##|</tspan>
-  <tspan x="40" dy="10.7">      \##ooo+---o?-------+ooo##/</tspan>
-  <tspan x="40" dy="10.7">        &#x27;##oooo+/-----+++oooo##&#x27;</tspan>
-  <tspan x="40" dy="10.7">           &#x27;##%%%%##&lt;3##%%%%##&#x27;</tspan>
-  <tspan x="40" dy="10.7">             &#x27;##%%#***#%%##&#x27;</tspan>
-  <tspan x="40" dy="10.7">                ##     ##</tspan>
-</text>
-</g>
-  <g opacity="0">
-  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;0;1" keyTimes="0;.25;.5;.75" calcMode="discrete"/>
-  <text class="ascii" x="40" y="66" xml:space="preserve">
-  <tspan x="40">          .&lt;3.                 .&lt;3.     z</tspan>
-  <tspan x="40" dy="10.7">        .&#x27;    &#x27;.             .&#x27;    &#x27;.      z</tspan>
-  <tspan x="40" dy="10.7">       /  ooo  \        ___ /  ooo  \</tspan>
-  <tspan x="40" dy="10.7">       \ o..o /     _^_/___\  o..o /</tspan>
-  <tspan x="40" dy="10.7">         &#x27;---&#x27;    _/###\___/  &#x27;---&#x27;</tspan>
-  <tspan x="40" dy="10.7">             ___/##ooooo##\___</tspan>
-  <tspan x="40" dy="10.7">          .-##ooooooooooooo##-.</tspan>
-  <tspan x="40" dy="10.7">        .##ooooooooooooooooooo##.</tspan>
-  <tspan x="40" dy="10.7">       /##oo+++-----------+++oo##\</tspan>
-  <tspan x="40" dy="10.7">      /##oo+---.-----------.---+oo##\</tspan>
-  <tspan x="40" dy="10.7">  o  |##oo+---|   _     _   |---+oo##|  o</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---|             |---+oo##|</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---|     o      |---+oo##|</tspan>
-  <tspan x="40" dy="10.7">     |##oo+---&#x27;-----------&#x27;---+oo##|</tspan>
-  <tspan x="40" dy="10.7">      \##ooo+---------------+ooo##/</tspan>
-  <tspan x="40" dy="10.7">        &#x27;##oooo+++-----+++oooo##&#x27;</tspan>
-  <tspan x="40" dy="10.7">           &#x27;##%%%%##&lt;3##%%%%##&#x27;</tspan>
-  <tspan x="40" dy="10.7">             &#x27;##%%#***#%%##&#x27;</tspan>
-  <tspan x="40" dy="10.7">                ##     ##</tspan>
-</text>
-</g>
-</g>
-<text class="caption" x="180" y="278" text-anchor="middle">&gt; idle / happy / thinking / sleepy</text>
+<text class="t sub" x="180" y="248" text-anchor="middle">&gt; idle / happy / thinking / sleepy</text>
 </svg>
