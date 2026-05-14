@@ -157,7 +157,10 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if result.ok else 1
 
     if args.command == "app-chat":
-        result = BuddyAlphaRuntime().route_app_chat(joined_text(args.text), surface=str(args.surface))
+        result = BuddyAlphaRuntime().route_app_chat(
+            joined_text(args.text),
+            surface=str(args.surface),
+        )
         print(result.message)
         if result.detail:
             print(result.detail)
