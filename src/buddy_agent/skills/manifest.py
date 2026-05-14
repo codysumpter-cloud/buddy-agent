@@ -98,17 +98,21 @@ def _parse_frontmatter(lines: list[str]) -> dict[str, object]:
         if current_key is None:
             raise SkillManifestError(f"Nested value without parent key: {raw_line}")
         if line.startswith("- "):
-            existing = data.get(current_key)
-            if not isinstance(existing, list):
-                existing = []
-                data[current_key] = existing
-            existing.append(_parse_scalar(line[2:]))
+            existing_value = data.get(current_key)
+            if isinstance(existing_value, list):
+                existing_list = cast(list[object], existing_value)
+            else:
+                existing_list = []
+                data[current_key] = existing_list
+            existing_list.append(_parse_scalar(line[2:]))
             continue
         key, separator, value = line.partition(":")
         if separator != ":":
             raise SkillManifestError(f"Invalid nested frontmatter line: {raw_line}")
-        existing_map = data.get(current_key)
-        if not isinstance(existing_map, dict):
+        existing_value = data.get(current_key)
+        if isinstance(existing_value, dict):
+            existing_map = cast(dict[str, object], existing_value)
+        else:
             existing_map = {}
             data[current_key] = existing_map
         existing_map[key.strip()] = _parse_scalar(value)
