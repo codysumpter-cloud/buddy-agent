@@ -13,10 +13,13 @@ def test_local_buddy_brain_adapter_returns_context():
     assert adapter.load_startup_context()["AGENTS.md"] == "Use clean boundaries."
 
 
-def test_local_omni_adapter_routes_text():
-    adapter = LocalOmniBuddyAdapter(prefix="local")
+def test_local_omni_adapter_routes_text_through_backend():
+    adapter = LocalOmniBuddyAdapter()
 
-    assert adapter.route_text("ping") == "local: ping"
+    response = adapter.route_text("ping", metadata={"model": "test-model"}, context=("ctx",))
+
+    assert response.startswith("Buddy runtime [test-model] processed: ping")
+    assert "Context: ctx" in response
 
 
 def test_local_app_bridge_records_events():
