@@ -24,6 +24,7 @@ COMMANDS = (
     "recall",
     "skill",
     "parity",
+    "app-chat",
 )
 
 
@@ -31,7 +32,7 @@ def build_parser() -> argparse.ArgumentParser:
     """Build the Buddy Agent CLI parser."""
     parser = argparse.ArgumentParser(
         prog="buddy",
-        description="Buddy Agent alpha runtime.",
+        description="Buddy Agent Alpha Runtime Plus.",
     )
     parser.add_argument(
         "--version",
@@ -55,6 +56,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output directory for `buddy generate`.",
     )
     parser.add_argument("--skill", default="summarize", help="Skill name for `buddy skill`.")
+    parser.add_argument("--surface", default="local", help="Surface name for `buddy app-chat`.")
     return parser
 
 
@@ -75,7 +77,7 @@ def run_smoke_command() -> int:
 
 
 def run_alpha_command() -> int:
-    """Run the richer Alpha Runtime smoke path."""
+    """Run the richer Alpha Runtime Plus smoke path."""
     runtime = BuddyAlphaRuntime()
     for result in runtime.smoke():
         status = "ok" if result.ok else "fail"
@@ -114,7 +116,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if doctor_ok(checks) else 1
 
     if args.command == "status":
-        print("Buddy Agent alpha status: initialized")
+        print("Buddy Agent Alpha Runtime Plus status: initialized")
         return 0
 
     if args.command == "generate":
@@ -152,6 +154,16 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "skill":
         result = BuddyAlphaRuntime().run_skill(args.skill, joined_text(args.text))
         print(result.message)
+        return 0 if result.ok else 1
+
+    if args.command == "app-chat":
+        result = BuddyAlphaRuntime().route_app_chat(
+            joined_text(args.text),
+            surface=str(args.surface),
+        )
+        print(result.message)
+        if result.detail:
+            print(result.detail)
         return 0 if result.ok else 1
 
     parser.print_help()

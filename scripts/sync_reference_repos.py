@@ -44,7 +44,8 @@ def sync_repo(destination: Path, repo: ReferenceRepo, *, dry_run: bool = False) 
         return
 
     print(f"Cloning {repo.repository}")
-    destination.mkdir(parents=True, exist_ok=True)
+    if not dry_run:
+        destination.mkdir(parents=True, exist_ok=True)
     run(
         [
             "git",

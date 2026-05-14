@@ -8,6 +8,8 @@ from dataclasses import dataclass, field
 from .adapters import AdapterHealth, RetrievedSource
 from .app_bridge import BuddyEvent, normalize_buddy_event_name
 from .memory import NoteIndex
+from .runtime.backends import LocalTemplateBackend, RuntimeBackend
+from .runtime.types import RuntimeMessage
 
 
 @dataclass
@@ -29,16 +31,27 @@ class LocalBuddyBrainAdapter:
 class LocalOmniBuddyAdapter:
     """Local text router used when no remote Omni service is configured."""
 
-    prefix: str = "Buddy local reply"
+    backend: RuntimeBackend = field(default_factory=LocalTemplateBackend)
 
     def health(self) -> AdapterHealth:
         """Return local adapter health."""
-        return AdapterHealth(name="omni-local", ok=True, detail="local echo router")
+        return AdapterHealth(name="omni-local", ok=True, detail="callable local backend")
 
-    def route_text(self, prompt: str, *, metadata: Mapping[str, str] | None = None) -> str:
-        """Return a deterministic local response."""
-        del metadata
-        return f"{self.prefix}: {prompt}"
+    def route_text(
+        self,
+        prompt: str,
+        *,
+        metadata: Mapping[str, str] | None = None,
+        context: Sequence[str] = (),
+    ) -> str:
+        """Return a deterministic local backend response."""
+        response = self.backend.respond(
+            prompt,
+            messages=(RuntimeMessage(role="user", content=prompt),),
+            metadata=metadata,
+            context=context,
+        )
+        return response.content
 
 
 @dataclass
