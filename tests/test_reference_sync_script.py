@@ -1,5 +1,6 @@
-from buddy_agent.references import ReferenceRepo
 from scripts.sync_reference_repos import sync_repo
+
+from buddy_agent.references import ReferenceRepo
 
 
 def test_reference_sync_dry_run_does_not_create_destination(tmp_path, capsys):
