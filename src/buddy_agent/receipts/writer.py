@@ -10,7 +10,9 @@ from typing import cast
 
 from .record import JSONValue, ReceiptRecord
 
-DEFAULT_RECEIPTS_DIR = Path(os.getenv("BUDDY_RECEIPTS_DIR", "~/.buddy_agent/receipts")).expanduser()
+DEFAULT_RECEIPTS_DIR = Path(
+    os.getenv("BUDDY_RECEIPTS_DIR", "~/.buddy_agent/receipts")
+).expanduser()
 SENSITIVE_KEY_PARTS = (
     "secret",
     "token",
@@ -24,7 +26,14 @@ SENSITIVE_KEY_PARTS = (
     "account_id",
     "credential",
 )
-SENSITIVE_VALUE_MARKERS = ("sk-", "ghp_", "github_pat_", "-----BEGIN", "xoxb-", "xoxp-")
+SENSITIVE_VALUE_MARKERS = (
+    "sk-",
+    "ghp_",
+    "github_pat_",
+    "-----BEGIN",
+    "xoxb-",
+    "xoxp-",
+)
 
 
 def _is_sensitive_key(key: str) -> bool:
@@ -75,5 +84,6 @@ class ReceiptWriter:
             return path
         timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
         path = self.directory / f"receipt-{timestamp}.json"
-        path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        content = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+        path.write_text(content, encoding="utf-8")
         return path
