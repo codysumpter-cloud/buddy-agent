@@ -34,10 +34,16 @@ class RuntimeChatResult(Protocol):
     detail: str
 
 
+class CompanionShellLike(Protocol):
+    """Minimal companion shell fields needed by app chat routes."""
+
+    buddy_id: str
+
+
 class AppChatRuntime(Protocol):
     """Minimal runtime capability needed by app chat routes."""
 
-    companion_shell: object
+    companion_shell: CompanionShellLike
 
     def route_app_chat(self, prompt: str, *, surface: str = "local") -> RuntimeChatResult:
         """Run one app chat turn."""
@@ -47,14 +53,10 @@ class AppChatRuntime(Protocol):
 def route_app_chat(runtime: AppChatRuntime, request: AppChatRequest) -> AppChatResponse:
     """Route an app chat request through the Buddy runtime."""
     result = runtime.route_app_chat(request.prompt, surface=request.surface)
-    buddy_id = request.buddy_id
-    shell = runtime.companion_shell
-    if hasattr(shell, "buddy_id"):
-        buddy_id = str(getattr(shell, "buddy_id"))
     return AppChatResponse(
         ok=result.ok,
         message=result.message,
         detail=result.detail,
-        buddy_id=buddy_id,
+        buddy_id=runtime.companion_shell.buddy_id or request.buddy_id,
         surface=request.surface,
     )
