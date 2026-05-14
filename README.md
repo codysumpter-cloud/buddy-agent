@@ -31,16 +31,19 @@ buddy smoke
 buddy alpha
 ```
 
-## Alpha Runtime
+## Alpha Runtime Plus
 
 ```bash
 buddy chat "hello buddy"
+buddy app-chat "hello from widget" --surface widget
 buddy remember "Prismtek likes clean runtime seams"
 buddy recall "runtime"
 buddy skill --skill caps "buddy alpha"
 ```
 
-The Alpha Runtime wires local chat routing, persistent memory, built-in skills, Buddy template validation, and companion permission policy into one runnable path.
+The Alpha Runtime Plus path wires Buddy-native runtime config, backend execution, persistent memory, vault-style retrieval, Buddy Brain operator context, local Omni routing, Buddy template loading, app bridge eventing, built-in skills, and companion permission policy into one runnable local path.
+
+This is still an alpha milestone. It is not full Hermes Agent or full ecosystem feature parity. Reference repositories are tracked and mapped, but each source capability should only be marked complete after it is ported, rebranded, wired, tested, documented, and license-audited.
 
 ## Generate a Buddy
 
@@ -75,16 +78,22 @@ Buddy is being designed as a persistent companion layer for desktop, browser, wi
 
 | Track | Status |
 | --- | --- |
-| Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> runnable alpha |
+| Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> Alpha Runtime Plus branch |
 | Package | `0.1.0` alpha scaffold |
 | CLI | `buddy` |
 | Smoke test | `buddy smoke` |
-| Alpha path | `buddy alpha`, `chat`, `remember`, `recall`, `skill` |
+| Alpha path | `buddy alpha`, `chat`, `app-chat`, `remember`, `recall`, `skill`, `parity` |
+| Runtime config | JSON loader with safe local defaults |
+| Backend execution | callable local template backend boundary |
 | Memory | persistent JSON-backed local memory |
+| Retrieval | local vault-style provider backed by note index |
+| Buddy Brain layer | local operator context adapter |
+| Omni routing | local callable backend adapter, provider-ready seam |
+| App bridge route | typed `app-chat` route and in-process event bridge |
 | Appearance template | Default Buddy supports pixel and ASCII modes |
-| Companion shell | Contracts and consent-first policy started |
-| iBeMore bridge | Typed app bridge contracts started |
-| Hermes reference | Planned import from `NousResearch/hermes-agent` |
+| Companion shell | loads and validates `templates/default-buddy/buddy.json` |
+| iBeMore bridge | typed app bridge contracts started |
+| Hermes reference | tracked reference; source parity not yet complete |
 | Discovery input | `awesome-hermes-agent` |
 | Compression input | `caveman` |
 | Restricted experiments | Disabled by default |
@@ -97,19 +106,32 @@ Buddy Agent tracks Hermes Agent, Buddy Brain, Omni Buddy, Prismtek Apps, Knowled
 
 Implemented alpha pieces:
 
-- `buddy` CLI with status, doctor, smoke, alpha, chat, remember, recall, skill, and generate commands
-- runnable local Alpha Runtime composition
+- `buddy` CLI with status, doctor, smoke, alpha, chat, app-chat, remember, recall, skill, parity, and generate commands
+- runnable local Alpha Runtime Plus composition
+- runtime config loader and backend execution seam
 - persistent JSON-backed local memory
-- local Omni-style routing adapter
+- local vault-style retrieval provider
+- local Buddy Brain operator context adapter
+- local Omni-style routing adapter backed by the runtime backend seam
+- typed app bridge chat route and local event bridge
 - built-in summarize and caps skills
 - app icon asset, README mascot asset, and default Buddy asset
 - app-safe Buddy appearance contract for pixel/ascii modes and 64x64 animation states
+- companion shell loader for the canonical default Buddy template
 - companion contracts, consent-first policy, and iBeMore app bridge contracts
 - runtime engine, message state, tool calls, and tool registry
 - Buddy profile, care, and training domain helpers
-- local adapters for Buddy Brain, Omni, Prismtek app events, and vault-style retrieval
 - note index, skill registry, automation registry, sandbox policy, app bridge contracts, gateway contracts, and Omni config
 - ecosystem integration registry and CI scaffolding
+
+Still not claimed complete:
+
+- full Hermes Agent source feature parity
+- full Buddy Brain operator/council parity
+- full AgentMemory or Knowledge Vault parity
+- full Omni local model/voice/vision parity
+- full Prismtek Apps or iBeMore app integration
+- restricted experiment enablement
 
 ## Development
 
@@ -121,6 +143,7 @@ buddy --help
 buddy doctor
 buddy smoke
 buddy alpha
+buddy app-chat "hello from app" --surface widget
 buddy generate --output my-buddy
 ```
 
