@@ -6,7 +6,7 @@ import json
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, cast
+from typing import cast
 
 from buddy_agent.buddy.render_contract import validate_buddy_manifest
 from buddy_agent.runtime.config import DEFAULT_TEMPLATE_PATH
@@ -14,13 +14,13 @@ from buddy_agent.runtime.config import DEFAULT_TEMPLATE_PATH
 
 @dataclass(frozen=True)
 class CompanionShell:
-    """Loaded companion shell contract for desktop, app, widget, and iBeMore surfaces."""
+    """Loaded companion shell contract for Buddy app surfaces."""
 
     buddy_id: str
     display_name: str
     manifest: Mapping[str, object]
     template_path: Path = DEFAULT_TEMPLATE_PATH
-    surfaces: tuple[str, ...] = ("desktop", "browser", "widget", "ibe_more")
+    surfaces: tuple[str, ...] = ("desktop", "widget", "ibe_more")
     permissions_required: tuple[str, ...] = ("chat", "widget", "context_bridge", "shortcut")
     metadata: Mapping[str, str] = field(default_factory=dict)
 
