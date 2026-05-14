@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Literal, cast
 
 TrainingAction = Literal[
     "chat",
@@ -19,6 +19,18 @@ TrainingAction = Literal[
 ]
 
 EvolutionStage = Literal["seedling", "apprentice", "specialist", "guardian"]
+ALLOWED_TRAINING_ACTIONS: tuple[TrainingAction, ...] = (
+    "chat",
+    "remember",
+    "recall",
+    "skill_used",
+    "quest_completed",
+    "test_passed",
+    "doc_added",
+    "code_reviewed",
+    "memory_reviewed",
+    "approval_handled",
+)
 STAT_NAMES = (
     "bond",
     "focus",
@@ -119,6 +131,14 @@ class BuddyTrainingState:
         return state
 
 
+def parse_training_action(value: str) -> TrainingAction:
+    """Parse and validate a Buddy Training action from CLI text."""
+    if value not in ALLOWED_TRAINING_ACTIONS:
+        supported = ", ".join(ALLOWED_TRAINING_ACTIONS)
+        raise ValueError(f"Unsupported Buddy Training action: {value}. Supported: {supported}")
+    return cast(TrainingAction, value)
+
+
 def _int_value(value: object, *, default: int) -> int:
     """Return an int from JSON-ish input without accepting booleans as numbers."""
     if isinstance(value, bool):
@@ -143,5 +163,5 @@ def _string_set(value: object) -> set[str]:
 def _evolution_value(value: object) -> EvolutionStage:
     """Return a valid evolution stage."""
     if value in {"seedling", "apprentice", "specialist", "guardian"}:
-        return value  # type: ignore[return-value]
+        return cast(EvolutionStage, value)
     return "seedling"
