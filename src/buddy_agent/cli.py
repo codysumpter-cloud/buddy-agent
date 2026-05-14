@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 from .alpha import BuddyAlphaRuntime
@@ -11,7 +12,10 @@ from .buddy.render_contract import validate_buddy_manifest
 from .doctor import doctor_ok, run_doctor
 from .metadata import PROJECT_NAME, VERSION
 from .parity import parity_summary_lines, validate_required_surface_parity
+from .providers import provider_names
+from .receipts import ReceiptWriter
 from .runtime import RuntimeEngine
+from .skills import find_skill_manifest, load_skill_manifests, validate_skill_directory
 
 COMMANDS = (
     "doctor",
@@ -23,6 +27,9 @@ COMMANDS = (
     "remember",
     "recall",
     "skill",
+    "skills",
+    "providers",
+    "receipts",
     "parity",
 )
 
@@ -39,6 +46,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Print the Buddy Agent version and exit.",
     )
     parser.add_argument(
+        "--receipts",
+        action="store_true",
+        help="Emit local sanitized receipts for supported runtime commands.",
+    )
+    parser.add_argument(
         "command",
         nargs="?",
         choices=COMMANDS,
@@ -47,7 +59,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "text",
         nargs="*",
-        help="Text input for chat, memory, recall, or skill commands.",
+        help="Text input for chat, memory, recall, skill, or nested commands.",
     )
     parser.add_argument(
         "--output",
@@ -64,9 +76,21 @@ def joined_text(parts: list[str], *, fallback: str = "hello") -> str:
     return value or fallback
 
 
-def run_smoke_command() -> int:
+def default_skills_path() -> Path:
+    """Return the configured public skill manifest path."""
+    return Path(os.getenv("BUDDY_SKILLS_PATH", "skills/public"))
+
+
+def make_runtime(*, emit_receipts: bool = False) -> BuddyAlphaRuntime:
+    """Build the alpha runtime with optional receipt emission."""
+    writer = ReceiptWriter() if emit_receipts else None
+    return BuddyAlphaRuntime(engine=RuntimeEngine(receipt_writer=writer))
+
+
+def run_smoke_command(*, emit_receipts: bool = False) -> int:
     """Run a small end-to-end CLI/runtime check."""
-    engine = RuntimeEngine(session_id="smoke")
+    writer = ReceiptWriter() if emit_receipts else None
+    engine = RuntimeEngine(session_id="smoke", receipt_writer=writer)
     response = engine.receive("hello")
     validate_buddy_manifest(default_manifest())
     print("ok runtime: " + response)
@@ -74,9 +98,9 @@ def run_smoke_command() -> int:
     return 0
 
 
-def run_alpha_command() -> int:
+def run_alpha_command(*, emit_receipts: bool = False) -> int:
     """Run the richer Alpha Runtime smoke path."""
-    runtime = BuddyAlphaRuntime()
+    runtime = make_runtime(emit_receipts=emit_receipts)
     for result in runtime.smoke():
         status = "ok" if result.ok else "fail"
         detail = f": {result.detail}" if result.detail else ""
@@ -94,6 +118,67 @@ def run_parity_command() -> int:
             print(f"fail parity: {problem}")
         return 1
     print("ok parity: all required surfaces covered")
+    return 0
+
+
+def run_skills_command(parts: list[str]) -> int:
+    """Run `buddy skills ...` commands."""
+    action = parts[0] if parts else "list"
+    root = default_skills_path()
+    if action == "list":
+        manifests = load_skill_manifests(root)
+        for manifest in manifests:
+            print(f"{manifest.name}\t{manifest.buddy.risk_class}\t{manifest.description}")
+        if not manifests:
+            print(f"no skills found under {root}")
+        return 0
+    if action == "validate":
+        problems = validate_skill_directory(root)
+        if problems:
+            for problem in problems:
+                print(f"fail skill: {problem}")
+            return 1
+        print(f"ok skills: {len(load_skill_manifests(root))} manifests valid")
+        return 0
+    if action == "inspect":
+        if len(parts) < 2:
+            print("fail skills inspect: missing skill name")
+            return 1
+        manifest = find_skill_manifest(root, parts[1])
+        if manifest is None:
+            print(f"fail skills inspect: unknown skill {parts[1]}")
+            return 1
+        print(f"name: {manifest.name}")
+        print(f"description: {manifest.description}")
+        print(f"risk_class: {manifest.buddy.risk_class}")
+        print(f"auto_executable: {manifest.buddy.auto_executable}")
+        print(f"requires_explicit_approval: {manifest.buddy.requires_explicit_approval}")
+        print(f"path: {manifest.path}")
+        return 0
+    print(f"fail skills: unknown action {action}")
+    return 1
+
+
+def run_providers_command(parts: list[str]) -> int:
+    """Run `buddy providers ...` commands."""
+    action = parts[0] if parts else "list"
+    if action != "list":
+        print(f"fail providers: unknown action {action}")
+        return 1
+    selected = os.getenv("BUDDY_PROVIDER", "local").strip().lower() or "local"
+    for name in provider_names():
+        suffix = " (selected)" if name == selected else ""
+        print(f"{name}{suffix}")
+    return 0
+
+
+def run_receipts_command(parts: list[str]) -> int:
+    """Run `buddy receipts ...` commands."""
+    action = parts[0] if parts else "path"
+    if action != "path":
+        print(f"fail receipts: unknown action {action}")
+        return 1
+    print(ReceiptWriter().path())
     return 0
 
 
@@ -123,34 +208,45 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "smoke":
-        return run_smoke_command()
+        return run_smoke_command(emit_receipts=args.receipts)
 
     if args.command == "alpha":
-        return run_alpha_command()
+        return run_alpha_command(emit_receipts=args.receipts)
 
     if args.command == "parity":
         return run_parity_command()
 
+    if args.command == "skills":
+        return run_skills_command(args.text)
+
+    if args.command == "providers":
+        return run_providers_command(args.text)
+
+    if args.command == "receipts":
+        return run_receipts_command(args.text)
+
     if args.command == "chat":
-        result = BuddyAlphaRuntime().chat(joined_text(args.text))
+        result = make_runtime(emit_receipts=args.receipts).chat(joined_text(args.text))
         print(result.message)
         if result.detail:
             print(result.detail)
         return 0 if result.ok else 1
 
     if args.command == "remember":
-        result = BuddyAlphaRuntime().remember(joined_text(args.text))
+        result = make_runtime(emit_receipts=args.receipts).remember(joined_text(args.text))
         print(result.message)
         print(result.detail)
         return 0 if result.ok else 1
 
     if args.command == "recall":
-        result = BuddyAlphaRuntime().recall(joined_text(args.text))
+        result = make_runtime(emit_receipts=args.receipts).recall(joined_text(args.text))
         print(result.message)
         return 0 if result.ok else 1
 
     if args.command == "skill":
-        result = BuddyAlphaRuntime().run_skill(args.skill, joined_text(args.text))
+        result = make_runtime(emit_receipts=args.receipts).run_skill(
+            args.skill, joined_text(args.text)
+        )
         print(result.message)
         return 0 if result.ok else 1
 
