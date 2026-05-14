@@ -9,9 +9,18 @@ from .alpha import BuddyAlphaRuntime
 from .buddy.generate import default_manifest, write_default_buddy
 from .buddy.render_contract import validate_buddy_manifest
 from .doctor import doctor_ok, run_doctor
+from .integrations.agentcraft import (
+    AgentCraftBridge,
+    AgentCraftConfig,
+    AgentCraftEvent,
+    parse_event_type,
+    parse_payload_json,
+)
 from .metadata import PROJECT_NAME, VERSION
 from .parity import parity_summary_lines, validate_required_surface_parity
 from .runtime import RuntimeEngine
+from .training import BuddyTrainingEngine, BuddyTrainingStore
+from .training.models import parse_training_action
 
 COMMANDS = (
     "doctor",
@@ -24,6 +33,8 @@ COMMANDS = (
     "recall",
     "skill",
     "parity",
+    "agentcraft",
+    "train",
 )
 
 
@@ -47,7 +58,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "text",
         nargs="*",
-        help="Text input for chat, memory, recall, or skill commands.",
+        help="Text input for chat, memory, recall, skill, train, or AgentCraft commands.",
     )
     parser.add_argument(
         "--output",
@@ -55,6 +66,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output directory for `buddy generate`.",
     )
     parser.add_argument("--skill", default="summarize", help="Skill name for `buddy skill`.")
+    parser.add_argument(
+        "--state",
+        default=None,
+        help="Optional state path for `buddy train` commands.",
+    )
     return parser
 
 
@@ -97,6 +113,114 @@ def run_parity_command() -> int:
     return 0
 
 
+def run_agentcraft_command(parts: list[str]) -> int:
+    """Run AgentCraft bridge helper commands."""
+    subcommand = parts[0] if parts else "doctor"
+    bridge = AgentCraftBridge()
+
+    if subcommand == "doctor":
+        for line in AgentCraftConfig.from_env().doctor_lines():
+            print(line)
+        return 0
+
+    if subcommand == "smoke":
+        events = (
+            AgentCraftEvent("hero_active", {"name": "Buddy Agent smoke"}),
+            AgentCraftEvent(
+                "mission_start",
+                {"name": "Buddy Agent smoke", "prompt": "redacted smoke event"},
+            ),
+            AgentCraftEvent("hero_idle", {"name": "Buddy Agent smoke"}),
+        )
+        for event in events:
+            print(bridge.emit(event).to_json())
+        return 0
+
+    if subcommand == "emit":
+        try:
+            event_type = parse_event_type(parts[1] if len(parts) > 1 else "")
+            payload = parse_payload_json(" ".join(parts[2:]) if len(parts) > 2 else None)
+        except ValueError as error:
+            print(f"fail agentcraft: {error}")
+            return 2
+        print(bridge.emit(AgentCraftEvent(event_type, payload)).to_json())
+        return 0
+
+    print("Usage: buddy agentcraft [doctor|smoke|emit <event-type> [json-payload]]")
+    return 2
+
+
+def run_train_command(parts: list[str], *, state_path: str | None = None) -> int:
+    """Run Buddy Training helper commands."""
+    subcommand = parts[0] if parts else "status"
+    store = BuddyTrainingStore(Path(state_path).expanduser() if state_path else None)
+    engine = BuddyTrainingEngine()
+
+    if subcommand == "status":
+        state = store.load()
+        for line in engine.summary_lines(state):
+            print(line)
+        print(f"state_path={store.path}")
+        return 0
+
+    if subcommand == "reset":
+        state = store.reset()
+        print("ok train: reset Buddy Training state")
+        print(f"state_path={store.path}")
+        for line in engine.summary_lines(state):
+            print(line)
+        return 0
+
+    if subcommand == "reward":
+        try:
+            action = parse_training_action(parts[1] if len(parts) > 1 else "")
+        except ValueError as error:
+            print(f"fail train: {error}")
+            return 2
+
+        state = store.load()
+        result = engine.apply(state, action)
+        store.save(result.state)
+        print(
+            "ok train: "
+            f"action={action} xp=+{result.reward.xp} sparks=+{result.reward.sparks} "
+            f"snacks=+{result.reward.snacks} levels=+{result.levels_gained}"
+        )
+        if result.new_achievements:
+            print("new achievements: " + ", ".join(result.new_achievements))
+        if result.new_cosmetics:
+            print("new cosmetics: " + ", ".join(result.new_cosmetics))
+        print(f"state_path={store.path}")
+        for line in engine.summary_lines(result.state):
+            print(line)
+
+        bridge = AgentCraftBridge()
+        bridge.emit(
+            AgentCraftEvent(
+                "mission_start",
+                {
+                    "name": "Buddy Training reward",
+                    "trainingAction": action,
+                    "xp": result.reward.xp,
+                },
+            )
+        )
+        bridge.emit(
+            AgentCraftEvent(
+                "hero_idle",
+                {
+                    "name": "Buddy Training",
+                    "level": result.state.level,
+                    "evolution": result.state.evolution,
+                },
+            )
+        )
+        return 0
+
+    print("Usage: buddy train [status|reward <action>|reset]")
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the Buddy Agent CLI."""
     parser = build_parser()
@@ -130,6 +254,12 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "parity":
         return run_parity_command()
+
+    if args.command == "agentcraft":
+        return run_agentcraft_command(args.text)
+
+    if args.command == "train":
+        return run_train_command(args.text, state_path=args.state)
 
     if args.command == "chat":
         result = BuddyAlphaRuntime().chat(joined_text(args.text))
