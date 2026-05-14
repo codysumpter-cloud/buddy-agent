@@ -7,7 +7,8 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Literal, TypeAlias
 
-JSONValue: TypeAlias = str | int | float | bool | None | dict[str, "JSONValue"] | list["JSONValue"]
+JSONScalar: TypeAlias = str | int | float | bool | None
+JSONValue: TypeAlias = JSONScalar | dict[str, "JSONValue"] | list["JSONValue"]
 ReceiptStatus: TypeAlias = Literal["ok", "error", "review", "deny"]
 
 
