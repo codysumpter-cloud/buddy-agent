@@ -30,3 +30,35 @@ def test_parity_command(capsys):
     assert "omni-buddy:" in captured.out
     assert "knowledge-vault:" in captured.out
     assert "ok parity" in captured.out
+
+
+def test_skills_validate_command(capsys):
+    assert main(["skills", "validate"]) == 0
+    captured = capsys.readouterr()
+    assert "ok skills:" in captured.out
+
+
+def test_skills_list_command(capsys):
+    assert main(["skills", "list"]) == 0
+    captured = capsys.readouterr()
+    assert "caps" in captured.out
+    assert "summarize" in captured.out
+
+
+def test_skills_inspect_command(capsys):
+    assert main(["skills", "inspect", "caps"]) == 0
+    captured = capsys.readouterr()
+    assert "name: caps" in captured.out
+    assert "risk_class: draft-only" in captured.out
+
+
+def test_providers_list_command(capsys):
+    assert main(["providers", "list"]) == 0
+    captured = capsys.readouterr()
+    assert "local" in captured.out
+
+
+def test_receipts_path_command(capsys):
+    assert main(["receipts", "path"]) == 0
+    captured = capsys.readouterr()
+    assert ".buddy_agent" in captured.out
