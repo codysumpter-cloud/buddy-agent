@@ -14,4 +14,5 @@ def test_run_doctor_returns_passing_checks():
         "vault-provider",
         "companion-shell",
         "surface-parity",
+        "integration-targets",
     }

@@ -9,6 +9,7 @@ from .alpha import BuddyAlphaRuntime
 from .buddy.generate import default_manifest, write_default_buddy
 from .buddy.render_contract import validate_buddy_manifest
 from .doctor import doctor_ok, run_doctor
+from .integrations import BuddyIntegrationRuntime, parse_integration_id
 from .integrations.agentcraft import (
     AgentCraftBridge,
     AgentCraftConfig,
@@ -36,6 +37,7 @@ COMMANDS = (
     "app-chat",
     "agentcraft",
     "train",
+    "integrations",
 )
 
 
@@ -59,7 +61,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "text",
         nargs="*",
-        help="Text input for chat, memory, recall, skill, train, or AgentCraft commands.",
+        help="Text input for chat, memory, recall, skill, train, or integration commands.",
     )
     parser.add_argument(
         "--output",
@@ -113,6 +115,49 @@ def run_parity_command() -> int:
         return 1
     print("ok parity: all required surfaces covered")
     return 0
+
+
+def run_integrations_command(parts: list[str]) -> int:
+    """Run priority integration registry commands."""
+    runtime = BuddyIntegrationRuntime()
+    subcommand = parts[0] if parts else "list"
+
+    if subcommand == "list":
+        for line in runtime.list_targets():
+            print(line)
+        return 0
+
+    if subcommand == "describe":
+        try:
+            integration_id = parse_integration_id(parts[1] if len(parts) > 1 else "")
+        except ValueError as error:
+            print(f"fail integrations: {error}")
+            return 2
+        result = runtime.describe(integration_id)
+        print(result.message)
+        return 0
+
+    if subcommand == "run":
+        try:
+            integration_id = parse_integration_id(parts[1] if len(parts) > 1 else "")
+        except ValueError as error:
+            print(f"fail integrations: {error}")
+            return 2
+        if len(parts) < 3:
+            print("Usage: buddy integrations run <target> <capability> [path]")
+            return 2
+        result = runtime.run(
+            integration_id,
+            parts[2],
+            path=parts[3] if len(parts) > 3 else None,
+        )
+        print(result.message)
+        if result.detail:
+            print(result.detail)
+        return 0 if result.ok else 1
+
+    print("Usage: buddy integrations [list|describe <target>|run <target> <capability>]")
+    return 2
 
 
 def run_agentcraft_command(parts: list[str]) -> int:
@@ -256,6 +301,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "parity":
         return run_parity_command()
+
+    if args.command == "integrations":
+        return run_integrations_command(args.text)
 
     if args.command == "agentcraft":
         return run_agentcraft_command(args.text)
