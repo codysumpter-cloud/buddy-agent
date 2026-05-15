@@ -6,7 +6,7 @@ def test_runtime_records_messages():
 
     response = engine.receive("hello")
 
-    assert response == "Buddy Agent runtime scaffold received your message."
+    assert response == "Buddy local echo: hello"
     assert engine.state.session_id == "session-1"
     assert [message.role for message in engine.state.messages] == ["user", "assistant"]
 
