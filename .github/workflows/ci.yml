@@ -29,5 +29,8 @@ jobs:
       - name: Type check
         run: mypy src
 
+      - name: Validate public skills
+        run: buddy skills validate
+
       - name: Test
         run: pytest
