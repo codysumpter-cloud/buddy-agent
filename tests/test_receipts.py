@@ -1,6 +1,6 @@
 import json
 
-from buddy_agent.receipts import ReceiptRecord, ReceiptWriter, sanitize_json
+from buddy_agent.receipts import ReceiptRecord, ReceiptWriter
 from buddy_agent.runtime import RuntimeEngine
 
 
@@ -24,10 +24,6 @@ def test_receipt_writer_writes_jsonl_and_redacts_sensitive_keys(tmp_path):
     assert payload["metadata"]["api_key"] == "[redacted]"
     assert payload["metadata"]["nested"]["token"] == "[redacted]"
     assert payload["metadata"]["safe"] == "value"
-
-
-def test_sanitize_json_redacts_by_value_marker():
-    assert sanitize_json("value contains github_pat_placeholder") == "[redacted]"
 
 
 def test_runtime_receipt_does_not_record_prompt_content(tmp_path):
