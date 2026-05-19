@@ -56,7 +56,9 @@ def test_skill_manifest_rejects_invalid_name(tmp_path: Path) -> None:
 
 
 def test_skill_manifest_rejects_long_description(tmp_path: Path) -> None:
-    path = write_skill(tmp_path, f"---\nname: demo\ndescription: {'x' * 1024}\n---\n")
+    description = "x" * 1024
+    manifest_text = f"---\nname: demo\ndescription: {description}\n---\n"
+    path = write_skill(tmp_path, manifest_text)
 
     with pytest.raises(SkillManifestError):
         load_skill_manifest(path)
