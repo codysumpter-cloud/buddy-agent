@@ -6,6 +6,20 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .contracts import IntegrationId, IntegrationStatus
+from .openmythos import (
+    get_variant_config,
+    torch_backend_lines,
+    training_plan_lines,
+    variant_summary_lines,
+)
+from .symphony import (
+    local_tracker_lines,
+    observability_lines,
+    worker_bridge_lines,
+    work_runner_lines,
+    workflow_contract_lines,
+    workspace_plan_lines,
+)
 from .targets import get_integration_target, integration_summary_lines
 
 
@@ -39,11 +53,7 @@ class BuddyIntegrationRuntime:
                 f"- {capability.capability_id}: {capability.status} | "
                 f"{capability.buddy_name}"
             )
-        return IntegrationRunResult(
-            ok=True,
-            message="\n".join(lines),
-            status=target.status,
-        )
+        return IntegrationRunResult(ok=True, message="\n".join(lines), status=target.status)
 
     def run(
         self,
@@ -52,98 +62,112 @@ class BuddyIntegrationRuntime:
         *,
         path: str | Path | None = None,
     ) -> IntegrationRunResult:
-        """Run one safe Buddy-native integration capability.
+        """Run one safe Buddy-native integration capability."""
+        get_integration_target(integration_id).get_capability(capability_id)
+        if integration_id == "openmythos":
+            return self._run_openmythos(capability_id, path)
+        if integration_id == "symphony":
+            return self._run_symphony(capability_id, path)
+        return self._not_runnable(integration_id, capability_id)
 
-        Adapter-ready and mapped capabilities intentionally return explanatory results
-        instead of pretending an upstream runtime has already been fully ported.
-        """
+    def _run_openmythos(
+        self,
+        capability_id: str,
+        path: str | Path | None,
+    ) -> IntegrationRunResult:
+        variant = str(path) if path is not None else None
+        if capability_id == "architecture-contract":
+            config = get_variant_config(variant)
+            return IntegrationRunResult(
+                ok=not config.validate(),
+                message="\n".join(config.architecture_lines()),
+                detail="Buddy Mythos architecture contract is dependency-light and testable.",
+                status="native-runtime",
+            )
+        if capability_id == "variant-configs":
+            return IntegrationRunResult(
+                ok=True,
+                message="\n".join(variant_summary_lines()),
+                status="native-runtime",
+            )
+        if capability_id == "torch-model":
+            return IntegrationRunResult(
+                ok=True,
+                message="\n".join(torch_backend_lines()),
+                detail="Model construction is optional; default install stays light.",
+                status="adapter-ready",
+            )
+        if capability_id == "training-script":
+            return IntegrationRunResult(
+                ok=True,
+                message="\n".join(training_plan_lines(variant)),
+                detail="Training is planned but not started by default.",
+                status="native-runtime",
+            )
+        return self._not_runnable("openmythos", capability_id)
+
+    def _run_symphony(
+        self,
+        capability_id: str,
+        path: str | Path | None,
+    ) -> IntegrationRunResult:
+        if capability_id == "workflow-contract":
+            lines = workflow_contract_lines(path)
+            ok = not any("invalid" in line for line in lines)
+            return IntegrationRunResult(ok=ok, message="\n".join(lines), status="native-runtime")
+        if capability_id == "tracker-local":
+            return IntegrationRunResult(
+                ok=True,
+                message="\n".join(local_tracker_lines(path)),
+                status="native-runtime",
+            )
+        if capability_id == "workspace-spawn":
+            if path is None:
+                return IntegrationRunResult(
+                    ok=False,
+                    message="workspace-spawn requires a WORKFLOW.md path",
+                    status="native-runtime",
+                )
+            return IntegrationRunResult(
+                ok=True,
+                message="\n".join(workspace_plan_lines(path)),
+                detail="Plan only. Use work-runner to create local files.",
+                status="native-runtime",
+            )
+        if capability_id == "work-runner":
+            if path is None:
+                return IntegrationRunResult(
+                    ok=False,
+                    message="work-runner requires a WORKFLOW.md path",
+                    status="native-runtime",
+                )
+            return IntegrationRunResult(
+                ok=True,
+                message="\n".join(work_runner_lines(path)),
+                detail="Local workspace files created.",
+                status="native-runtime",
+            )
+        if capability_id == "codex-app-server":
+            return IntegrationRunResult(
+                ok=True,
+                message="\n".join(worker_bridge_lines()),
+                detail="Buddy exposes the bridge contract without starting a process.",
+                status="adapter-ready",
+            )
+        if capability_id == "observability":
+            return IntegrationRunResult(
+                ok=True,
+                message="\n".join(observability_lines()),
+                status="native-runtime",
+            )
+        return self._not_runnable("symphony", capability_id)
+
+    def _not_runnable(self, integration_id: IntegrationId, capability_id: str) -> IntegrationRunResult:
         target = get_integration_target(integration_id)
         capability = target.get_capability(capability_id)
-
-        if integration_id == "openmythos" and capability_id == "architecture-contract":
-            return self._run_openmythos_architecture_contract()
-        if integration_id == "symphony" and capability_id == "workflow-contract":
-            return self._run_symphony_workflow_contract(path)
-
         return IntegrationRunResult(
             ok=False,
-            message=(
-                f"{integration_id}.{capability_id} is {capability.status}, not fully "
-                "native-runtime in Buddy yet."
-            ),
+            message=f"{integration_id}.{capability_id} is {capability.status} in Buddy.",
             detail=capability.validation,
             status=capability.status,
         )
-
-    def _run_openmythos_architecture_contract(self) -> IntegrationRunResult:
-        """Return a dependency-light OpenMythos architecture contract summary."""
-        lines = (
-            "Buddy Mythos architecture contract",
-            "stages=prelude,recurrent_block,coda",
-            "attention=gqa|mla",
-            "ffn=moe_with_shared_experts",
-            "loop_control=max_loop_iters,n_loops",
-            "stability=lti_injection_spectral_radius_lt_1",
-            "torch_backend=optional_not_default",
-        )
-        return IntegrationRunResult(
-            ok=True,
-            message="\n".join(lines),
-            detail="OpenMythos PyTorch backend remains optional and adapter-ready.",
-            status="native-runtime",
-        )
-
-    def _run_symphony_workflow_contract(
-        self,
-        path: str | Path | None,
-    ) -> IntegrationRunResult:
-        """Validate the minimal Symphony workflow front matter shape."""
-        if path is None:
-            return IntegrationRunResult(
-                ok=True,
-                message=(
-                    "Buddy Symphony workflow contract ready: requires tracker, "
-                    "workspace, hooks, agent, and codex sections when loaded from a file."
-                ),
-                detail="No workflow path provided; reported contract schema only.",
-                status="native-runtime",
-            )
-
-        workflow_path = Path(path).expanduser()
-        if not workflow_path.exists():
-            return IntegrationRunResult(
-                ok=False,
-                message=f"Workflow file not found: {workflow_path}",
-                status="native-runtime",
-            )
-
-        text = workflow_path.read_text(encoding="utf-8")
-        front_matter = _extract_front_matter(text)
-        missing = tuple(
-            key
-            for key in ("tracker:", "workspace:", "hooks:", "agent:", "codex:")
-            if key not in front_matter
-        )
-        if missing:
-            return IntegrationRunResult(
-                ok=False,
-                message="Symphony workflow contract invalid",
-                detail="missing " + ", ".join(missing),
-                status="native-runtime",
-            )
-        return IntegrationRunResult(
-            ok=True,
-            message="Symphony workflow contract valid",
-            detail=str(workflow_path),
-            status="native-runtime",
-        )
-
-
-def _extract_front_matter(text: str) -> str:
-    """Extract Markdown YAML front matter without adding a YAML dependency."""
-    if not text.startswith("---"):
-        return ""
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        return ""
-    return parts[1]
