@@ -1,0 +1,31 @@
+{
+  "name": "prismtek-youtube-buddy-lipsync",
+  "version": "1.1.0",
+  "description": "Produce a Prismtek/Buddy talking-host overlay for narrated videos using pixel-art visemes and FFmpeg audio RMS animation.",
+  "owner": "Prismtek",
+  "license": "MIT",
+  "platforms": ["macos", "linux"],
+  "requires": {
+    "python": ">=3.11",
+    "commands": ["magick", "ffmpeg", "ffprobe"]
+  },
+  "entrypoints": {
+    "generate_visemes": "scripts/generate_buddy_v12_visemes.py",
+    "render_lipsync": "scripts/prismtek_youtube_avatar_lipsync.py"
+  },
+  "artifacts": {
+    "committed": ["SKILL.md", "skill.manifest.json", "scripts/*.py", "tests/*.py"],
+    "not_committed": ["*.mp4", "*.mov", "*.wav", "*.aac", "*.lipsync-receipt.json", "buddy-host-main-v12-*.png"]
+  },
+  "safety": {
+    "stores_credentials": false,
+    "uploads_to_youtube": false,
+    "uses_private_browser_session": false,
+    "uses_face_swap_or_impersonation": false,
+    "requires_operator_approval_for_publish": true
+  },
+  "verification": [
+    "python3 -m py_compile scripts/*.py",
+    "python3 -m pytest tests/test_prismtek_youtube_buddy_lipsync.py"
+  ]
+}
