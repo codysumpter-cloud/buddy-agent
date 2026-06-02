@@ -33,10 +33,7 @@ where = ["src"]
 
 [tool.ruff]
 line-length = 100
-src = ["src", "tests"]
-extend-exclude = [
-  "skills/media/prismtek-youtube-buddy-lipsync/scripts/*.py",
-]
+src = ["src", "tests"]nextend-exclude = ["skills"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
