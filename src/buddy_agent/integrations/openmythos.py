@@ -83,8 +83,10 @@ class BuddyMythosConfig:
             f"heads={self.num_attention_heads}",
             f"kv_heads={self.num_key_value_heads}",
             f"ffn=moe experts={self.num_experts} shared={self.num_shared_experts}",
-            f"loop_control=recurrent_depth={self.recurrent_depth} max_loop_iters={self.max_loop_iters}",
-            f"lti_injection={str(self.lti_injection).lower()} spectral_radius={self.spectral_radius}",
+            "loop_control="
+            f"recurrent_depth={self.recurrent_depth} max_loop_iters={self.max_loop_iters}",
+            "lti_injection="
+            f"{str(self.lti_injection).lower()} spectral_radius={self.spectral_radius}",
             f"estimated_params={self.parameter_estimate()}",
             f"validation={status}",
             f"torch_backend={torch_backend_status()}",
@@ -137,7 +139,8 @@ def get_variant_config(name: str | None = None) -> BuddyMythosConfig:
         return VARIANT_CONFIGS[variant]
     except KeyError as error:
         supported = ", ".join(sorted(VARIANT_CONFIGS))
-        raise ValueError(f"Unknown Buddy Mythos variant {variant!r}. Supported: {supported}") from error
+        message = f"Unknown Buddy Mythos variant {variant!r}. Supported: {supported}"
+        raise ValueError(message) from error
 
 
 def variant_summary_lines() -> tuple[str, ...]:
@@ -155,7 +158,8 @@ def variant_summary_lines() -> tuple[str, ...]:
 
 def torch_backend_status() -> str:
     """Return optional Torch backend availability without importing Torch."""
-    return "available" if importlib.util.find_spec("torch") is not None else "missing_optional_dependency"
+    has_torch = importlib.util.find_spec("torch") is not None
+    return "available" if has_torch else "missing_optional_dependency"
 
 
 def torch_backend_lines() -> tuple[str, ...]:
