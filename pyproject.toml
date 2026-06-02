@@ -33,7 +33,8 @@ where = ["src"]
 
 [tool.ruff]
 line-length = 100
-src = ["src", "tests"]nextend-exclude = ["skills"]
+src = ["src", "tests"]
+extend-exclude = ["skills"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
