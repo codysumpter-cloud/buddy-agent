@@ -18,8 +18,9 @@ INTEGRATION_TARGETS: tuple[IntegrationTarget, ...] = (
         upstream_license="MIT",
         upstream_package="hermes-agent",
         summary=(
-            "Self-improving agent runtime source for Buddy-native chat, model routing, "
-            "tools, skills, memory, scheduling, terminal backends, and messaging surfaces."
+            "Self-improving agent runtime source for Buddy-native chat, model "
+            "routing, tools, skills, memory, scheduling, terminal backends, and "
+            "messaging surfaces."
         ),
         status="adapter-ready",
         capabilities=(
@@ -30,7 +31,9 @@ INTEGRATION_TARGETS: tuple[IntegrationTarget, ...] = (
                 summary="Interactive terminal chat loop and command surface.",
                 status="mapped",
                 source_path="hermes_cli/main.py, run_agent.py, cli.py",
-                validation="Port command loop behind Buddy-native names and run Buddy CLI tests.",
+                validation=(
+                    "Port command loop behind Buddy-native names and run Buddy CLI tests."
+                ),
             ),
             IntegrationCapability(
                 capability_id="model-routing",
@@ -69,7 +72,9 @@ INTEGRATION_TARGETS: tuple[IntegrationTarget, ...] = (
                 status="adapter-ready",
                 source_path="agent/, tools/memory_tools.py, hermes_state.py",
                 runtime_command="buddy integrations run hermes-agent memory",
-                validation="Back memory provider with Buddy persistent memory before import parity.",
+                validation=(
+                    "Back memory provider with Buddy persistent memory before import parity."
+                ),
             ),
             IntegrationCapability(
                 capability_id="scheduler",
@@ -78,7 +83,10 @@ INTEGRATION_TARGETS: tuple[IntegrationTarget, ...] = (
                 summary="Scheduled natural-language tasks with platform delivery.",
                 status="mapped",
                 source_path="cron/",
-                validation="Keep disabled until explicit schedule creation and cancellation tests exist.",
+                validation=(
+                    "Keep disabled until explicit schedule creation and cancellation "
+                    "tests exist."
+                ),
             ),
             IntegrationCapability(
                 capability_id="messaging-gateway",
@@ -87,7 +95,10 @@ INTEGRATION_TARGETS: tuple[IntegrationTarget, ...] = (
                 summary="Telegram, Discord, Slack, WhatsApp, Signal, and email concepts.",
                 status="mapped",
                 source_path="gateway/, tui_gateway/",
-                validation="Each platform requires opt-in config, secret handling, and smoke tests.",
+                validation=(
+                    "Each platform requires opt-in config, secret handling, and "
+                    "smoke tests."
+                ),
             ),
             IntegrationCapability(
                 capability_id="subagents",
@@ -96,7 +107,10 @@ INTEGRATION_TARGETS: tuple[IntegrationTarget, ...] = (
                 summary="Isolated subagent workstreams and research trajectory helpers.",
                 status="mapped",
                 source_path="agent/, batch_runner.py, trajectory_compressor.py",
-                validation="Port only after sandbox, workspace, and provenance policies are complete.",
+                validation=(
+                    "Port only after sandbox, workspace, and provenance policies are "
+                    "complete."
+                ),
             ),
         ),
     ),
@@ -191,17 +205,22 @@ INTEGRATION_TARGETS: tuple[IntegrationTarget, ...] = (
                 capability_id="architecture-contract",
                 buddy_name="Buddy Mythos architecture contract",
                 upstream_name="OpenMythos MythosConfig/OpenMythos",
-                summary="Prelude, recurrent block, coda, attention choice, MoE, and loop depth contract.",
+                summary=(
+                    "Prelude, recurrent block, coda, attention choice, MoE, and loop "
+                    "depth contract."
+                ),
                 status="native-runtime",
                 source_path="src/buddy_agent/integrations/openmythos.py",
-                runtime_command="buddy integrations run openmythos architecture-contract [variant]",
+                runtime_command=(
+                    "buddy integrations run openmythos architecture-contract [variant]"
+                ),
                 validation="Buddy exposes dependency-light config validation in tests.",
             ),
             IntegrationCapability(
                 capability_id="torch-model",
                 buddy_name="Buddy Mythos PyTorch backend guard",
                 upstream_name="OpenMythos torch model",
-                summary="Optional backend availability check and import guard for PyTorch model work.",
+                summary="Optional backend availability check and import guard for PyTorch.",
                 status="adapter-ready",
                 source_path="src/buddy_agent/integrations/openmythos.py",
                 runtime_command="buddy integrations run openmythos torch-model",
@@ -212,7 +231,7 @@ INTEGRATION_TARGETS: tuple[IntegrationTarget, ...] = (
                 capability_id="variant-configs",
                 buddy_name="Buddy Mythos variants",
                 upstream_name="OpenMythos model variants",
-                summary="Named model scale configs for tiny, 1B, 3B, and 7B planning targets.",
+                summary="Named model scale configs for tiny, 1B, 3B, and 7B targets.",
                 status="native-runtime",
                 source_path="src/buddy_agent/integrations/openmythos.py",
                 runtime_command="buddy integrations run openmythos variant-configs",
@@ -256,10 +275,14 @@ def validate_integration_targets() -> tuple[str, ...]:
         seen: set[str] = set()
         for capability in target.capabilities:
             if capability.capability_id in seen:
-                problems.append(f"{target.integration_id} duplicate capability {capability.capability_id}")
+                problems.append(
+                    f"{target.integration_id} duplicate capability {capability.capability_id}"
+                )
             seen.add(capability.capability_id)
             if not capability.summary.strip():
-                problems.append(f"{target.integration_id}.{capability.capability_id} missing summary")
+                problems.append(
+                    f"{target.integration_id}.{capability.capability_id} missing summary"
+                )
             if capability.status == "native-runtime" and not capability.runtime_command:
                 problems.append(
                     f"{target.integration_id}.{capability.capability_id} missing runtime command"
