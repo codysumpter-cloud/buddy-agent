@@ -99,7 +99,11 @@ def test_openmythos_torch_backend_guard_does_not_require_torch():
 
 
 def test_openmythos_training_script_returns_plan_only():
-    result = BuddyIntegrationRuntime().run("openmythos", "training-script", path="buddy-mythos-1b")
+    result = BuddyIntegrationRuntime().run(
+        "openmythos",
+        "training-script",
+        path="buddy-mythos-1b",
+    )
 
     assert result.ok is True
     assert result.status == "native-runtime"
@@ -162,7 +166,13 @@ def test_symphony_local_tracker_loads_json_issue(tmp_path):
 def test_symphony_workspace_plan_renders_prompt(tmp_path):
     tracker = tmp_path / "issues.json"
     tracker.write_text(
-        json.dumps({"identifier": "BUDDY-7", "title": "Plan workspace", "body": "Ship it."}),
+        json.dumps(
+            {
+                "identifier": "BUDDY-7",
+                "title": "Plan workspace",
+                "body": "Ship it.",
+            }
+        ),
         encoding="utf-8",
     )
     workflow = write_workflow(tmp_path, tracker_path=tracker)
@@ -178,7 +188,13 @@ def test_symphony_workspace_plan_renders_prompt(tmp_path):
 def test_symphony_work_runner_creates_local_workspace_files(tmp_path):
     tracker = tmp_path / "issues.json"
     tracker.write_text(
-        json.dumps({"identifier": "BUDDY-9", "title": "Create files", "body": "Receipt please."}),
+        json.dumps(
+            {
+                "identifier": "BUDDY-9",
+                "title": "Create files",
+                "body": "Receipt please.",
+            }
+        ),
         encoding="utf-8",
     )
     workflow = write_workflow(tmp_path, tracker_path=tracker)
@@ -187,10 +203,13 @@ def test_symphony_work_runner_creates_local_workspace_files(tmp_path):
 
     assert result.ok is True
     assert "mode=local_plan_no_external_services_started" in result.message
-    workspace_line = next(line for line in result.message.splitlines() if line.startswith("workspace="))
+    workspace_line = next(
+        line for line in result.message.splitlines() if line.startswith("workspace=")
+    )
     workspace_path = workspace_line.removeprefix("workspace=")
-    assert (tmp_path / "workspaces" / "BUDDY-9-Create-files" / "BUDDY_WORK_PROMPT.md").exists()
-    assert (tmp_path / "workspaces" / "BUDDY-9-Create-files" / "buddy_work_run.json").exists()
+    expected_dir = tmp_path / "workspaces" / "BUDDY-9-Create-files"
+    assert (expected_dir / "BUDDY_WORK_PROMPT.md").exists()
+    assert (expected_dir / "buddy_work_run.json").exists()
     assert workspace_path.endswith("BUDDY-9-Create-files")
 
 
