@@ -14,7 +14,7 @@ from .metadata import PROJECT_NAME, VERSION
 from .parity import parity_summary_lines, validate_required_surface_parity
 from .providers import provider_names
 from .receipts import ReceiptWriter
-from .runtime import RuntimeEngine
+from .runtime import BuddyActionLoopRuntime, RuntimeEngine
 from .skills import find_skill_manifest, load_skill_manifests, validate_skill_directory
 
 COMMANDS = (
@@ -31,6 +31,7 @@ COMMANDS = (
     "providers",
     "receipts",
     "parity",
+    "loop",
 )
 
 
@@ -118,6 +119,46 @@ def run_parity_command() -> int:
             print(f"fail parity: {problem}")
         return 1
     print("ok parity: all required surfaces covered")
+    return 0
+
+
+def run_loop_command(parts: list[str], *, emit_receipts: bool = False) -> int:
+    """Run Buddy + Lil' Buddy action-loop commands."""
+    action = parts[0] if parts else "demo"
+    if action != "demo":
+        print(f"fail loop: unknown action {action}")
+        return 1
+
+    objective = joined_text(parts[1:], fallback="Research the current context and prepare a useful note.")
+    loop = BuddyActionLoopRuntime(receipt_writer=ReceiptWriter() if emit_receipts else None)
+    session = loop.start_session(objective)
+    print(f"ok loop: Buddy session {session.id}")
+    print("Buddy: received mission and delegated safe worker steps")
+
+    safe_steps = [
+        ("Summarize Page", "Prepare a concise page summary.", "browser.summarize", "read-only"),
+        ("Save Memory", "Stage the useful takeaway as Buddy memory.", "memory.remember", "draft-only"),
+        ("Note Draft", "Prepare a note draft from the result.", "note.draft", "draft-only"),
+    ]
+    for title, instruction, action_type, risk in safe_steps:
+        delegated = loop.delegate(
+            title=title,
+            instruction=instruction,
+            action_type=action_type,  # type: ignore[arg-type]
+            risk=risk,  # type: ignore[arg-type]
+        )
+        report = loop.complete_action(delegated)
+        print(f"Lil' Buddy: {report.summary}")
+
+    gated = loop.delegate(
+        title="Review calendar update",
+        instruction="Ask Buddy before applying this update.",
+        action_type="calendar.create",
+        risk="write",
+    )
+    print(f"Buddy: paused for review on {gated.title} ({gated.risk})")
+    print(f"world: {loop.world_state.buddy_status} / {loop.world_state.lil_buddy_status}")
+    print(f"receipts: {len(loop.receipts)}")
     return 0
 
 
@@ -215,6 +256,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "parity":
         return run_parity_command()
+
+    if args.command == "loop":
+        return run_loop_command(args.text, emit_receipts=args.receipts)
 
     if args.command == "skills":
         return run_skills_command(args.text)
