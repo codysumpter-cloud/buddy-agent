@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 REQUIRED_WORKFLOW_SECTIONS = ("tracker", "workspace", "hooks", "agent", "codex")
 SAFE_SLUG_RE = re.compile(r"[^a-zA-Z0-9._-]+")
@@ -166,12 +166,12 @@ def load_local_issue(path: Path | None) -> BuddyWorkIssue:
     if isinstance(raw, list) and raw:
         first = raw[0]
         if isinstance(first, dict):
-            return BuddyWorkIssue.from_json(first)
+            return BuddyWorkIssue.from_json(cast(dict[str, Any], first))
     if isinstance(raw, dict):
         issues = raw.get("issues")
         if isinstance(issues, list) and issues and isinstance(issues[0], dict):
-            return BuddyWorkIssue.from_json(issues[0])
-        return BuddyWorkIssue.from_json(raw)
+            return BuddyWorkIssue.from_json(cast(dict[str, Any], issues[0]))
+        return BuddyWorkIssue.from_json(cast(dict[str, Any], raw))
     raise ValueError(f"Unsupported local tracker shape: {path}")
 
 
@@ -218,7 +218,10 @@ def create_local_workspace(plan: BuddyWorkRunPlan) -> BuddyWorkRunPlan:
         "hooks_detected": list(plan.hook_names),
         "external_services_started": False,
     }
-    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    receipt_path.write_text(
+        json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     return BuddyWorkRunPlan(
         workflow_path=plan.workflow_path,
         issue=plan.issue,
