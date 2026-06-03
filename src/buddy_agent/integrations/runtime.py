@@ -75,6 +75,20 @@ class BuddyIntegrationRuntime:
         capability_id: str,
         path: str | Path | None,
     ) -> IntegrationRunResult:
+        try:
+            return self._run_openmythos_checked(capability_id, path)
+        except ValueError as error:
+            return IntegrationRunResult(
+                ok=False,
+                message=str(error),
+                status="native-runtime",
+            )
+
+    def _run_openmythos_checked(
+        self,
+        capability_id: str,
+        path: str | Path | None,
+    ) -> IntegrationRunResult:
         variant = str(path) if path is not None else None
         if capability_id == "architecture-contract":
             config = get_variant_config(variant)
@@ -107,6 +121,20 @@ class BuddyIntegrationRuntime:
         return self._not_runnable("openmythos", capability_id)
 
     def _run_symphony(
+        self,
+        capability_id: str,
+        path: str | Path | None,
+    ) -> IntegrationRunResult:
+        try:
+            return self._run_symphony_checked(capability_id, path)
+        except (FileNotFoundError, ValueError) as error:
+            return IntegrationRunResult(
+                ok=False,
+                message=str(error),
+                status="native-runtime",
+            )
+
+    def _run_symphony_checked(
         self,
         capability_id: str,
         path: str | Path | None,
