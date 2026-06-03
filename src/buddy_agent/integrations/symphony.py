@@ -132,6 +132,8 @@ def parse_workflow_text(text: str, *, path: Path | None = None) -> BuddyWorkflow
 def load_workflow(path: str | Path) -> BuddyWorkflow:
     """Load a workflow from disk."""
     workflow_path = Path(path).expanduser()
+    if not workflow_path.exists():
+        raise FileNotFoundError(f"Workflow file not found: {workflow_path}")
     text = workflow_path.read_text(encoding="utf-8")
     return parse_workflow_text(text, path=workflow_path)
 
@@ -156,12 +158,14 @@ def parse_front_matter(text: str) -> dict[str, dict[str, str]]:
 
 def load_local_issue(path: Path | None) -> BuddyWorkIssue:
     """Load the first pending local issue from JSON, or return a smoke issue."""
-    if path is None or not path.exists():
+    if path is None:
         return BuddyWorkIssue(
             identifier="LOCAL-1",
             title="Buddy local Symphony smoke work",
             body="Verify the Buddy Symphony work-runner path.",
         )
+    if not path.exists():
+        raise FileNotFoundError(f"Configured tracker file not found: {path}")
     raw = json.loads(path.read_text(encoding="utf-8"))
     if isinstance(raw, list) and raw:
         first = raw[0]
