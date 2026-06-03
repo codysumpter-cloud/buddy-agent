@@ -42,11 +42,11 @@ class BuddyMythosConfig:
             problems.append("num_hidden_layers must be positive")
         if self.num_attention_heads <= 0:
             problems.append("num_attention_heads must be positive")
-        if self.hidden_size % self.num_attention_heads != 0:
+        elif self.hidden_size % self.num_attention_heads != 0:
             problems.append("hidden_size must be divisible by num_attention_heads")
         if self.num_key_value_heads <= 0:
             problems.append("num_key_value_heads must be positive")
-        if self.num_attention_heads % self.num_key_value_heads != 0:
+        elif self.num_attention_heads > 0 and self.num_attention_heads % self.num_key_value_heads != 0:
             problems.append("num_attention_heads must be divisible by num_key_value_heads")
         if self.num_experts < 1:
             problems.append("num_experts must be >= 1")
