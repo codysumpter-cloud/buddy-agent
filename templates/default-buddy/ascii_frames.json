@@ -1,6 +1,6 @@
 {
-  "idle": "default buddy idle ascii frame",
-  "happy": "default buddy happy ascii frame",
-  "thinking": "default buddy thinking ascii frame",
-  "sleepy": "default buddy sleepy ascii frame"
+  "idle": "     <3           <3     \n   .'  '.       .'  '.   \n  /  ..  \\_^_/  ..  \\  \n       .-#####-.       \n   o  /# .---. #\\  o   \n     |# | o o | #|      \n     |# |  u  | #|      \n      \\#'---'#/       \n        ##<3##         \n        ##  ##         ",
+  "happy": "   \\<3/       \\<3/   \n   .'  '.     .'  '.   \n  /  **  \\_^_/  **  \\ \n       .-#####-.       \n  \\o /# .---. #\\ o/  \n     |# | ^ ^ | #|      \n     |# | \\_/ | #|     \n      \\#'---'#/       \n       *##<3##*        \n        ##  ##         ",
+  "thinking": "     <3           <3  ? \n   .'  '.       .'  '.  \n  /  ..  \\_^_/  ..  \\ \n       .-#####-.    ?  \n   o  /# .---. #\\     \n     |# | o o | #|     \n     |# |  -  | #| ... \n      \\#'---'#/      \n        ##<3##        \n        ##  ##        ",
+  "sleepy": "     <3           <3    \n   .'  '.       .'  '.  \n  /  zz  \\_^_/  zz  \\ \n       .-#####-.   Zz  \n      /# .---. #\\     \n     |# | - - | #|     \n     |# |  .  | #|     \n      \\#'---'#/      \n        ##<3##        \n        ##  ##        "
 }
