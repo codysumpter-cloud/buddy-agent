@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
 
@@ -210,7 +210,7 @@ def create_local_workspace(plan: BuddyWorkRunPlan) -> BuddyWorkRunPlan:
     receipt_path = plan.workspace_path / "buddy_work_run.json"
     prompt_path.write_text(plan.prompt + "\n", encoding="utf-8")
     receipt = {
-        "created_at": datetime.now(timezone.utc).isoformat(),
+        "created_at": datetime.now(UTC).isoformat(),
         "issue": {
             "identifier": plan.issue.identifier,
             "title": plan.issue.title,
