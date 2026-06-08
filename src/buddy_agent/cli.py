@@ -9,7 +9,13 @@ from .alpha import BuddyAlphaRuntime
 from .buddy.generate import default_manifest, write_default_buddy
 from .buddy.render_contract import validate_buddy_manifest
 from .doctor import doctor_ok, run_doctor
-from .game_studio import detect_engine, index_project, init_game_studio, parse_engine, studio_doctor_lines
+from .game_studio import (
+    detect_engine,
+    index_project,
+    init_game_studio,
+    parse_engine,
+    studio_doctor_lines,
+)
 from .integrations import BuddyIntegrationRuntime, parse_integration_id
 from .integrations.agentcraft import (
     AgentCraftBridge,
@@ -63,7 +69,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "text",
         nargs="*",
-        help="Text input for chat, memory, recall, skill, train, integration, or game-studio commands.",
+        help=(
+            "Text input for chat, memory, recall, skill, train, integration, "
+            "or game-studio commands."
+        ),
     )
     parser.add_argument(
         "--output",
