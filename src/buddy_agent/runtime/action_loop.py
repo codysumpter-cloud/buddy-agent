@@ -17,13 +17,7 @@ from buddy_agent.receipts import ReceiptRecord, ReceiptWriter
 RiskClass: TypeAlias = Literal["read-only", "draft-only", "write"]
 RiskDecision: TypeAlias = Literal["allow", "confirm"]
 AgentRole: TypeAlias = Literal["orchestrator", "worker"]
-ActionStatus: TypeAlias = Literal[
-    "delegated",
-    "needs-review",
-    "completed",
-    "cancelled",
-    "denied",
-]
+ActionStatus: TypeAlias = Literal["delegated", "needs-review", "completed", "cancelled", "denied"]
 SessionStatus: TypeAlias = Literal["waiting-for-human", "running", "completed"]
 WorkerReportStatus: TypeAlias = Literal["step-completed", "blocked", "needs-approval", "done"]
 ActionType: TypeAlias = Literal[
@@ -96,7 +90,7 @@ class BuddyAction:
         session_id: str,
         delegation_id: str,
         assigned_agent_id: str,
-    ) -> "BuddyAction":
+    ) -> BuddyAction:
         """Create an action with the correct initial status."""
         status: ActionStatus = "needs-review" if requires_human_approval(risk) else "delegated"
         return cls(
