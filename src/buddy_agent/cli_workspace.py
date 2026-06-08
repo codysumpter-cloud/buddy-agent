@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 
-from .workspace import WorkspaceItemKind, init_buddy_workspace, workspace_status, write_workspace_item
+import sys
+
+from .workspace import (
+    WorkspaceItemKind,
+    init_buddy_workspace,
+    workspace_status,
+    write_workspace_item,
+)
 
 WORKSPACE_CREATE_COMMANDS: dict[str, WorkspaceItemKind] = {
     "draft-email": "email",
@@ -55,4 +62,4 @@ def run_workspace_command(parts: list[str]) -> int:
 def main(argv: list[str] | None = None) -> int:
     """Run the standalone Buddy workspace CLI."""
 
-    return run_workspace_command(argv or [])
+    return run_workspace_command(sys.argv[1:] if argv is None else argv)
