@@ -10,6 +10,15 @@ Game engines are great at scenes, inspectors, animation, prefabs, tilemaps, impo
 
 Buddy Game Studio connects those strengths without pretending VS Code should replace the engine.
 
+## Reference app patterns
+
+Buddy Game Studio follows the useful parts of agentic game-builder apps without copying their whole stack.
+
+- **BloxBot pattern**: a desktop UI talks to an agent sidecar, and the agent reaches the creative tool through a structured MCP-style bridge. That is the right shape for future Godot, Unity, browser, file, art, calendar, and message adapters.
+- **Stud pattern**: a UI talks to a local bridge, the bridge queues tool work, and the creative app reports results back. That is the right shape for live feedback, undo-aware edits, and user-visible progress.
+
+Buddy's first implementation is the safer foundation underneath those patterns: a local playground workspace with manifests, drafts, receipts, and reviewable files. External adapters can be added later without changing the workspace contract.
+
 ## Commands
 
 ```bash
@@ -17,6 +26,16 @@ buddy game-studio doctor [project-path]
 buddy game-studio detect [project-path]
 buddy game-studio init [project-path] [auto|godot|unity]
 buddy game-studio index [project-path]
+
+buddy-workspace init [project-path]
+buddy-workspace status [project-path]
+buddy-workspace code-task [project-path] [title] [body]
+buddy-workspace art-request [project-path] [title] [body]
+buddy-workspace browser-note [project-path] [title] [body]
+buddy-workspace draft-email [project-path] [title] [body]
+buddy-workspace draft-message [project-path] [title] [body]
+buddy-workspace draft-calendar [project-path] [title] [body]
+buddy-workspace file-note [project-path] [title] [body]
 ```
 
 ### `doctor`
@@ -69,7 +88,37 @@ Builds a compact JSON project index for docs, review prompts, and guarded agent 
 buddy game-studio index ./my-game
 ```
 
-The index ignores engine caches and generated folders such as `.godot`, `Library`, `Temp`, `Obj`, `Build`, `Logs`, `.vscode`, `node_modules`, and `.git`.
+The index ignores engine caches and generated folders such as `.buddy`, `.godot`, `Library`, `Temp`, `Obj`, `Build`, `Logs`, `.vscode`, `node_modules`, and `.git`.
+
+## Buddy Playground workspace
+
+`buddy-workspace init` creates `.buddy/playground/`, Buddy's local sandbox inside the project.
+
+```text
+.buddy/playground/
+├── manifest.json
+├── permissions.json
+├── README.md
+├── browser/research_notes/
+├── art/requests/
+├── code/tasks/
+├── files/
+├── outbox/email_drafts/
+├── outbox/message_drafts/
+├── outbox/calendar_drafts/
+└── receipts/
+```
+
+Buddy can use this playground to:
+
+- create local files
+- draft code tasks
+- create browser/research notes
+- write image/art generation briefs
+- draft emails, messages, and calendar events for review
+- keep receipts and task context
+
+The important split is **draft vs action**. Drafts are allowed locally. External side effects require an approved adapter and user confirmation.
 
 ## Godot workflow
 
@@ -91,12 +140,17 @@ Use VS Code for:
 - tasks
 - project indexing
 - guarded Buddy prompts
+- Buddy Playground drafts and receipts
 
 Generated tasks include:
 
 - `Godot: Run Game`
 - `Godot: Headless Smoke`
 - `Buddy: Index Game Project`
+- `Buddy: Initialize Playground`
+- `Buddy: Playground Status`
+- `Buddy: Draft Code Task`
+- `Buddy: Draft Art Request`
 
 ## Unity workflow
 
@@ -118,18 +172,37 @@ Use VS Code for:
 - EditMode tests
 - project indexing
 - guarded Buddy prompts
+- Buddy Playground drafts and receipts
 
 Generated tasks include:
 
 - `Unity: EditMode Tests`
 - `Unity: Open Project`
 - `Buddy: Index Game Project`
+- `Buddy: Initialize Playground`
+- `Buddy: Playground Status`
+- `Buddy: Draft Code Task`
+- `Buddy: Draft Art Request`
 
 Set `UNITY_EDITOR` before running Unity tasks:
 
 ```bash
 export UNITY_EDITOR="/Applications/Unity/Hub/Editor/<version>/Unity.app/Contents/MacOS/Unity"
 ```
+
+## Future adapter surfaces
+
+The playground is designed to sit underneath richer app surfaces:
+
+| Surface | First safe behavior | Later adapter behavior |
+| --- | --- | --- |
+| Browser | research notes and web-task plans | controlled browser session with receipts |
+| Files | local generated files | project patch application with diffs |
+| Code | code tasks and snippets | sandboxed execution and test repair loop |
+| Art | prompts and asset briefs | image generation job queue/gallery |
+| Email | saved drafts | provider connector after approval |
+| Messages | saved drafts | chat/SMS connector after approval |
+| Calendar | saved event JSON | calendar connector after approval |
 
 ## Guardrails
 
@@ -142,20 +215,24 @@ Review diffs carefully for:
 - prefab or scene metadata
 - project settings
 - generated imports
+- `.buddy/playground/outbox/*` drafts before using external adapters
 
 Prefer small changes:
 
-1. index project
-2. ask for a specific edit plan
-3. edit scripts or docs first
-4. only modify scenes/prefabs with explicit review
-5. run engine smoke tests manually or through VS Code tasks
+1. initialize playground
+2. index project
+3. draft a specific code/art/browser/message/calendar item
+4. review the draft or patch
+5. apply only the approved change
+6. run engine smoke tests manually or through VS Code tasks
 
 ## Future extensions
 
 Good next slices:
 
-- `buddy game-studio prompt` to create a safe edit brief from the project index
+- `buddy workspace` alias inside the main CLI
+- browser surface shell with local-only bookmarks and screenshots
+- image generation job queue and gallery manifest
 - Godot scene template generation
 - Unity assembly/test layout helpers
 - pixel sprite state manifest generation
