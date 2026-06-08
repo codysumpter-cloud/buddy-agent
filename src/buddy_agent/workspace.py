@@ -12,7 +12,7 @@ import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal, cast
+from typing import Literal
 
 WorkspaceItemKind = Literal[
     "email",
@@ -148,8 +148,20 @@ def parse_workspace_item_kind(value: str) -> WorkspaceItemKind:
     """Parse a workspace item kind from CLI text."""
 
     normalized = value.strip().lower()
-    if normalized in ITEM_DIRECTORIES:
-        return cast(WorkspaceItemKind, normalized)
+    if normalized == "email":
+        return "email"
+    if normalized == "message":
+        return "message"
+    if normalized == "calendar":
+        return "calendar"
+    if normalized == "art":
+        return "art"
+    if normalized == "browser":
+        return "browser"
+    if normalized == "code":
+        return "code"
+    if normalized == "file":
+        return "file"
 
     allowed = ", ".join(ITEM_DIRECTORIES)
     raise ValueError(f"unsupported workspace item kind {value!r}; expected one of: {allowed}")
