@@ -16,30 +16,73 @@
     "thinking",
     "sleepy"
   ],
+  "animation": {
+    "states": [
+      "idle",
+      "happy",
+      "thinking",
+      "sleepy"
+    ],
+    "frame_duration_ms": 900,
+    "loop": true
+  },
   "palette": [
-    "#121b4f",
-    "#89e6df",
-    "#c9fff2",
-    "#ffd66b",
-    "#ff8aa0",
-    "#b8c7ef"
+    "#08165c",
+    "#56d6d2",
+    "#8ee9df",
+    "#cffff2",
+    "#effff9",
+    "#ffd45e",
+    "#f69c45",
+    "#f8fbff"
   ],
   "traits": [
     "tama-like",
     "pet",
     "cute",
-    "trainable"
+    "trainable",
+    "round_mint_body",
+    "heart_antler_ears",
+    "top_tuft",
+    "face_panel",
+    "tiny_arms_and_feet",
+    "gold_heart_charm",
+    "navy_pixel_outline",
+    "transparent_background"
   ],
   "customization_options": [
     "palette",
-    "ears",
+    "heart_antler_ears",
     "tuft",
-    "face",
-    "belly_charm",
+    "face_panel",
+    "belly_heart_charm",
     "accessory",
+    "pose",
+    "outline_weight",
+    "highlight_pattern",
     "idle_animation",
     "ascii_style"
   ],
+  "style_reference": {
+    "body": "round mint/cyan pixel-pet body",
+    "outline": "deep navy high-contrast pixel outline",
+    "face": "large soft face panel with dot eyes, small smile, and plus/blush cheeks",
+    "ears": "heart-shaped antler ears",
+    "details": [
+      "small top tuft",
+      "tiny side arms",
+      "tiny rounded feet",
+      "gold heart belly charm",
+      "asymmetric pixel highlights"
+    ],
+    "must_not": [
+      "screen body",
+      "phone body",
+      "gamepad body",
+      "blurred painterly rendering",
+      "3D mascot rendering"
+    ]
+  },
   "rules": {
     "buddy_is_pet": true,
     "device_shape_allowed": false,
