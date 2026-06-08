@@ -9,6 +9,13 @@ from .alpha import BuddyAlphaRuntime
 from .buddy.generate import default_manifest, write_default_buddy
 from .buddy.render_contract import validate_buddy_manifest
 from .doctor import doctor_ok, run_doctor
+from .game_studio import (
+    detect_engine,
+    index_project,
+    init_game_studio,
+    parse_engine,
+    studio_doctor_lines,
+)
 from .integrations import BuddyIntegrationRuntime, parse_integration_id
 from .integrations.agentcraft import (
     AgentCraftBridge,
@@ -38,6 +45,7 @@ COMMANDS = (
     "agentcraft",
     "train",
     "integrations",
+    "game-studio",
 )
 
 
@@ -61,7 +69,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "text",
         nargs="*",
-        help="Text input for chat, memory, recall, skill, train, or integration commands.",
+        help=(
+            "Text input for chat, memory, recall, skill, train, integration, "
+            "or game-studio commands."
+        ),
     )
     parser.add_argument(
         "--output",
@@ -268,6 +279,46 @@ def run_train_command(parts: list[str], *, state_path: str | None = None) -> int
     return 2
 
 
+def run_game_studio_command(parts: list[str]) -> int:
+    """Run VS Code + Godot/Unity workspace helper commands."""
+    subcommand = parts[0] if parts else "doctor"
+    project_path = parts[1] if len(parts) > 1 else "."
+
+    if subcommand == "doctor":
+        for line in studio_doctor_lines(project_path):
+            print(line)
+        return 0
+
+    if subcommand == "detect":
+        detection = detect_engine(project_path)
+        engine = detection.engine or "none"
+        print(f"ok game-studio: engine={engine} confidence={detection.confidence}")
+        for reason in detection.reasons:
+            print(f"info marker: {reason}")
+        return 0 if detection.engine is not None else 1
+
+    if subcommand == "init":
+        engine_arg = parts[2] if len(parts) > 2 else "auto"
+        try:
+            engine = parse_engine(engine_arg, root=project_path)
+        except ValueError as error:
+            print(f"fail game-studio: {error}")
+            return 2
+
+        result = init_game_studio(project_path, engine=engine)
+        for line in result.summary_lines():
+            print(line)
+        return 0
+
+    if subcommand == "index":
+        index = index_project(project_path)
+        print(index.to_json())
+        return 0
+
+    print("Usage: buddy game-studio [doctor|detect|init|index] [project-path] [engine]")
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the Buddy Agent CLI."""
     parser = build_parser()
@@ -304,6 +355,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "integrations":
         return run_integrations_command(args.text)
+
+    if args.command == "game-studio":
+        return run_game_studio_command(args.text)
 
     if args.command == "agentcraft":
         return run_agentcraft_command(args.text)
