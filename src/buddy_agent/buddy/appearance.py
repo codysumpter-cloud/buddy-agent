@@ -49,21 +49,39 @@ class BuddyAppearanceTemplate:
     states: tuple[BuddyState, ...] = BUDDY_ANIMATION_STATES
     canvas_size: int = BUDDY_CANVAS_SIZE
     palette: tuple[str, ...] = (
-        "#121b4f",
-        "#89e6df",
-        "#c9fff2",
-        "#ffd66b",
-        "#ff8aa0",
-        "#b8c7ef",
+        "#08165c",  # deep navy outline
+        "#56d6d2",  # cyan shadow
+        "#8ee9df",  # mint body
+        "#cffff2",  # face panel
+        "#effff9",  # highlight
+        "#ffd45e",  # gold heart
+        "#f69c45",  # warm heart shadow
+        "#f8fbff",  # eye highlight
     )
-    traits: tuple[str, ...] = ("tama-like", "pet", "cute", "trainable")
+    traits: tuple[str, ...] = (
+        "tama-like",
+        "pet",
+        "cute",
+        "trainable",
+        "round_mint_body",
+        "heart_antler_ears",
+        "top_tuft",
+        "face_panel",
+        "tiny_arms_and_feet",
+        "gold_heart_charm",
+        "navy_pixel_outline",
+        "transparent_background",
+    )
     customization_options: tuple[str, ...] = (
         "palette",
-        "ears",
+        "heart_antler_ears",
         "tuft",
-        "face",
-        "belly_charm",
+        "face_panel",
+        "belly_heart_charm",
         "accessory",
+        "pose",
+        "outline_weight",
+        "highlight_pattern",
         "idle_animation",
         "ascii_style",
     )
