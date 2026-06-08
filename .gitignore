@@ -19,6 +19,19 @@ reference_repos/
 .env
 .env.*
 !.env.example
+!.env.local.example
+*.pem
+*.key
+*.sqlite
+*.db
+
+# Local runtime state
+.local/
+.buddy_agent/
+.buddy-agent/
+receipts/
+generated_receipts/
+generated_buddies/
 
 # OS/editor
 .DS_Store

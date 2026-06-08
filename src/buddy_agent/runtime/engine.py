@@ -6,6 +6,8 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from uuid import uuid4
 
+from buddy_agent.receipts import ReceiptRecord, ReceiptWriter
+
 from .backends import LocalTemplateBackend, RuntimeBackend, RuntimeBackendResponse
 from .config import RuntimeConfig, load_runtime_config
 from .tools import ToolRegistry
@@ -14,12 +16,13 @@ from .types import RuntimeState, ToolCall, ToolResult
 
 @dataclass
 class RuntimeEngine:
-    """Runtime engine with config, state, tools, and a backend boundary."""
+    """Runtime engine with config, state, tools, backend boundary, and optional receipts."""
 
     session_id: str = field(default_factory=lambda: str(uuid4()))
     tools: ToolRegistry = field(default_factory=ToolRegistry)
     config: RuntimeConfig = field(default_factory=load_runtime_config)
     backend: RuntimeBackend = field(default_factory=LocalTemplateBackend)
+    receipt_writer: ReceiptWriter | None = None
     state: RuntimeState = field(init=False)
 
     def __post_init__(self) -> None:
@@ -36,6 +39,19 @@ class RuntimeEngine:
         self.state.append_message("user", content)
         response = self.respond(content, metadata=metadata, context=context)
         self.state.append_message("assistant", response.content)
+        if self.receipt_writer is not None:
+            self.receipt_writer.write(
+                ReceiptRecord(
+                    action="runtime.receive",
+                    status="ok",
+                    summary="Backend response emitted without recording prompt content.",
+                    metadata={
+                        "backend": response.metadata.get("backend", "unknown"),
+                        "runtime": response.metadata.get("runtime", self.config.name),
+                        "input_length": len(content),
+                    },
+                )
+            )
         return response.content
 
     def respond(

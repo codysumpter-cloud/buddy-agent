@@ -9,9 +9,15 @@ from typing import Any, cast
 
 from .index import NoteIndex, NoteRecord
 
-DEFAULT_MEMORY_PATH = Path(
-    os.getenv("BUDDY_MEMORY_FILE", "~/.buddy_agent/memory.json")
-).expanduser()
+DEFAULT_MEMORY_PATH = Path("~/.buddy_agent/memory.json").expanduser()
+
+
+def default_memory_path() -> Path:
+    """Return the configured memory path with a safe fallback."""
+    value = os.getenv("BUDDY_MEMORY_FILE", "").strip()
+    if not value:
+        return DEFAULT_MEMORY_PATH
+    return Path(value).expanduser()
 
 
 class PersistentNoteIndex(NoteIndex):
@@ -25,7 +31,7 @@ class PersistentNoteIndex(NoteIndex):
 
     def __init__(self, path: Path | None = None) -> None:
         super().__init__()
-        self.path = path or DEFAULT_MEMORY_PATH
+        self.path = path or default_memory_path()
         self.load()
 
     def load(self) -> None:

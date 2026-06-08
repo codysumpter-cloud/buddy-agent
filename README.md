@@ -4,31 +4,7 @@
 
 <h1 align="center">Buddy Agent</h1>
 
-<p align="center"><strong>Native Buddy runtime for the Prismtek / Hermes ecosystem.</strong></p>
-
-<p align="center">
-  <a href="#ascii-buddy"><strong>ASCII Buddy</strong></a>
-  &nbsp;•&nbsp;
-  <a href="#pixel-buddy"><strong>Pixel Buddy</strong></a>
-</p>
-
-<details open id="ascii-buddy">
-<summary><strong>View ASCII Buddy mascot</strong></summary>
-
-<p align="center">
-  <img src="assets/buddy-agent-mascot.svg" alt="Animated ASCII Buddy mascot" width="280">
-</p>
-
-</details>
-
-<details id="pixel-buddy">
-<summary><strong>View Pixel Buddy mascot</strong></summary>
-
-<p align="center">
-  <img src="assets/default-buddy.svg" alt="Default pixel Buddy mascot" width="220">
-</p>
-
-</details>
+<p align="center"><strong>Guarded execution layer for Prismtek's Agentic OS.</strong></p>
 
 <p align="center">
   <img src="assets/badges/runtime.svg" alt="Runtime: runnable alpha"><br>
@@ -36,35 +12,88 @@
   <img src="assets/badges/license.svg" alt="License: Prismtek Source Available">
 </p>
 
-<p align="center">
-  <a href="https://github.com/codysumpter-cloud/buddy-agent/archive/refs/heads/main.zip"><img src="assets/badges/download.svg" alt="Download Source ZIP"></a><br>
-  <a href="https://github.com/codysumpter-cloud/buddy-agent"><img src="assets/badges/repository.svg" alt="View Repository"></a><br>
-  <a href="https://github.com/codysumpter-cloud/buddy-agent/issues"><img src="assets/badges/roadmap.svg" alt="View Roadmap"></a>
-</p>
+## What Buddy-Agent is
 
-## Install
+Buddy-Agent is the guarded execution layer for Prismtek's Agentic OS. It connects the runtime shell, skills, memory, policies, adapters, and receipts so the ecosystem has one safe local execution boundary to harden over time.
+
+The current project is a **runnable alpha**. It is designed to be installed locally, inspected, tested, and extended behind conservative defaults.
+
+## What Buddy-Agent is not
+
+Buddy-Agent is not a finished autonomous production operator. It is not a live-account browser bot, trading bot, gambling bot, wallet signer, credential manager, or unsupervised agent runtime.
+
+Public defaults do not include signed-in Safari automation, browser session automation, live social posting, credential inventory, gambling, trading, prediction-market execution, wallet signing, deposits, withdrawals, or money-action instructions.
+
+## Alpha warning
+
+This is alpha software. Expect rough edges, incomplete adapters, local-only defaults, and explicit approval boundaries. Use it for guarded development and review, not production automation.
+
+## Safety model summary
+
+Buddy-Agent defaults to local/offline execution:
 
 ```bash
-git clone https://github.com/codysumpter-cloud/buddy-agent.git
+BUDDY_PROVIDER=local
+BUDDY_NETWORK_ENABLED=false
+BUDDY_APPROVAL_MODE=manual
+BUDDY_SKILLS_PATH=skills/public
+```
+
+Unknown providers fall back to the local provider while network execution is disabled. Receipts are local sanitized summaries and should not contain prompts, secrets, tokens, cookies, private keys, OAuth material, account identifiers, or browser session data.
+
+Read the full model in [`docs/SAFETY_MODEL.md`](docs/SAFETY_MODEL.md).
+
+## Skill approval model
+
+Skills are described by `SKILL.md` manifests. Manifest parsing is metadata-only and does not execute arbitrary code.
+
+Default policy:
+
+| Risk class | Default |
+| --- | --- |
+| `read-only` | allow |
+| `draft-only` | allow |
+| `write` | confirm |
+| `external-action` | confirm |
+| `destructive` | deny-by-default |
+| `money` | deny-by-default |
+| `identity` | deny-by-default |
+| `location` | confirm |
+| `credential` | deny |
+| `repo-mutation` | confirm |
+
+Read the full policy in [`docs/SKILL_POLICY.md`](docs/SKILL_POLICY.md).
+
+## Public-safe install
+
+```bash
+git clone <access-granted Buddy-Agent repository URL>
 cd buddy-agent
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .[dev]
-buddy doctor
-buddy smoke
-buddy alpha
+cp .env.example .env.local
 ```
 
-## Alpha Runtime
+`.env.local` is ignored. Do not commit real API keys, tokens, cookies, passwords, OAuth secrets, account IDs, private keys, or private local paths.
+
+## Public-safe quickstart
 
 ```bash
+buddy --version
+buddy doctor
+buddy status
+buddy smoke
+buddy alpha
 buddy chat "hello buddy"
 buddy remember "Buddy can keep local notes"
-buddy recall "local"
+buddy recall "Buddy"
 buddy skill --skill caps "buddy alpha"
+buddy skills validate
+buddy providers list
+buddy receipts path
+buddy parity
 ```
-
-The Alpha Runtime wires local chat routing, persistent memory, built-in skills, Buddy template validation, and companion permission policy into one runnable path.
 
 ## Generate a Buddy
 
@@ -74,34 +103,43 @@ buddy generate --output my-buddy
 
 Generated Buddies support pixel and ASCII render modes, idle/happy/thinking/sleepy states, and a centered 64x64 frame contract.
 
-## Buddy Game Studio
+## CLI docs
 
-Use VS Code as a dev cockpit for Godot or Unity while the game engine stays the source of truth for scenes, inspectors, prefabs, animation, imports, exports, and play mode.
+See [`docs/CLI.md`](docs/CLI.md) for the public-alpha command surface.
 
-```bash
-buddy game-studio doctor ./my-game
-buddy game-studio detect ./my-game
-buddy game-studio init ./my-game godot
-buddy game-studio init ./my-game unity
-buddy game-studio index ./my-game
-```
+## Known limitations
 
-`buddy game-studio init` writes a reviewable `.vscode/` scaffold with recommended extensions, settings, tasks, launch config, and workspace notes. Existing files are skipped by default. `buddy game-studio index` creates compact JSON project context while ignoring engine caches such as `.godot`, `Library`, `Temp`, `Obj`, `Build`, `Logs`, `.vscode`, `node_modules`, and `.git`.
+- The default provider is local echo only.
+- Network providers are not enabled by default.
+- Public skills are demos and placeholders, not a complete skill registry.
+- KnowledgeVault, Buddy-Brain, Omni, and app bridges are contract/future-work areas unless explicitly implemented and audited.
+- Receipts are local files and are not a complete audit/compliance system.
+- This repo is source-available and commercially restricted, not open-source under a permissive license.
 
-See [`docs/BUDDY_GAME_STUDIO.md`](docs/BUDDY_GAME_STUDIO.md) for the full workflow and guardrails.
+## Ecosystem relationships
 
-## Version Tracker
+| Project/surface | Relationship |
+| --- | --- |
+| Buddy-Brain | Future bridge for startup/context handoff; not a public default live brain dependency. |
+| KnowledgeVault | Future read-only retrieval adapter; public alpha includes a placeholder skill manifest only. |
+| Omni-Buddy | Local bridge/fallback concepts exist; network bridge remains explicit future/audited work. |
+| Prismtek Apps | Buddy-Agent can define app bridge contracts; live app/account actions are not public defaults. |
+| Hermes | Buddy-Agent may preserve Hermes-compatible concepts and must preserve MIT notices for Hermes-derived code. |
+
+## Version tracker
 
 | Track | Status |
 | --- | --- |
 | Runtime | <img src="assets/status-dot.svg" width="12" alt="online"> runnable alpha |
 | Package | `0.1.0` alpha scaffold |
 | CLI | `buddy` |
+| Provider | local/offline default |
 | Memory | persistent JSON-backed local memory |
+| Skills | public manifest validation and built-in demos |
+| Receipts | local sanitized JSONL/JSON primitives |
 | Appearance | pixel and ASCII Buddy modes |
 | Companion | consent-first contracts started |
 | iBeMore | typed app bridge contracts started |
-| Game Studio | VS Code + Godot/Unity cockpit scaffold |
 
 ## Development
 
@@ -113,7 +151,12 @@ buddy --help
 buddy doctor
 buddy smoke
 buddy alpha
+buddy skills validate
 buddy generate --output my-buddy
-buddy game-studio doctor .
-buddy game-studio index .
 ```
+
+## License summary
+
+Buddy-Agent is source-available under the Prismtek Source Available License. Personal, educational, and non-commercial use is allowed under the repository license. Commercial use requires a separate written commercial license agreement from the copyright holder.
+
+This summary is not a replacement for [`LICENSE`](LICENSE). Review [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) before public release or redistribution.

@@ -1,0 +1,5 @@
+# Private Skills
+
+Copy this directory locally if you need machine-specific private skill manifests.
+
+Do not commit private skills, secrets, account IDs, OAuth material, cookies, browser session details, private paths, or live account automation defaults.
