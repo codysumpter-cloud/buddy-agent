@@ -12,7 +12,7 @@ import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Literal, cast
 
 WorkspaceItemKind = Literal[
     "email",
@@ -62,6 +62,16 @@ WORKSPACE_DIRECTORIES = (
     Path("outbox") / "calendar_drafts",
     Path("receipts"),
 )
+
+ITEM_DIRECTORIES: dict[WorkspaceItemKind, Path] = {
+    "email": Path("outbox") / "email_drafts",
+    "message": Path("outbox") / "message_drafts",
+    "calendar": Path("outbox") / "calendar_drafts",
+    "art": Path("art") / "requests",
+    "browser": Path("browser") / "research_notes",
+    "code": Path("code") / "tasks",
+    "file": Path("files"),
+}
 
 
 @dataclass(frozen=True)
@@ -134,6 +144,17 @@ class WorkspaceStatus:
         return json.dumps(self.to_dict(), indent=2, sort_keys=True)
 
 
+def parse_workspace_item_kind(value: str) -> WorkspaceItemKind:
+    """Parse a workspace item kind from CLI text."""
+
+    normalized = value.strip().lower()
+    if normalized in ITEM_DIRECTORIES:
+        return cast(WorkspaceItemKind, normalized)
+
+    allowed = ", ".join(ITEM_DIRECTORIES)
+    raise ValueError(f"unsupported workspace item kind {value!r}; expected one of: {allowed}")
+
+
 def playground_path(root: Path | str = ".") -> Path:
     """Return the Buddy playground path for a project root."""
 
@@ -180,7 +201,7 @@ def workspace_status(root: Path | str = ".") -> WorkspaceStatus:
     workspace = playground_path(root_path)
     counts: dict[str, int] = {}
 
-    for kind, directory in _item_directories().items():
+    for kind, directory in ITEM_DIRECTORIES.items():
         item_directory = workspace / directory
         counts[kind] = _count_files(item_directory)
 
@@ -201,11 +222,8 @@ def write_workspace_item(
 ) -> WorkspaceItemResult:
     """Write a user-reviewable workspace item."""
 
-    if kind not in _item_directories():
-        raise ValueError(f"unsupported workspace item kind: {kind}")
-
     workspace = playground_path(root)
-    directory = workspace / _item_directories()[kind]
+    directory = workspace / ITEM_DIRECTORIES[kind]
     directory.mkdir(parents=True, exist_ok=True)
 
     stem = _next_item_stem(directory, kind, title)
@@ -316,18 +334,6 @@ def _files_readme() -> str:
     )
 
 
-def _item_directories() -> dict[WorkspaceItemKind, Path]:
-    return {
-        "email": Path("outbox") / "email_drafts",
-        "message": Path("outbox") / "message_drafts",
-        "calendar": Path("outbox") / "calendar_drafts",
-        "art": Path("art") / "requests",
-        "browser": Path("browser") / "research_notes",
-        "code": Path("code") / "tasks",
-        "file": Path("files"),
-    }
-
-
 def _render_item(kind: WorkspaceItemKind, title: str, body: str) -> str:
     if kind == "calendar":
         payload = {
@@ -351,7 +357,9 @@ def _render_item(kind: WorkspaceItemKind, title: str, body: str) -> str:
 
 def _next_item_stem(directory: Path, kind: WorkspaceItemKind, title: str) -> str:
     prefix = f"{kind}_"
-    existing = [path for path in directory.iterdir() if path.is_file() and path.name.startswith(prefix)]
+    existing = [
+        path for path in directory.iterdir() if path.is_file() and path.name.startswith(prefix)
+    ]
     return f"{prefix}{len(existing) + 1:04d}_{_slugify(title)}"
 
 
