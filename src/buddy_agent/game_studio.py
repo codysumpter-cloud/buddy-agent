@@ -19,6 +19,7 @@ EngineName = Literal["godot", "unity"]
 SUPPORTED_ENGINES: tuple[EngineName, ...] = ("godot", "unity")
 
 IGNORED_DIRECTORIES = {
+    ".buddy",
     ".git",
     ".godot",
     ".vscode",
@@ -291,6 +292,35 @@ def vscode_templates(engine: EngineName) -> dict[str, str]:
     return _unity_templates()
 
 
+def _buddy_workspace_tasks() -> list[dict[str, object]]:
+    return [
+        {
+            "label": "Buddy: Initialize Playground",
+            "type": "shell",
+            "command": "buddy-workspace init .",
+            "problemMatcher": [],
+        },
+        {
+            "label": "Buddy: Playground Status",
+            "type": "shell",
+            "command": "buddy-workspace status .",
+            "problemMatcher": [],
+        },
+        {
+            "label": "Buddy: Draft Code Task",
+            "type": "shell",
+            "command": "buddy-workspace code-task . \"New code task\" \"Describe the task here.\"",
+            "problemMatcher": [],
+        },
+        {
+            "label": "Buddy: Draft Art Request",
+            "type": "shell",
+            "command": "buddy-workspace art-request . \"New art request\" \"Describe the asset here.\"",
+            "problemMatcher": [],
+        },
+    ]
+
+
 def _godot_templates() -> dict[str, str]:
     extensions = {
         "recommendations": [
@@ -330,6 +360,7 @@ def _godot_templates() -> dict[str, str]:
                 "command": "buddy game-studio index .",
                 "problemMatcher": [],
             },
+            *_buddy_workspace_tasks(),
         ],
     }
     launch = {
@@ -398,6 +429,7 @@ def _unity_templates() -> dict[str, str]:
                 "command": "buddy game-studio index .",
                 "problemMatcher": [],
             },
+            *_buddy_workspace_tasks(),
         ],
     }
     launch = {
@@ -440,6 +472,8 @@ def _workspace_notes(engine: EngineName) -> str:
         f"- {editor_note}\n"
         "- Use VS Code for code, Git, docs, tasks, indexing, and guarded Buddy prompts.\n"
         f"- {run_command}\n"
+        "- Run **Terminal > Run Task > Buddy: Initialize Playground** to create Buddy's "
+        "local playground.\n"
         "- Run **Terminal > Run Task > Buddy: Index Game Project** before asking an "
         "agent to edit.\n\n"
         "Guardrail: do not let an agent rewrite imported/cache folders. Review scene "
