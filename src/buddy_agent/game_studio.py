@@ -1,7 +1,8 @@
 """VS Code + engine project helpers for Buddy Game Studio.
 
-The helpers intentionally do not launch Godot, Unity, shell commands, or AI agents. They create
-reviewable workspace files and a lightweight project index that a human or guarded agent can inspect.
+The helpers intentionally do not launch Godot, Unity, shell commands, or AI agents. They
+create reviewable workspace files and a lightweight project index that a human or guarded
+agent can inspect.
 """
 
 from __future__ import annotations
@@ -172,7 +173,7 @@ def detect_engine(root: Path | str = ".") -> EngineDetection:
         reasons.append("found Packages/manifest.json")
 
     if godot_score > 0 and unity_score == 0:
-        confidence: Literal["high", "medium"] = "high" if godot_score >= 1 else "medium"
+        confidence: Literal["high", "medium"] = "high"
         return EngineDetection(root_path, "godot", confidence, tuple(reasons))
 
     if unity_score >= 2 and godot_score == 0:
@@ -224,7 +225,10 @@ def index_project(root: Path | str = ".", *, max_files: int = 400) -> ProjectInd
 
     root_path = Path(root).expanduser().resolve()
     detection = detect_engine(root_path)
-    files = tuple(_relative_path(root_path, path) for path in _iter_project_files(root_path, max_files))
+    files = tuple(
+        _relative_path(root_path, path)
+        for path in _iter_project_files(root_path, max_files)
+    )
 
     scenes = tuple(path for path in files if Path(path).suffix.lower() in SCENE_SUFFIXES)
     scripts = tuple(path for path in files if Path(path).suffix.lower() in SCRIPT_SUFFIXES)
@@ -418,22 +422,28 @@ def _unity_templates() -> dict[str, str]:
 def _workspace_notes(engine: EngineName) -> str:
     if engine == "godot":
         run_command = "Run **Terminal > Run Task > Godot: Run Game**."
-        editor_note = "Keep Godot open for scenes, inspectors, animation, tilemaps, and exports."
+        editor_note = (
+            "Keep Godot open for scenes, inspectors, animation, tilemaps, and exports."
+        )
     else:
-        run_command = "Set `UNITY_EDITOR`, then run **Terminal > Run Task > Unity: EditMode Tests**."
+        run_command = (
+            "Set `UNITY_EDITOR`, then run "
+            "**Terminal > Run Task > Unity: EditMode Tests**."
+        )
         editor_note = "Keep Unity open for scenes, prefabs, inspectors, animator, and builds."
 
     return (
         "# Buddy Game Studio\n\n"
-        "This workspace turns VS Code into the development cockpit while the game engine remains "
-        "the source of truth for runtime/editor behavior.\n\n"
+        "This workspace turns VS Code into the development cockpit while the game engine "
+        "remains the source of truth for runtime/editor behavior.\n\n"
         f"- Engine: `{engine}`\n"
         f"- {editor_note}\n"
         "- Use VS Code for code, Git, docs, tasks, indexing, and guarded Buddy prompts.\n"
         f"- {run_command}\n"
-        "- Run **Terminal > Run Task > Buddy: Index Game Project** before asking an agent to edit.\n\n"
-        "Guardrail: do not let an agent rewrite imported/cache folders. Review scene and prefab diffs "
-        "before committing.\n"
+        "- Run **Terminal > Run Task > Buddy: Index Game Project** before asking an "
+        "agent to edit.\n\n"
+        "Guardrail: do not let an agent rewrite imported/cache folders. Review scene "
+        "and prefab diffs before committing.\n"
     )
 
 
