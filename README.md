@@ -74,6 +74,22 @@ buddy generate --output my-buddy
 
 Generated Buddies support pixel and ASCII render modes, idle/happy/thinking/sleepy states, and a centered 64x64 frame contract.
 
+## Buddy Game Studio
+
+Use VS Code as a dev cockpit for Godot or Unity while the game engine stays the source of truth for scenes, inspectors, prefabs, animation, imports, exports, and play mode.
+
+```bash
+buddy game-studio doctor ./my-game
+buddy game-studio detect ./my-game
+buddy game-studio init ./my-game godot
+buddy game-studio init ./my-game unity
+buddy game-studio index ./my-game
+```
+
+`buddy game-studio init` writes a reviewable `.vscode/` scaffold with recommended extensions, settings, tasks, launch config, and workspace notes. Existing files are skipped by default. `buddy game-studio index` creates compact JSON project context while ignoring engine caches such as `.godot`, `Library`, `Temp`, `Obj`, `Build`, `Logs`, `.vscode`, `node_modules`, and `.git`.
+
+See [`docs/BUDDY_GAME_STUDIO.md`](docs/BUDDY_GAME_STUDIO.md) for the full workflow and guardrails.
+
 ## Version Tracker
 
 | Track | Status |
@@ -85,6 +101,7 @@ Generated Buddies support pixel and ASCII render modes, idle/happy/thinking/slee
 | Appearance | pixel and ASCII Buddy modes |
 | Companion | consent-first contracts started |
 | iBeMore | typed app bridge contracts started |
+| Game Studio | VS Code + Godot/Unity cockpit scaffold |
 
 ## Development
 
@@ -97,4 +114,6 @@ buddy doctor
 buddy smoke
 buddy alpha
 buddy generate --output my-buddy
+buddy game-studio doctor .
+buddy game-studio index .
 ```
