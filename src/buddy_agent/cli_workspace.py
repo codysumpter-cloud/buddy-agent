@@ -29,8 +29,8 @@ def run_workspace_command(parts: list[str]) -> int:
     project_path = parts[1] if len(parts) > 1 else "."
 
     if subcommand == "init":
-        result = init_buddy_workspace(project_path)
-        for line in result.summary_lines():
+        init_result = init_buddy_workspace(project_path)
+        for line in init_result.summary_lines():
             print(line)
         return 0
 
@@ -41,13 +41,13 @@ def run_workspace_command(parts: list[str]) -> int:
     if subcommand in WORKSPACE_CREATE_COMMANDS:
         title = parts[2] if len(parts) > 2 else subcommand.replace("-", " ").title()
         body = " ".join(parts[3:]).strip() or title
-        result = write_workspace_item(
+        item_result = write_workspace_item(
             project_path,
             kind=WORKSPACE_CREATE_COMMANDS[subcommand],
             title=title,
             body=body,
         )
-        for line in result.summary_lines():
+        for line in item_result.summary_lines():
             print(line)
         return 0
 
