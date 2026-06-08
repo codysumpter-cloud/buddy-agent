@@ -17,17 +17,34 @@ Buddy Game Studio follows the useful parts of agentic game-builder apps without 
 - **BloxBot pattern**: a desktop UI talks to an agent sidecar, and the agent reaches the creative tool through a structured MCP-style bridge. That is the right shape for Godot, Unity, browser, file, art, calendar, and message adapters.
 - **Stud pattern**: a UI talks to a local bridge, the bridge queues tool work, and the creative app reports results back. That is the right shape for live feedback, undo-aware edits, and user-visible progress.
 
-Buddy's first implementation in this PR is not a replacement for existing Buddy browser/automation skills. It is the safer workspace contract underneath them: local manifests, drafts, receipts, reviewable files, and explicit approval boundaries that existing and future adapters can plug into.
+Buddy's first implementation in this PR is not a replacement for existing Buddy browser, automation, iOS, or workspace runtime work. It is the safer local contract underneath those surfaces: manifests, drafts, receipts, reviewable files, and explicit approval boundaries that existing and future adapters can plug into.
 
-## Existing browser surfaces
+## Existing browser and workspace surfaces
 
-Browser work is **not** greenfield. Buddy Agent already has browser-related capability documentation and skills, including:
+Browser/workspace work is **not** greenfield. The relevant surface area already spans multiple repos:
 
-- `docs/BUDDY_FEATURE_PARITY.md` tracking Browser/web tooling as part of the parity surface.
-- `skills/native/hermes-bookmark-research-digest/` for approved, read-only browser/API research digests.
-- `skills/native/signed-in-safari-social-automation/` for explicit-approval, signed-in Safari workflows on macOS.
+### `codysumpter-cloud/buddy-agent`
 
-The playground's browser folder is therefore a receipt/draft surface for agent-browser work, not a claim that browser automation still needs to be invented. Existing agent-browser/browser skills should write notes, plans, artifacts, and secret-free receipts here when running through Buddy Game Studio.
+- `docs/BUDDY_FEATURE_PARITY.md` tracks Browser/web tooling as part of the parity surface.
+- `skills/native/hermes-bookmark-research-digest/` handles approved, read-only browser/API research digests.
+- `skills/native/signed-in-safari-social-automation/` documents explicit-approval, signed-in Safari workflows on macOS.
+
+### `codysumpter-cloud/buddy-brain`
+
+- `docs/BROWSER_AUTOMATION_PROFILE.md` defines browser automation as an opt-in, isolated delegated profile, not the default chat path.
+- `skills/browser-automation/README.md` tells operators when browser/UI automation is appropriate and keeps it scoped.
+- `skills/workspace-dispatch/SKILL.md` defines a mission orchestration loop with independent worker tasks, machine-checkable exit criteria, retries, and reporting.
+- `docs/UNIFIED_OPERATOR_APP.md` maps browser-first surfaces, workstation-first surfaces, and shared companion surfaces so the user can move from browser planning to local execution without guessing ownership.
+
+### `codysumpter-cloud/prismtek-apps`
+
+- `apps/bemore-ios-native/BeMoreAgentShell/Views/BuddyAgentBrowserView.swift` already implements the guarded in-app Agent Browser using `WKWebView`, Buddy/Lil' Buddy Orchestrator/Worker UI, tool chips, approval cards, and a receipt timeline.
+- `apps/bemore-ios-native/BeMoreAgentShell/WebBrowserService.swift` provides a Safari-backed browser open path through `SFSafariViewController`.
+- `apps/bemore-ios-native/BeMoreAgentShell/BeMoreWorkspaceRuntime.swift` already models action receipts, artifacts, built-in Web Browser/GitHub Search capabilities, workspace reads/writes, skill installs, sandbox-style commands, and `.bemore` artifact persistence.
+- `docs/BUDDY_ACTION_LOOP_V1.md` defines the guarded Agent Browser MVP, minimum two-agent Orchestrator/Worker loop, safe browser/draft actions, approval risk classes, receipts, and the future bridge to `buddy-agent` endpoints.
+- `docs/BUDDY_CAPABILITY_SURFACES.md` defines product ownership for Buddy Workshop, installed skills/apps, config forms, receipt/artifact rendering, and product adapters calling the shared Buddy Runtime.
+
+The playground's browser folder is therefore a **receipt/draft bridge** for existing agent-browser work, not a claim that browser automation still needs to be invented. Existing agent-browser/browser skills should write notes, plans, artifacts, and secret-free receipts here when running through Buddy Game Studio.
 
 ## Commands
 
@@ -130,6 +147,19 @@ Buddy can use this playground to:
 
 The important split is **draft vs action**. Drafts are allowed locally. External side effects require an approved adapter and user confirmation.
 
+## Relationship to `.bemore` workspace runtime
+
+`prismtek-apps` already has the app-side `.bemore` runtime. This PR intentionally does **not** replace that runtime.
+
+Use the two workspaces this way:
+
+| Workspace | Owner | Purpose |
+| --- | --- | --- |
+| `.bemore/` | `prismtek-apps` app runtime | Canonical app artifacts, skills, receipts, memory/session state, and user-visible persisted runtime records. |
+| `.buddy/playground/` | `buddy-agent` local/project workspace | Reviewable local drafts, game/project work items, browser receipts, art/code requests, and pre-adapter handoff notes. |
+
+The bridge direction is: app/runtime receipts from `.bemore` can inform Buddy's local project context, and Buddy's `.buddy/playground` drafts can be promoted into app-visible artifacts only after an explicit adapter/approval step.
+
 ## Godot workflow
 
 Use Godot for:
@@ -202,17 +232,18 @@ export UNITY_EDITOR="/Applications/Unity/Hub/Editor/<version>/Unity.app/Contents
 
 ## Adapter surfaces
 
-The playground is designed to sit underneath richer app surfaces, including surfaces that already exist elsewhere in Buddy/Hermes skills:
+The playground is designed to sit underneath richer app surfaces, including surfaces that already exist elsewhere in Buddy Brain, Prismtek Apps, and Buddy/Hermes skills:
 
 | Surface | First safe behavior in this PR | Adapter integration behavior |
 | --- | --- | --- |
 | Browser / agent-browser | research notes, web-task plans, and receipts | existing browser adapters write secret-free receipts and use approval gates for account actions |
-| Files | local generated files | project patch application with diffs |
+| Files | local generated files | project patch application with diffs or promotion into app-visible `.bemore` artifacts |
 | Code | code tasks and snippets | sandboxed execution and test repair loop |
 | Art | prompts and asset briefs | image generation job queue/gallery |
 | Email | saved drafts | provider connector after approval |
 | Messages | saved drafts | chat/SMS connector after approval |
 | Calendar | saved event JSON | calendar connector after approval |
+| Workspace dispatch | local task drafts and receipts | Buddy Brain worker orchestration with machine-checkable exit criteria |
 
 ## Guardrails
 
@@ -227,6 +258,7 @@ Review diffs carefully for:
 - generated imports
 - `.buddy/playground/outbox/*` drafts before using external adapters
 - `.buddy/playground/browser/*` receipts before treating browser work as verified
+- cross-workspace promotion from `.buddy/playground` into `.bemore` app artifacts
 
 Prefer small changes:
 
@@ -235,17 +267,19 @@ Prefer small changes:
 3. draft a specific code/art/browser/message/calendar item
 4. review the draft, receipt, or patch
 5. apply only the approved change
-6. run engine smoke tests manually or through VS Code tasks
+6. promote approved work to `.bemore` or external adapters only through a receipt-backed path
+7. run engine smoke tests manually or through VS Code tasks
 
-## Future extensions
+## Next integration slices
 
 Good next slices:
 
 - `buddy workspace` alias inside the main CLI
 - wire existing agent-browser/browser skills to write standardized playground receipts
+- define a `.bemore` ↔ `.buddy/playground` promotion/export contract
 - image generation job queue and gallery manifest
 - Godot scene template generation
 - Unity assembly/test layout helpers
 - pixel sprite state manifest generation
 - PR-ready game change receipts
-- optional integration with Buddy worker/orchestrator sessions
+- optional integration with Buddy Brain workspace-dispatch Orchestrator/Worker sessions
