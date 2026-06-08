@@ -14,10 +14,20 @@ Buddy Game Studio connects those strengths without pretending VS Code should rep
 
 Buddy Game Studio follows the useful parts of agentic game-builder apps without copying their whole stack.
 
-- **BloxBot pattern**: a desktop UI talks to an agent sidecar, and the agent reaches the creative tool through a structured MCP-style bridge. That is the right shape for future Godot, Unity, browser, file, art, calendar, and message adapters.
+- **BloxBot pattern**: a desktop UI talks to an agent sidecar, and the agent reaches the creative tool through a structured MCP-style bridge. That is the right shape for Godot, Unity, browser, file, art, calendar, and message adapters.
 - **Stud pattern**: a UI talks to a local bridge, the bridge queues tool work, and the creative app reports results back. That is the right shape for live feedback, undo-aware edits, and user-visible progress.
 
-Buddy's first implementation is the safer foundation underneath those patterns: a local playground workspace with manifests, drafts, receipts, and reviewable files. External adapters can be added later without changing the workspace contract.
+Buddy's first implementation in this PR is not a replacement for existing Buddy browser/automation skills. It is the safer workspace contract underneath them: local manifests, drafts, receipts, reviewable files, and explicit approval boundaries that existing and future adapters can plug into.
+
+## Existing browser surfaces
+
+Browser work is **not** greenfield. Buddy Agent already has browser-related capability documentation and skills, including:
+
+- `docs/BUDDY_FEATURE_PARITY.md` tracking Browser/web tooling as part of the parity surface.
+- `skills/native/hermes-bookmark-research-digest/` for approved, read-only browser/API research digests.
+- `skills/native/signed-in-safari-social-automation/` for explicit-approval, signed-in Safari workflows on macOS.
+
+The playground's browser folder is therefore a receipt/draft surface for agent-browser work, not a claim that browser automation still needs to be invented. Existing agent-browser/browser skills should write notes, plans, artifacts, and secret-free receipts here when running through Buddy Game Studio.
 
 ## Commands
 
@@ -113,7 +123,7 @@ Buddy can use this playground to:
 
 - create local files
 - draft code tasks
-- create browser/research notes
+- store browser/agent-browser notes and receipts
 - write image/art generation briefs
 - draft emails, messages, and calendar events for review
 - keep receipts and task context
@@ -190,13 +200,13 @@ Set `UNITY_EDITOR` before running Unity tasks:
 export UNITY_EDITOR="/Applications/Unity/Hub/Editor/<version>/Unity.app/Contents/MacOS/Unity"
 ```
 
-## Future adapter surfaces
+## Adapter surfaces
 
-The playground is designed to sit underneath richer app surfaces:
+The playground is designed to sit underneath richer app surfaces, including surfaces that already exist elsewhere in Buddy/Hermes skills:
 
-| Surface | First safe behavior | Later adapter behavior |
+| Surface | First safe behavior in this PR | Adapter integration behavior |
 | --- | --- | --- |
-| Browser | research notes and web-task plans | controlled browser session with receipts |
+| Browser / agent-browser | research notes, web-task plans, and receipts | existing browser adapters write secret-free receipts and use approval gates for account actions |
 | Files | local generated files | project patch application with diffs |
 | Code | code tasks and snippets | sandboxed execution and test repair loop |
 | Art | prompts and asset briefs | image generation job queue/gallery |
@@ -216,13 +226,14 @@ Review diffs carefully for:
 - project settings
 - generated imports
 - `.buddy/playground/outbox/*` drafts before using external adapters
+- `.buddy/playground/browser/*` receipts before treating browser work as verified
 
 Prefer small changes:
 
 1. initialize playground
 2. index project
 3. draft a specific code/art/browser/message/calendar item
-4. review the draft or patch
+4. review the draft, receipt, or patch
 5. apply only the approved change
 6. run engine smoke tests manually or through VS Code tasks
 
@@ -231,7 +242,7 @@ Prefer small changes:
 Good next slices:
 
 - `buddy workspace` alias inside the main CLI
-- browser surface shell with local-only bookmarks and screenshots
+- wire existing agent-browser/browser skills to write standardized playground receipts
 - image generation job queue and gallery manifest
 - Godot scene template generation
 - Unity assembly/test layout helpers
