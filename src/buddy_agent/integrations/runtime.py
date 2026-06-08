@@ -15,8 +15,8 @@ from .openmythos import (
 from .symphony import (
     local_tracker_lines,
     observability_lines,
-    worker_bridge_lines,
     work_runner_lines,
+    worker_bridge_lines,
     workflow_contract_lines,
     workspace_plan_lines,
 )
