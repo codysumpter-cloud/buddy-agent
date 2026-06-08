@@ -24,6 +24,9 @@ dev = [
   "ruff>=0.8.0",
   "mypy>=1.10,<2.0",
 ]
+mythos = [
+  "torch>=2.3",
+]
 
 [project.scripts]
 buddy = "buddy_agent.cli:main"
@@ -38,6 +41,7 @@ extend-exclude = ["skills"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
 
 [tool.mypy]
 python_version = "3.11"

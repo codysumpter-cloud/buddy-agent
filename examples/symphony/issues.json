@@ -1,0 +1,8 @@
+[
+  {
+    "identifier": "BUDDY-100",
+    "title": "Verify Buddy Symphony local work runner",
+    "body": "Run the workflow contract, workspace plan, and work-runner commands. Confirm that Buddy writes BUDDY_WORK_PROMPT.md and buddy_work_run.json without launching external services.",
+    "priority": "high"
+  }
+]
