@@ -9,7 +9,7 @@ from .alpha import BuddyAlphaRuntime
 from .buddy.generate import default_manifest, write_default_buddy
 from .buddy.render_contract import validate_buddy_manifest
 from .doctor import doctor_ok, run_doctor
-from .game_studio import index_project, init_game_studio, parse_engine, studio_doctor_lines
+from .game_studio import detect_engine, index_project, init_game_studio, parse_engine, studio_doctor_lines
 from .integrations import BuddyIntegrationRuntime, parse_integration_id
 from .integrations.agentcraft import (
     AgentCraftBridge,
@@ -281,9 +281,12 @@ def run_game_studio_command(parts: list[str]) -> int:
         return 0
 
     if subcommand == "detect":
-        detection = parse_engine("auto", root=project_path)
-        print(f"ok game-studio: detected engine={detection}")
-        return 0
+        detection = detect_engine(project_path)
+        engine = detection.engine or "none"
+        print(f"ok game-studio: engine={engine} confidence={detection.confidence}")
+        for reason in detection.reasons:
+            print(f"info marker: {reason}")
+        return 0 if detection.engine is not None else 1
 
     if subcommand == "init":
         engine_arg = parts[2] if len(parts) > 2 else "auto"
