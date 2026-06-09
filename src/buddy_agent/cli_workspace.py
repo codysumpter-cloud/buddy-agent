@@ -4,7 +4,12 @@ from __future__ import annotations
 
 import sys
 
-from .workspace import init_buddy_workspace, parse_workspace_item_kind, workspace_status, write_workspace_item
+from .workspace import (
+    init_buddy_workspace,
+    parse_workspace_item_kind,
+    workspace_status,
+    write_workspace_item,
+)
 
 WORKSPACE_CREATE_COMMANDS: dict[str, str] = {
     "draft-email": "email",
@@ -44,7 +49,12 @@ def run_workspace_command(parts: list[str]) -> int:
         except ValueError as error:
             print(f"fail workspace: {error}")
             return 2
-        item_result = write_workspace_item(root, kind=kind, title=parts[2], body=" ".join(parts[3:]))
+        item_result = write_workspace_item(
+            root,
+            kind=kind,
+            title=parts[2],
+            body=" ".join(parts[3:]),
+        )
         for line in item_result.summary_lines():
             print(line)
         return 0
