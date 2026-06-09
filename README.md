@@ -1,38 +1,29 @@
-<p align="center">
-  <img src="assets/buddy-agent-mascot.svg" alt="Buddy Agent animated ASCII mascot" width="280">
-</p>
-
 <h1 align="center">Buddy Agent</h1>
 
 <p align="center"><strong>Local-first Buddy runtime, companion shell, and creative workspace toolkit for the Prismtek / Hermes ecosystem.</strong></p>
 
+<table align="center">
+  <tr>
+    <td align="center" width="50%">
+      <img src="assets/buddy-agent-mascot.svg" alt="Animated ASCII Buddy mascot cycling through idle, happy, thinking, and sleepy states" width="280"><br>
+      <strong>ASCII Buddy</strong><br>
+      <sub>Terminal/docs mascot. Cycles through idle → happy → thinking → sleepy.</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="assets/default-buddy.svg" alt="Default mint pixel Buddy mascot" width="220"><br>
+      <strong>Pixel Buddy</strong><br>
+      <sub>Default mint/cyan avatar matching the app art direction.</sub>
+    </td>
+  </tr>
+</table>
+
 <p align="center">
-  <a href="#ascii-buddy"><strong>ASCII Buddy</strong></a>
-  &nbsp;•&nbsp;
-  <a href="#pixel-buddy"><strong>Pixel Buddy</strong></a>
-  &nbsp;•&nbsp;
   <a href="#what-works-today"><strong>What works</strong></a>
   &nbsp;•&nbsp;
   <a href="#what-does-not-work-yet"><strong>What does not work yet</strong></a>
+  &nbsp;•&nbsp;
+  <a href="#appearance-contract"><strong>Appearance contract</strong></a>
 </p>
-
-<details open id="ascii-buddy">
-<summary><strong>View ASCII Buddy mascot</strong></summary>
-
-<p align="center">
-  <img src="assets/buddy-agent-mascot.svg" alt="Animated ASCII Buddy mascot cycling through idle, happy, thinking, and sleepy states" width="280">
-</p>
-
-</details>
-
-<details id="pixel-buddy">
-<summary><strong>View Pixel Buddy mascot</strong></summary>
-
-<p align="center">
-  <img src="assets/default-buddy.svg" alt="Default pixel Buddy mascot" width="220">
-</p>
-
-</details>
 
 <p align="center">
   <img src="assets/badges/runtime.svg" alt="Runtime: runnable alpha"><br>
@@ -125,6 +116,8 @@ ASCII Buddy and Pixel Buddy must share the same required states:
 ```text
 idle -> happy -> thinking -> sleepy -> repeat
 ```
+
+The README ASCII mascot now uses SVG-native SMIL frame opacity animation instead of CSS keyframes, because GitHub image rendering is more reliable with inline SVG animation than stylesheet keyframes.
 
 ## Alpha Runtime
 
@@ -230,7 +223,7 @@ The important split is **draft vs action**. Drafts are allowed locally. External
 | Skills | local built-in skill path |
 | Training | local companion progression state |
 | AgentCraft | local event bridge helpers |
-| Appearance | pixel and ASCII Buddy modes; animation states restored |
+| Appearance | pixel and ASCII Buddy modes; README shows both visibly |
 | Companion | consent-first contracts started |
 | iBeMore | typed app bridge contracts started |
 | Integrations | Hermes mapped/adapter-ready; OpenMythos and Symphony local native-runtime slices |
