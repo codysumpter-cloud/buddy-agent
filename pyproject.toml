@@ -30,6 +30,8 @@ mythos = [
 
 [project.scripts]
 buddy = "buddy_agent.cli:main"
+buddy-workspace = "buddy_agent.cli_workspace:main"
+buddy-product-spine = "buddy_agent.cli_product_spine:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
