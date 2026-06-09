@@ -15,18 +15,24 @@ jobs:
         with:
           show-progress: false
 
-      - name: Capture Ruff diagnostics
-        run: |
-          python -m pip install ruff==0.8.6 --quiet
-          ruff check src tests --output-format=concise > ruff-output.txt || true
-          cat ruff-output.txt
-
-      - name: Upload Ruff diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          name: ruff-output
-          path: ruff-output.txt
+          python-version: '3.11'
 
-      - name: Fail on Ruff diagnostics
-        run: test ! -s ruff-output.txt
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip --quiet
+          pip install -e .[dev] --quiet
+
+      - name: Lint
+        run: ruff check src tests --output-format=concise
+
+      - name: Type check
+        run: mypy src
+
+      - name: Validate public skills
+        run: buddy skills validate
+
+      - name: Test
+        run: pytest
