@@ -191,8 +191,8 @@ def run_skills_command(parts: list[str]) -> int:
     root = default_skills_path()
     if action == "list":
         manifests = load_skill_manifests(root)
-        for manifest in manifests:
-            print(f"{manifest.name}\t{manifest.buddy.risk_class}\t{manifest.description}")
+        for skill_manifest in manifests:
+            print(f"{skill_manifest.name}\t{skill_manifest.buddy.risk_class}\t{skill_manifest.description}")
         if not manifests:
             print(f"no skills found under {root}")
         return 0
@@ -208,16 +208,16 @@ def run_skills_command(parts: list[str]) -> int:
         if len(parts) < 2:
             print("fail skills inspect: missing skill name")
             return 2
-        manifest = find_skill_manifest(root, parts[1])
-        if manifest is None:
+        selected_manifest = find_skill_manifest(root, parts[1])
+        if selected_manifest is None:
             print(f"fail skills inspect: unknown skill {parts[1]}")
             return 1
-        print(f"name: {manifest.name}")
-        print(f"description: {manifest.description}")
-        print(f"risk_class: {manifest.buddy.risk_class}")
-        print(f"auto_executable: {manifest.buddy.auto_executable}")
-        print(f"requires_explicit_approval: {manifest.buddy.requires_explicit_approval}")
-        print(f"path: {manifest.path}")
+        print(f"name: {selected_manifest.name}")
+        print(f"description: {selected_manifest.description}")
+        print(f"risk_class: {selected_manifest.buddy.risk_class}")
+        print(f"auto_executable: {selected_manifest.buddy.auto_executable}")
+        print(f"requires_explicit_approval: {selected_manifest.buddy.requires_explicit_approval}")
+        print(f"path: {selected_manifest.path}")
         return 0
     print(f"fail skills: unknown action {action}")
     return 2
