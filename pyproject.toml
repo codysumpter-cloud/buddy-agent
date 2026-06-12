@@ -30,6 +30,7 @@ mythos = [
 
 [project.scripts]
 buddy = "buddy_agent.cli:main"
+buddy-demo = "buddy_agent.orchestration.demo:main"
 buddy-workspace = "buddy_agent.cli_workspace:main"
 buddy-product-spine = "buddy_agent.cli_product_spine:main"
 
