@@ -93,7 +93,22 @@ buddy skills validate
 buddy providers list
 buddy receipts path
 buddy parity
+buddy-demo "Draft a safe project note"
 ```
+
+## Buddy + Lil' Buddy orchestration demo
+
+The local Buddy/Lil' Buddy scaffold lives in [`src/buddy_agent/orchestration/`](src/buddy_agent/orchestration/) with task, result, and review envelopes plus matching schemas in [`schemas/`](schemas/).
+
+Run the no-secrets local demo:
+
+```bash
+buddy-demo "Draft a safe project note"
+```
+
+The command routes one prompt through Buddy as orchestrator, one Lil' Buddy worker, Buddy Review, and a final reviewed response. See [`docs/BUDDY_LIL_BUDDY_RUNTIME.md`](docs/BUDDY_LIL_BUDDY_RUNTIME.md).
+
+Future prompts should follow the ecosystem default: use KnowledgeVault for durable knowledge, Buddy Brain for governance, Buddy Agent for runtime execution, and Omni Buddy for local embodied/device integrations.
 
 ## Generate a Buddy
 
@@ -153,6 +168,7 @@ buddy smoke
 buddy alpha
 buddy skills validate
 buddy generate --output my-buddy
+buddy-demo "Draft a safe project note"
 ```
 
 ## License summary
