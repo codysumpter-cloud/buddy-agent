@@ -61,7 +61,7 @@ class BuddyOrchestrator:
 
     def run(self, user_intent: str) -> dict[str, object]:
         """Run the local demo loop and return a structured trace."""
-        intent = user_intent.strip() or "Show the Buddy + Lil Buddy default loop."
+        intent = user_intent.strip() or "Show the Buddy + Lil' Buddy default loop."
         plan = self.plan(intent)
         task = self.delegate(intent)
         result = self.worker.execute(task)
@@ -87,7 +87,7 @@ class BuddyOrchestrator:
         """Create Buddy's short plan for the local loop."""
         return (
             "Preserve the human intent and classify risk.",
-            "Delegate one scoped local reasoning task to Lil Buddy.",
+            "Delegate one scoped local reasoning task to Lil' Buddy.",
             "Review the structured result against scope, evidence, and safety gates.",
             "Respond only after Buddy Review.",
         )
@@ -98,7 +98,7 @@ class BuddyOrchestrator:
         return TaskEnvelope.build(
             user_intent=user_intent,
             delegated_scope=(
-                "Summarize the intent, confirm the Buddy/Lil Buddy route, and identify "
+                "Summarize the intent, confirm the Buddy/Lil' Buddy route, and identify "
                 "whether Buddy must escalate before action."
             ),
             constraints=(
@@ -158,14 +158,14 @@ class BuddyOrchestrator:
     def respond(self, user_intent: str, review: ReviewEnvelope) -> str:
         """Create Buddy's final human-facing response after review."""
         if review.status == "block":
-            return "Buddy reviewed Lil Buddy's result and blocked the task before action."
+            return "Buddy reviewed Lil' Buddy's result and blocked the task before action."
         if review.escalation_required:
             return (
-                "Buddy reviewed Lil Buddy's result and would pause for approval before any "
+                "Buddy reviewed Lil' Buddy's result and would pause for approval before any "
                 f"gated action for: {user_intent}"
             )
         return (
-            "Buddy reviewed Lil Buddy's structured result and approved the local demo response "
+            "Buddy reviewed Lil' Buddy's structured result and approved the local demo response "
             f"for: {user_intent}"
         )
 
