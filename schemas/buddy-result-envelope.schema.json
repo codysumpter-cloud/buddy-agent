@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prismtek.dev/schemas/buddy-result-envelope.schema.json",
+  "title": "Buddy Result Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "worker",
+    "status",
+    "summary",
+    "findings",
+    "artifacts",
+    "risks",
+    "open_questions",
+    "tool_calls",
+    "needs_buddy_review"
+  ],
+  "properties": {
+    "schema_version": { "const": "buddy.result.v1" },
+    "task_id": { "type": "string", "minLength": 1 },
+    "worker": { "type": "string", "const": "Lil Buddy" },
+    "status": {
+      "type": "string",
+      "enum": ["complete", "partial", "blocked", "failed"]
+    },
+    "summary": { "type": "string", "minLength": 1 },
+    "findings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "risks": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tool_calls": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "needs_buddy_review": { "type": "boolean", "const": true }
+  }
+}
