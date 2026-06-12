@@ -34,6 +34,7 @@ Human prompt -> Buddy short plan -> task envelope -> Lil' Buddy worker -> result
 | `src/buddy_agent/orchestration/envelopes.py` | Task, result, review, and trace dataclasses |
 | `src/buddy_agent/orchestration/orchestrator.py` | Buddy plan/delegate/review/respond scaffold |
 | `src/buddy_agent/orchestration/worker.py` | Lil' Buddy scoped local worker scaffold |
+| `src/buddy_agent/orchestration/demo.py` | `buddy-demo` CLI entry point |
 | `schemas/buddy-task-envelope.schema.json` | JSON Schema for task envelopes |
 | `schemas/buddy-result-envelope.schema.json` | JSON Schema for result envelopes |
 
@@ -42,13 +43,13 @@ Human prompt -> Buddy short plan -> task envelope -> Lil' Buddy worker -> result
 Run after installing the package locally:
 
 ```bash
-buddy demo buddy-loop "Draft a safe project note"
+buddy-demo "Draft a safe project note"
 ```
 
 Equivalent module call from a checkout:
 
 ```bash
-python -m buddy_agent.cli demo buddy-loop "Draft a safe project note"
+python -m buddy_agent.orchestration.demo "Draft a safe project note"
 ```
 
 The command prints JSON with:
