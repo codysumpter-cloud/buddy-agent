@@ -20,7 +20,7 @@
   "properties": {
     "schema_version": { "const": "buddy.result.v1" },
     "task_id": { "type": "string", "minLength": 1 },
-    "worker": { "type": "string", "const": "Lil Buddy" },
+    "worker": { "type": "string", "const": "Lil' Buddy" },
     "status": {
       "type": "string",
       "enum": ["complete", "partial", "blocked", "failed"]
