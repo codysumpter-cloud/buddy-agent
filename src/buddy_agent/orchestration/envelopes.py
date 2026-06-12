@@ -76,7 +76,7 @@ class TaskEnvelope:
         approved_tools: tuple[ToolContract, ...],
         safety_class: SafetyClass,
         orchestrator: str = "Buddy",
-        worker: str = "Lil Buddy",
+        worker: str = "Lil' Buddy",
     ) -> TaskEnvelope:
         """Build a task envelope with a deterministic task id."""
         return cls(
