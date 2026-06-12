@@ -21,7 +21,7 @@
     "schema_version": { "const": "buddy.task.v1" },
     "task_id": { "type": "string", "minLength": 1 },
     "orchestrator": { "type": "string", "const": "Buddy" },
-    "worker": { "type": "string", "const": "Lil Buddy" },
+    "worker": { "type": "string", "const": "Lil' Buddy" },
     "user_intent": { "type": "string", "minLength": 1 },
     "delegated_scope": { "type": "string", "minLength": 1 },
     "constraints": {
