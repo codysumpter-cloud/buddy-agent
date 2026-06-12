@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prismtek.dev/schemas/buddy-task-envelope.schema.json",
+  "title": "Buddy Task Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "orchestrator",
+    "worker",
+    "user_intent",
+    "delegated_scope",
+    "constraints",
+    "approved_tools",
+    "safety_class",
+    "expected_output",
+    "review_required"
+  ],
+  "properties": {
+    "schema_version": { "const": "buddy.task.v1" },
+    "task_id": { "type": "string", "minLength": 1 },
+    "orchestrator": { "type": "string", "const": "Buddy" },
+    "worker": { "type": "string", "const": "Lil Buddy" },
+    "user_intent": { "type": "string", "minLength": 1 },
+    "delegated_scope": { "type": "string", "minLength": 1 },
+    "constraints": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "approved_tools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "contract", "description", "requires_approval"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "contract": {
+            "type": "string",
+            "enum": [
+              "read-only",
+              "draft-only",
+              "local-execution",
+              "repo-mutation",
+              "device-observation",
+              "device-action",
+              "external-action"
+            ]
+          },
+          "description": { "type": "string" },
+          "requires_approval": { "type": "boolean" }
+        }
+      }
+    },
+    "safety_class": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "blocked"]
+    },
+    "expected_output": { "type": "string" },
+    "review_required": { "type": "boolean", "const": true }
+  }
+}
