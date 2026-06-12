@@ -11,7 +11,7 @@ from .envelopes import ResultEnvelope, TaskEnvelope
 class LilBuddyWorker:
     """A constrained worker that executes only a Buddy task envelope."""
 
-    name: str = "Lil Buddy"
+    name: str = "Lil' Buddy"
 
     def execute(self, task: TaskEnvelope) -> ResultEnvelope:
         """Execute the delegated scope and return a structured result envelope."""
@@ -29,7 +29,7 @@ class LilBuddyWorker:
                 task_id=task.task_id,
                 worker=self.name,
                 status="blocked",
-                summary="Lil Buddy cannot execute tasks that bypass Buddy Review.",
+                summary="Lil' Buddy cannot execute tasks that bypass Buddy Review.",
                 risks=("review_required was false",),
                 open_questions=("Should Buddy reissue the task with review_required=true?",),
             )
@@ -57,7 +57,7 @@ class LilBuddyWorker:
             task_id=task.task_id,
             worker=self.name,
             status="complete",
-            summary="Lil Buddy completed the delegated local scope and returned structured results.",
+            summary="Lil' Buddy completed the delegated local scope and returned structured results.",
             findings=findings,
             artifacts=("local-demo:buddy-lil-buddy-loop",),
             risks=risks,
