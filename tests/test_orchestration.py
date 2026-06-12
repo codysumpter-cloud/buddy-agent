@@ -8,7 +8,7 @@ def test_buddy_orchestrator_delegates_and_reviews():
     trace = BuddyOrchestrator().run("Draft a safe project note")
 
     assert trace["task"]["orchestrator"] == "Buddy"
-    assert trace["task"]["worker"] == "Lil Buddy"
+    assert trace["task"]["worker"] == "Lil' Buddy"
     assert trace["task"]["review_required"] is True
     assert trace["result"]["needs_buddy_review"] is True
     assert trace["review"]["status"] == "approved"
