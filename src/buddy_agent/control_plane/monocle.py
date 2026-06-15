@@ -7,10 +7,11 @@ is explicitly enabled, so Buddy Agent remains usable in environments where
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from importlib import import_module
 from time import monotonic
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 from uuid import uuid4
 
 from .sanitizer import Sanitizer
@@ -46,7 +47,13 @@ class TraceSummary:
 class MonocleAdapter:
     """Optional wrapper around Monocle setup and trace receipt generation."""
 
-    def __init__(self, *, enabled: bool = False, workflow_name: str = "buddy-agent", sanitizer: Sanitizer | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        enabled: bool = False,
+        workflow_name: str = "buddy-agent",
+        sanitizer: Sanitizer | None = None,
+    ) -> None:
         self.enabled = enabled
         self.workflow_name = workflow_name
         self.sanitizer = sanitizer or Sanitizer()
@@ -64,7 +71,7 @@ class MonocleAdapter:
 
         try:
             module = import_module("monocle_apptrace")
-            setup = getattr(module, "setup_monocle_telemetry")
+            setup = cast(Callable[..., None], getattr(module, "setup_monocle_telemetry"))
             setup(workflow_name=self.workflow_name)
             self._setup_result = {"enabled": True, "status": "configured", "workflow": self.workflow_name}
         except Exception as exc:  # pragma: no cover - depends on optional package/runtime
@@ -103,14 +110,15 @@ class MonocleAdapter:
             error_class=error_class,
             raw_trace_exported=False,
         )
-        safe, _ = self.sanitizer.sanitize(summary.as_receipt())
+        safe_value, _ = self.sanitizer.sanitize(summary.as_receipt())
+        safe = cast(Mapping[str, Any], safe_value)
         return TraceSummary(
             workflow=str(safe["workflow"]),
             status=str(safe["status"]),
             trace_ref=str(safe["trace_ref"]),
-            duration_ms=safe.get("duration_ms"),
-            tool_categories=tuple(safe.get("tool_categories") or ()),
-            assertions=tuple(safe.get("assertions") or ()),
-            error_class=safe.get("error_class"),
+            duration_ms=cast(int | None, safe.get("duration_ms")),
+            tool_categories=tuple(str(item) for item in safe.get("tool_categories") or ()),
+            assertions=tuple(str(item) for item in safe.get("assertions") or ()),
+            error_class=cast(str | None, safe.get("error_class")),
             raw_trace_exported=bool(safe.get("raw_trace_exported", False)),
         )
