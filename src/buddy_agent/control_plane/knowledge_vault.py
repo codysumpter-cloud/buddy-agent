@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime, timezone
 import json
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 from uuid import uuid4
 
 from .sanitizer import Sanitizer
@@ -43,12 +43,11 @@ class KnowledgeVaultEmitter:
     """
 
     source: str = "buddy-agent"
-    sanitizer: Sanitizer | None = None
+    sanitizer: Sanitizer = field(default_factory=Sanitizer)
 
     def __post_init__(self) -> None:
         if self.source not in ALLOWED_SOURCES:
             raise ValueError(f"Unsupported Knowledge Vault source: {self.source}")
-        object.__setattr__(self, "sanitizer", self.sanitizer or Sanitizer())
 
     def build_event(
         self,
@@ -65,8 +64,9 @@ class KnowledgeVaultEmitter:
         if resolved_event_type not in ALLOWED_EVENT_TYPES:
             raise ValueError(f"Unsupported Knowledge Vault event_type: {resolved_event_type}")
 
-        safe_payload, report = self.sanitizer.sanitize(payload or {})
-        event = {
+        safe_value, report = self.sanitizer.sanitize(payload or {})
+        safe_payload = cast(Mapping[str, Any], safe_value)
+        event: Mapping[str, Any] = {
             "event_id": event_id or f"evt-buddy-agent-{uuid4().hex[:16]}",
             "event_type": resolved_event_type,
             "source": self.source,
