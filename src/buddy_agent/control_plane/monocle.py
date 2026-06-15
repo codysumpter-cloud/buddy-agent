@@ -7,11 +7,11 @@ is explicitly enabled, so Buddy Agent remains usable in environments where
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from importlib import import_module
 from time import monotonic
-from typing import Any, Mapping, cast
+from typing import Any, cast
 from uuid import uuid4
 
 from .sanitizer import Sanitizer
