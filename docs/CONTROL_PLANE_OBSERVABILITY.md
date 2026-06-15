@@ -1,146 +1,123 @@
 # Buddy Agent Control Plane and Observability Integration
 
-Status: spec-only integration contract  
+Status: initial live runtime adapter + integration contract  
 Owner repo: `codysumpter-cloud/buddy-agent`  
 Related receiver: `codysumpter-cloud/knowledge-vault` / `99-System/Vegapunk Brain/`  
 Reference systems: AgentRQ, Monocle
 
 ## Purpose
 
-Buddy Agent is the runtime executor for guarded user tasks. This document defines how Buddy Agent should integrate with:
+Buddy Agent is the runtime executor for guarded user tasks. This document defines and tracks the first live adapter layer for:
 
-- AgentRQ as an optional human-in-the-loop task and approval control plane.
-- Monocle as an optional trace and verification layer for agent/tool execution.
-- Knowledge Vault / Vegapunk Brain as the durable sanitized receipt receiver.
+- AgentRQ-style task, reply, and approval control-plane operations.
+- Monocle-style private trace setup and sanitized trace summaries.
+- Knowledge Vault / Vegapunk Brain sanitized runtime receipt emission.
 
-This is not a live adapter yet. It is the contract future adapter code must satisfy before Buddy Agent can claim native AgentRQ or Monocle support.
+The first adapter lives under `src/buddy_agent/control_plane/`. It is intentionally small, stdlib-only, and credential-free. It can be called by the existing Buddy runtime loop by injecting an AgentRQ/MCP tool transport.
+
+## Implementation status
+
+Implemented in this PR:
+
+| File | Runtime role |
+| --- | --- |
+| `src/buddy_agent/control_plane/agentrq.py` | Allowlisted AgentRQ MCP-style client for workspace/task/status/reply operations. |
+| `src/buddy_agent/control_plane/monocle.py` | Optional lazy Monocle setup and private trace summary builder. |
+| `src/buddy_agent/control_plane/knowledge_vault.py` | Sanitized Knowledge Vault event builder/writer for inbox event drafts. |
+| `src/buddy_agent/control_plane/runtime_adapter.py` | High-level coordinator for AgentRQ task state, Monocle summaries, and Knowledge Vault events. |
+| `src/buddy_agent/control_plane/sanitizer.py` | Conservative redaction and unsafe-data blocking. |
+| `tests/test_control_plane_runtime_adapter.py` | Tests for task completion, redaction, raw trace blocking, denied approval handling, and attachment denial. |
+
+Not implemented in this PR:
+
+- Real AgentRQ credentials or committed MCP config.
+- Direct network calls to AgentRQ.
+- Raw Monocle trace export.
+- Automatic cross-repo writes into `knowledge-vault`.
+- Compiled graph mutation.
 
 ## Why these two systems fit Buddy Agent
 
-AgentRQ exposes a realtime task workspace where agents can retrieve assigned tasks, update task status, reply to task threads, request permission for sensitive actions, and work through MCP-compatible tools. Buddy Agent can treat that as an operator-facing task queue and approval surface.
+AgentRQ exposes a realtime task workspace where agents can retrieve assigned tasks, update task statuses, reply to task threads, request permissions, and work through MCP-compatible tools.
 
-Monocle traces GenAI app and agent execution using OpenTelemetry-compatible spans. It can capture agent runs, tool calls, LLM calls, vector lookups, errors, timing, and trace-based test assertions. Buddy Agent can treat that as private runtime observability.
+Monocle traces GenAI app and agent execution using OpenTelemetry-compatible spans. Buddy Agent treats raw traces as private runtime artifacts and emits only sanitized trace summaries.
 
 ## Integration roles
 
 | System | Buddy Agent role | Durable memory status |
 | --- | --- | --- |
-| AgentRQ | Optional task, reply, and approval control plane | Only sanitized task receipts may be emitted |
-| Monocle | Optional private trace recorder and verification source | Raw traces must not be emitted |
-| Knowledge Vault | Durable graph/memory receiver | Receives sanitized graph events only |
+| AgentRQ | Optional task, reply, and approval control plane | Only sanitized task receipts may be emitted. |
+| Monocle | Optional private trace recorder and verification source | Raw traces must not be emitted. |
+| Knowledge Vault | Durable graph/memory receiver | Receives sanitized graph events only. |
+
+## Runtime adapter flow
+
+```text
+AgentRQ injected MCP/tool transport
+  -> AgentRQClient.get_next_task()
+  -> ControlPlaneRuntimeAdapter.run_next_task(runner)
+  -> MonocleAdapter optional setup + private trace summary
+  -> Sanitizer strips or blocks unsafe data
+  -> KnowledgeVaultEmitter builds schema-shaped event
+  -> caller may write the event to an approved Knowledge Vault inbox path
+```
+
+The adapter requires the caller to inject the AgentRQ transport. That keeps `.mcp.json`, `.codex/config.toml`, OAuth credentials, bearer tokens, and tokenized MCP URLs outside the repo.
 
 ## AgentRQ adapter contract
 
-Buddy Agent may use AgentRQ when a workspace is explicitly configured by the operator.
-
-Allowed AgentRQ operations:
+Allowed operations:
 
 - Read workspace task state.
 - Pull the next task assigned to Buddy Agent.
 - Post task progress replies.
-- Update task status through the approved lifecycle.
+- Update task status through `notstarted`, `ongoing`, `blocked`, and `completed`.
 - Surface approval-required pauses to the human operator.
 - Record allow/deny outcomes as sanitized receipts.
-- Download attachments only when the task policy allows it.
+- Download attachments only when explicitly enabled by caller policy.
 
-Buddy Agent must not:
+Blocked by default:
 
-- Store AgentRQ tokens in repository files.
-- Commit `.mcp.json`, `.codex/config.toml`, local settings, OAuth tokens, bearer tokens, workspace URLs containing tokens, or generated secrets.
-- Treat AgentRQ approval as permission to bypass Buddy Agent risk policy.
-- Emit raw AgentRQ task messages, attachments, private workspace IDs, or tokenized URLs into Knowledge Vault.
-- Turn on broad `allow_all_commands` behavior without a separate explicit human approval record.
-
-Recommended local-only configuration paths:
-
-```text
-.mcp.json                 # local only, ignored by git
-.codex/config.toml        # local only, ignored by git
-.claude/settings.local.json
-.env.local
-```
-
-## Buddy Agent task lifecycle mapping
-
-| Buddy Agent state | AgentRQ state | Knowledge Vault event class |
-| --- | --- | --- |
-| Session/task discovered | `notstarted` | `task` |
-| Work accepted | `ongoing` | `task` |
-| Missing approval | `blocked` | `decision` |
-| Human denies risky action | `blocked` or `completed` with denial note | `decision` |
-| Work completed | `completed` | `task` |
-| Runtime/system issue | `blocked` | `system` |
+- Attachment downloads.
+- Unknown AgentRQ tools.
+- Unsupported task statuses.
+- Silent approval. Silence is never approval.
+- Tokenized URL persistence.
+- Raw AgentRQ task chat persistence.
 
 ## Monocle adapter contract
 
-Buddy Agent may use Monocle to trace agent execution, but raw trace files are private runtime artifacts.
+The Monocle adapter imports `monocle_apptrace` lazily only when enabled. If Monocle is unavailable, startup returns a public-safe `unavailable` status instead of crashing the Buddy runtime.
 
 Allowed Monocle uses:
 
-- Capture runtime span timelines for debugging.
-- Verify expected tool calls in tests.
-- Verify disallowed tools were not called.
-- Track duration, error states, and validation outcomes.
-- Produce local trace JSON files or send traces to an explicitly configured private observability backend.
-- Summarize traces into sanitized receipts for Knowledge Vault.
+- Private trace setup.
+- Duration/error/status summaries.
+- Tool category summaries.
+- Trace assertions such as `no_secrets_emitted` and `no_raw_prompt_emitted`.
 
-Buddy Agent must not emit raw Monocle traces to Knowledge Vault.
+Blocked durable outputs:
 
-Raw trace fields considered private by default:
-
-- prompts and full model responses
-- tool arguments and tool outputs
-- file paths
-- repo checkout paths
+- raw OpenTelemetry spans
+- prompts
+- full model outputs
+- tool arguments
+- tool outputs
+- local/private paths
 - browser sessions
-- user IDs, tenant IDs, session IDs
-- tokens, headers, credentials, cookies
-- attachment contents
-- private conversation text
-- raw stack traces that expose private paths or secrets
+- credentials, headers, cookies, and API keys
 
-## Sanitized receipt shape
+## Knowledge Vault receipt contract
 
-Buddy Agent may convert AgentRQ state and Monocle traces into a Knowledge Vault event only after sanitization.
+The runtime adapter builds Knowledge Vault-shaped event drafts with required fields:
 
-```json
-{
-  "source": "buddy-agent",
-  "event_class": "task",
-  "title": "Completed guarded repository task",
-  "summary": "Buddy Agent completed a docs-only integration task and recorded validation status.",
-  "task_ref": "public-pr-or-issue-reference",
-  "control_plane": {
-    "provider": "agentrq",
-    "workspace_ref": "redacted-or-public-alias",
-    "task_status": "completed",
-    "approval_required": false,
-    "approval_outcome": "not_required"
-  },
-  "observability": {
-    "provider": "monocle",
-    "trace_ref": "private-trace-id-or-redacted",
-    "raw_trace_exported": false,
-    "assertions": [
-      "no_secrets_emitted",
-      "no_raw_prompt_emitted",
-      "validation_completed"
-    ]
-  },
-  "validation": {
-    "status": "passed",
-    "commands": [
-      "docs-only review"
-    ]
-  },
-  "redaction": {
-    "raw_prompts": "excluded",
-    "secrets": "excluded",
-    "private_paths": "excluded",
-    "browser_sessions": "excluded"
-  }
-}
-```
+- `event_id`
+- `event_type`
+- `source`
+- `timestamp`
+- `payload`
+
+The emitter never writes to compiled graph outputs. It can only write to a caller-supplied inbox directory and rejects duplicate event IDs.
 
 ## Required guardrails
 
@@ -155,35 +132,19 @@ Every adapter implementation must preserve the existing public-alpha risk policy
 - Private file paths must be redacted before receipts are emitted.
 - Knowledge Vault receives receipts, not raw runtime dumps.
 
-## Implementation status
+## Validation
 
-Current status: spec-only.
+Run the adapter tests with:
 
-Buddy Agent is not AgentRQ-native or Monocle-native until a reviewed adapter exists with:
+```bash
+python -m pytest tests/test_control_plane_runtime_adapter.py
+```
 
-- local-only config loading
-- token redaction
-- task lifecycle mapping
-- approval pause handling
-- Monocle trace capture
-- trace-to-receipt sanitization
-- schema validation against `knowledge-vault/99-System/Vegapunk Brain/emitters/graph-event.schema.json`
-- tests proving private fields are not emitted
+The tests prove:
 
-## Minimum future implementation plan
-
-1. Add local configuration discovery for optional AgentRQ workspace endpoints.
-2. Add an AgentRQ client wrapper with explicit allowlisted operations.
-3. Add Monocle setup behind an opt-in environment flag.
-4. Add a trace sanitizer that emits only summary-level assertions.
-5. Add a Knowledge Vault emitter adapter that validates events against the receiver schema.
-6. Add tests for secret redaction, prompt exclusion, denied approval handling, and schema validity.
-7. Document setup without committing any tokenized config.
-
-## Validation for this spec
-
-- Documentation-only change.
-- No runtime code is changed.
-- No config file containing tokens is added.
-- No generated trace or task data is committed.
-- Integration remains explicitly optional and spec-only.
+- AgentRQ task state can move `notstarted -> ongoing -> completed`.
+- Sanitized Knowledge Vault events are generated.
+- tokenized URLs and secret-like values are not persisted.
+- raw trace markers and raw prompt/conversation fields are blocked.
+- attachment downloads are denied by default.
+- silence cannot be treated as approval.
