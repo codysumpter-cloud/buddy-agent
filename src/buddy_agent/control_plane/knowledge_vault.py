@@ -12,7 +12,6 @@ from uuid import uuid4
 
 from .sanitizer import Sanitizer
 
-
 ALLOWED_SOURCES = {"buddy-agent", "buddy-brain", "omni-buddy", "prismtek-apps", "knowledge-vault"}
 ALLOWED_EVENT_TYPES = {
     "task_created",
