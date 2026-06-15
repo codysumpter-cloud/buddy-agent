@@ -37,6 +37,7 @@ RAW_TRACE_MARKERS = (
     "otel",
     "opentelemetry",
 )
+RAW_TRACE_KEYS = {marker.lower() for marker in RAW_TRACE_MARKERS} | {"trace", "span", "spans", "raw_trace"}
 RAW_PROMPT_KEYS = {"prompt", "raw_prompt", "system_prompt", "developer_prompt", "messages", "conversation", "transcript"}
 BROWSER_KEYS = {"browser_session", "cookie", "cookies", "headers", "screenshot", "dom", "page_dump"}
 
@@ -81,6 +82,9 @@ class Sanitizer:
 
                 if key_l in RAW_PROMPT_KEYS:
                     blocked.append(f"raw prompt/conversation field at {item_path}")
+                    continue
+                if key_l in RAW_TRACE_KEYS:
+                    blocked.append(f"raw trace field at {item_path}")
                     continue
                 if key_l in BROWSER_KEYS:
                     blocked.append(f"browser/session field at {item_path}")
