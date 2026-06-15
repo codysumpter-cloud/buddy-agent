@@ -9,7 +9,7 @@ local to the operator environment.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Mapping, Protocol
+from typing import Any, ClassVar, Mapping, Protocol, cast
 
 from .sanitizer import Sanitizer
 
@@ -37,8 +37,8 @@ class AgentRQTask:
 class AgentRQClient:
     """Small allowlisted adapter for AgentRQ MCP-style task operations."""
 
-    allowed_statuses = frozenset({"notstarted", "ongoing", "blocked", "completed"})
-    allowed_tools = frozenset({
+    allowed_statuses: ClassVar[frozenset[str]] = frozenset({"notstarted", "ongoing", "blocked", "completed"})
+    allowed_tools: ClassVar[frozenset[str]] = frozenset({
         "getWorkspace",
         "getNextTask",
         "getTaskMessages",
@@ -74,7 +74,12 @@ class AgentRQClient:
         status = str(safe.get("status") or "notstarted")
         assignee = safe.get("assignee")
         public_ref = safe.get("public_ref") or safe.get("url") or safe.get("ref")
-        metadata = {k: v for k, v in safe.items() if k not in {"id", "task_id", "taskId", "title", "name", "status", "assignee", "public_ref", "url", "ref"}}
+        metadata = {
+            k: v
+            for k, v in safe.items()
+            if k
+            not in {"id", "task_id", "taskId", "title", "name", "status", "assignee", "public_ref", "url", "ref"}
+        }
         return AgentRQTask(
             task_id=task_id,
             title=title,
@@ -91,7 +96,8 @@ class AgentRQClient:
         return self._safe_mapping(self._call("updateTaskStatus", {"taskId": task_id, "status": status}))
 
     def reply(self, task_id: str, message: str) -> Mapping[str, Any]:
-        safe_payload, _ = self.sanitizer.sanitize({"taskId": task_id, "message": message})
+        safe_payload_value, _ = self.sanitizer.sanitize({"taskId": task_id, "message": message})
+        safe_payload = cast(Mapping[str, Any], safe_payload_value)
         return self._safe_mapping(self._call("reply", safe_payload))
 
     def get_task_messages(self, task_id: str) -> Mapping[str, Any]:
@@ -104,7 +110,13 @@ class AgentRQClient:
             raise PermissionError("AgentRQ attachment download is disabled by Buddy policy")
         return self._safe_mapping(self._call("downloadAttachment", {"attachmentId": attachment_id}))
 
-    def task_receipt(self, task: AgentRQTask, *, approval_required: bool = False, approval_outcome: str = "not_required") -> Mapping[str, Any]:
+    def task_receipt(
+        self,
+        task: AgentRQTask,
+        *,
+        approval_required: bool = False,
+        approval_outcome: str = "not_required",
+    ) -> Mapping[str, Any]:
         receipt = {
             "provider": "agentrq",
             "workspace_alias": self.workspace_alias,
@@ -116,17 +128,18 @@ class AgentRQClient:
             "approval_outcome": approval_outcome,
         }
         safe, _ = self.sanitizer.sanitize(receipt)
-        return safe
+        return cast(Mapping[str, Any], safe)
 
     def _call(self, tool_name: str, arguments: Mapping[str, Any] | None) -> Any:
         if tool_name not in self.allowed_tools:
             raise ValueError(f"Unsupported AgentRQ tool: {tool_name}")
-        safe_arguments, _ = self.sanitizer.sanitize(dict(arguments or {}))
+        safe_arguments_value, _ = self.sanitizer.sanitize(dict(arguments or {}))
+        safe_arguments = cast(Mapping[str, Any], safe_arguments_value)
         return self.transport.call_tool(tool_name, safe_arguments)
 
     def _safe_mapping(self, result: Any) -> Mapping[str, Any]:
         if isinstance(result, Mapping):
             safe, _ = self.sanitizer.sanitize(dict(result))
-            return safe
+            return cast(Mapping[str, Any], safe)
         safe, _ = self.sanitizer.sanitize({"value": result})
-        return safe
+        return cast(Mapping[str, Any], safe)
