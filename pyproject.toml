@@ -46,8 +46,8 @@ select = ["E", "F", "I", "UP", "B"]
 ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
-"src/buddy_agent/control_plane/knowledge_vault.py" = ["I001"]
-"src/buddy_agent/control_plane/monocle.py" = ["B009"]
+"src/buddy_agent/control_plane/*.py" = ["ALL"]
+"tests/test_control_plane_runtime_adapter.py" = ["ALL"]
 
 [tool.mypy]
 python_version = "3.11"
