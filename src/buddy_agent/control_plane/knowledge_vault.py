@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Mapping, cast
+from typing import Any, cast
 from uuid import uuid4
 
 from .sanitizer import Sanitizer
