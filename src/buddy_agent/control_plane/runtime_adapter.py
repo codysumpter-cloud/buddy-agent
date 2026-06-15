@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
-from typing import Any, Callable, Mapping
+from typing import Any, cast
 
 from .agentrq import AgentRQClient, AgentRQTask
 from .knowledge_vault import KnowledgeVaultEmitter
@@ -65,7 +66,8 @@ class ControlPlaneRuntimeAdapter:
 
         try:
             runner_result = runner(task) or {}
-            safe_runner_result, _ = self.sanitizer.sanitize(runner_result)
+            safe_value, _ = self.sanitizer.sanitize(runner_result)
+            safe_runner_result = cast(Mapping[str, Any], safe_value)
             final_status = "completed" if complete_on_success else task.status
             if complete_on_success:
                 self.agentrq.update_task_status(task.task_id, "completed")
@@ -73,7 +75,7 @@ class ControlPlaneRuntimeAdapter:
                 trace_ref=trace_ref,
                 started_at=started_at,
                 status="completed",
-                tool_categories=tuple(safe_runner_result.get("tool_categories") or ("runtime",)),
+                tool_categories=tuple(str(item) for item in safe_runner_result.get("tool_categories") or ("runtime",)),
                 assertions=("no_secrets_emitted", "no_raw_prompt_emitted", "validation_completed"),
             )
             receipt = self._build_receipt(task, final_status=final_status, runner_result=safe_runner_result, trace=trace)
@@ -128,7 +130,7 @@ class ControlPlaneRuntimeAdapter:
             "approval_outcome": approval_outcome,
         }
         safe, _ = self.sanitizer.sanitize(receipt)
-        return safe
+        return cast(Mapping[str, Any], safe)
 
     def _build_receipt(
         self,
@@ -154,4 +156,4 @@ class ControlPlaneRuntimeAdapter:
             },
         }
         safe, _ = self.sanitizer.sanitize(receipt)
-        return safe
+        return cast(Mapping[str, Any], safe)
