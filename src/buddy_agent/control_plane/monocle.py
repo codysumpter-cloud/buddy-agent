@@ -71,7 +71,7 @@ class MonocleAdapter:
 
         try:
             module = import_module("monocle_apptrace")
-            setup = cast(Callable[..., None], getattr(module, "setup_monocle_telemetry"))
+            setup = cast(Callable[..., None], module.setup_monocle_telemetry)
             setup(workflow_name=self.workflow_name)
             self._setup_result = {"enabled": True, "status": "configured", "workflow": self.workflow_name}
         except Exception as exc:  # pragma: no cover - depends on optional package/runtime
