@@ -8,9 +8,9 @@ URLs before they can become Knowledge Vault receipts.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 import copy
 import re
+from dataclasses import dataclass, field
 from typing import Any, Mapping
 
 
