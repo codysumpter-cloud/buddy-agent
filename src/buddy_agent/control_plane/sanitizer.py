@@ -26,7 +26,7 @@ TOKEN_VALUE_RE = re.compile(
     r"(sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9_]{12,}|xox[baprs]-[A-Za-z0-9-]{12,}|Bearer\s+[A-Za-z0-9._-]{12,})",
     re.IGNORECASE,
 )
-TOKENIZED_URL_RE = re.compile(r"https?://[^\s]+[?&](token|access_token|api_key|key|secret)=", re.IGNORECASE)
+TOKENIZED_URL_RE = re.compile(r"https?://[^\s]+[?&](token|access_token|api_key|key|secret)=[^\s&]+", re.IGNORECASE)
 PRIVATE_PATH_RE = re.compile(r"(/Users/[^\s]+|/home/[^\s]+|C:\\Users\\[^\s]+|/var/folders/[^\s]+)")
 RAW_TRACE_MARKERS = (
     "resourceSpans",
