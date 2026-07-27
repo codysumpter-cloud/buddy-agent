@@ -33,21 +33,7 @@ jobs:
         with:
           python-version: "3.11"
       - run: python -m pip install -e ".[dev]"
-      - name: Capture focused lint output
-        id: readiness_lint
-        continue-on-error: true
-        run: ruff check src/buddy_agent/agent_readiness tests/test_agent_readiness_*.py > /tmp/readiness-ruff.txt 2>&1
-      - name: Upload focused lint output
-        if: steps.readiness_lint.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: readiness-ruff
-          path: /tmp/readiness-ruff.txt
-      - name: Enforce focused lint
-        if: steps.readiness_lint.outcome == 'failure'
-        run: |
-          cat /tmp/readiness-ruff.txt
-          exit 1
+      - run: ruff check src/buddy_agent/agent_readiness tests/test_agent_readiness_*.py
       - run: mypy src/buddy_agent/agent_readiness
       - run: pytest -q tests/test_agent_readiness_*.py
       - run: buddy-readiness checkpoint
