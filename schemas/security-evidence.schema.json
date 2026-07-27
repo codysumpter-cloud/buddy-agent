@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prismtek.dev/schemas/security-evidence.schema.json",
+  "title": "Buddy security evidence bundle",
+  "type": "object",
+  "required": ["checks_run", "findings"],
+  "properties": {
+    "checks_run": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check", "rule_id", "severity", "confidence", "summary"],
+        "properties": {
+          "check": { "type": "string" },
+          "rule_id": { "type": "string" },
+          "severity": { "enum": ["info", "low", "medium", "high", "critical"] },
+          "confidence": { "enum": ["low", "medium", "high"] },
+          "summary": { "type": "string" },
+          "resolution": { "enum": ["open", "fixed", "accepted-risk", "false-positive"] },
+          "evidence_ref": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
