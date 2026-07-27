@@ -1,4 +1,8 @@
-from buddy_agent.agent_readiness.checkpoint import InMemoryCheckpointAdapter, UsageTotals, run_checkpoint_smoke
+from buddy_agent.agent_readiness.checkpoint import (
+    InMemoryCheckpointAdapter,
+    UsageTotals,
+    run_checkpoint_smoke,
+)
 
 
 def test_checkpoint_restore_preserves_usage_trace_and_listener_lifecycle():
