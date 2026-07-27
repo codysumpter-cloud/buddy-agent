@@ -15,7 +15,7 @@ class UsageTotals:
     model_cost: float = 0.0
     tool_cost: float = 0.0
 
-    def __add__(self, other: "UsageTotals") -> "UsageTotals":
+    def __add__(self, other: UsageTotals) -> UsageTotals:
         return UsageTotals(
             input_tokens=self.input_tokens + other.input_tokens,
             output_tokens=self.output_tokens + other.output_tokens,
@@ -38,7 +38,7 @@ class RunCheckpoint:
         return json.dumps(asdict(self), sort_keys=True, separators=(",", ":"))
 
     @classmethod
-    def restore(cls, payload: str) -> "RunCheckpoint":
+    def restore(cls, payload: str) -> RunCheckpoint:
         value = json.loads(payload)
         value["usage"] = UsageTotals(**value["usage"])
         return cls(**value)
