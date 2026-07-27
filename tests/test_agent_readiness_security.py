@@ -1,5 +1,7 @@
-from buddy_agent.agent_readiness.security import SecurityFinding, evaluate_security_gate
-
+from buddy_agent.agent_readiness.security import (
+    SecurityFinding,
+    evaluate_security_gate,
+)
 
 REQUIRED = {"secret_scan", "dependency_scan", "static_analysis", "agent_security_review"}
 
