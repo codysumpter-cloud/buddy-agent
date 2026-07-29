@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, cast
+from typing import Any, cast
 
 from buddy_agent.receipts.record import JSONValue
 from buddy_agent.tasks.events import KnowledgeVaultTaskEventSink, TaskEventResult
