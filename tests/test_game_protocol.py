@@ -10,7 +10,7 @@ from buddy_agent.game_protocol import (
     normalize_message,
     normalize_model_response,
 )
-from buddy_agent.providers import DisabledProvider, OpenAIResponsesProvider, provider_from_env
+from buddy_agent.game_providers import DisabledProvider, OpenAIResponsesProvider, provider_from_env
 
 
 def test_game_context_redacts_secret_keys_and_limits_commands() -> None:
@@ -70,6 +70,6 @@ def test_openai_responses_adapter_extracts_output_text(monkeypatch: pytest.Monke
             ]
         }
 
-    monkeypatch.setattr("buddy_agent.providers._post_json", fake_post)
+    monkeypatch.setattr("buddy_agent.game_providers._post_json", fake_post)
     provider = OpenAIResponsesProvider("test-key", model="test-model")
     assert provider.complete(system="system", user="user") == '{"reply":"Ready","commands":[]}'
