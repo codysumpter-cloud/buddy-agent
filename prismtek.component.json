@@ -18,12 +18,20 @@
       "path": "schemas/trust-fabric-evidence.schema.json"
     },
     {
+      "contract": "buddy.evidence-evaluated.v1",
+      "path": "src/buddy_agent/trust_fabric/pipeline.py"
+    },
+    {
       "contract": "buddy.policy-decision.v1",
       "path": "schemas/trust-fabric-policy-decision.schema.json"
     },
     {
       "contract": "buddy.execution-receipt.v1",
       "path": "schemas/trust-fabric-execution-receipt.schema.json"
+    },
+    {
+      "contract": "buddy.execution-verified.v1",
+      "path": "src/buddy_agent/trust_fabric/pipeline.py"
     },
     {
       "contract": "buddy.task-economics.v1",
