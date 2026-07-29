@@ -312,6 +312,6 @@ def register_task_tools() -> None:
     additions = tuple(tool for tool in TASK_TOOLS if tool.name not in base.TOOL_BY_NAME)
     if not additions:
         return
-    base.TOOLS = (*base.TOOLS, *additions)
+    setattr(base, "TOOLS", (*base.TOOLS, *additions))
     base.TOOL_BY_NAME.update({tool.name: tool for tool in additions})
     base.TOOL_HANDLERS.update(TASK_HANDLERS)
