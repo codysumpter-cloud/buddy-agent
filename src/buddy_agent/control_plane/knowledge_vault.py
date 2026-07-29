@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
 from uuid import uuid4
@@ -15,6 +15,7 @@ from .sanitizer import Sanitizer
 ALLOWED_SOURCES = {"buddy-agent", "buddy-brain", "omni-buddy", "prismtek-apps", "knowledge-vault"}
 ALLOWED_EVENT_TYPES = {
     "task_created",
+    "task_state_changed",
     "task_completed",
     "decision_made",
     "repo_updated",
@@ -70,7 +71,7 @@ class KnowledgeVaultEmitter:
             "event_id": event_id or f"evt-buddy-agent-{uuid4().hex[:16]}",
             "event_type": resolved_event_type,
             "source": self.source,
-            "timestamp": timestamp or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "timestamp": timestamp or datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "payload": {
                 "class": event_class,
                 "title": title,

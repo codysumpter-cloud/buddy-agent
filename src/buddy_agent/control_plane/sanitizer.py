@@ -23,8 +23,11 @@ SECRET_KEY_RE = re.compile(
     r"(api[_-]?key|authorization|bearer|client[_-]?secret|cookie|credential|jwt|oauth|password|private[_-]?key|secret|token)",
     re.IGNORECASE,
 )
+# Prefixes must begin at a token boundary. Without the negative lookbehind,
+# ordinary durable IDs such as ``task-abc...`` contain the substring ``sk-``
+# and are falsely redacted as OpenAI API keys.
 TOKEN_VALUE_RE = re.compile(
-    r"(sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9_]{12,}|xox[baprs]-[A-Za-z0-9-]{12,}|Bearer\s+[A-Za-z0-9._-]{12,})",
+    r"((?<![A-Za-z0-9])sk-[A-Za-z0-9_-]{12,}|(?<![A-Za-z0-9])gh[pousr]_[A-Za-z0-9_]{12,}|(?<![A-Za-z0-9])xox[baprs]-[A-Za-z0-9-]{12,}|(?<![A-Za-z0-9])Bearer\s+[A-Za-z0-9._-]{12,})",
     re.IGNORECASE,
 )
 TOKENIZED_URL_RE = re.compile(r"https?://[^\s]+[?&](token|access_token|api_key|key|secret)=[^\s&]+", re.IGNORECASE)
