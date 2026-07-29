@@ -16,18 +16,19 @@ from .game_protocol import (
     normalize_model_response,
 )
 from .game_providers import ProviderError, provider_from_env
+from .game_stack_context import assemble_game_stack_context
 
 GameHandler = Callable[[base.BuddyMcpConfig, dict[str, Any]], dict[str, Any]]
 
 GAME_TOOLS = (
     base.ToolDefinition(
         "buddy.game.status",
-        "Report the Buddy game protocol, model provider, and executable in-game command allowlist.",
+        "Report the Buddy game protocol, model provider, stack context, and executable in-game command allowlist.",
         {"type": "object", "properties": {}, "additionalProperties": False},
     ),
     base.ToolDefinition(
         "buddy.game.chat",
-        "Reply as Buddy inside a Prismtek game and optionally propose allowlisted in-game commands.",
+        "Reply as Buddy inside a Prismtek game using bounded BUAP, KnowledgeVault, and Buddy Brain context.",
         {
             "type": "object",
             "properties": {
@@ -43,29 +44,36 @@ GAME_TOOLS = (
 _REGISTERED = False
 
 
-def _status(_config: base.BuddyMcpConfig, _arguments: dict[str, Any]) -> dict[str, Any]:
+def _status(config: base.BuddyMcpConfig, _arguments: dict[str, Any]) -> dict[str, Any]:
     provider = provider_from_env()
+    _stack_context, stack_receipt = assemble_game_stack_context(config, "")
     return {
         "ok": True,
         "protocol_version": PROTOCOL_VERSION,
         "provider": provider.status.to_dict(),
         "commands": list(ALLOWED_GAME_COMMANDS),
+        "stack": stack_receipt.to_dict(),
         "capabilities": {
             "chat": provider.status.configured,
             "game_commands": True,
             "persistent_tasks": True,
             "durable_memory_events": True,
+            "buap_policy_context": bool(stack_receipt.buap_policy_files),
+            "knowledge_vault_context": stack_receipt.knowledge_vault_configured,
+            "buddy_brain_governance_context": stack_receipt.buddy_brain_report_loaded,
+            "omni_buddy_transport_contract": stack_receipt.omni_buddy_transport_contract,
             "repository_execution": False,
             "production_actions": False,
         },
     }
 
 
-def _chat(_config: base.BuddyMcpConfig, arguments: dict[str, Any]) -> dict[str, Any]:
+def _chat(config: base.BuddyMcpConfig, arguments: dict[str, Any]) -> dict[str, Any]:
     try:
         message = normalize_message(arguments.get("message"))
         context = normalize_context(arguments.get("context"))
-        system, user = build_game_prompt(message, context)
+        stack_context, stack_receipt = assemble_game_stack_context(config, message)
+        system, user = build_game_prompt(message, context, stack_context)
         provider = provider_from_env()
         raw = provider.complete(system=system, user=user)
         response = normalize_model_response(raw)
@@ -77,9 +85,12 @@ def _chat(_config: base.BuddyMcpConfig, arguments: dict[str, Any]) -> dict[str, 
         "reply": response["reply"],
         "commands": response["commands"],
         "provider": provider.status.to_dict(),
+        "stack": stack_receipt.to_dict(),
         "claims": {
             "commands_proposed_not_executed": True,
             "game_client_must_validate": True,
+            "stack_context_is_bounded": True,
+            "knowledge_evidence_may_be_incomplete": True,
         },
     }
 
