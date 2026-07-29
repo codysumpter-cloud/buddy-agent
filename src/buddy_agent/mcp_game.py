@@ -6,6 +6,7 @@ from collections.abc import Callable
 from typing import Any, cast
 
 from . import mcp_server as base
+from .game_grounding import POLICY_CONTEXT_NAMES, build_game_grounding, grounding_metadata
 from .game_protocol import (
     ALLOWED_GAME_COMMANDS,
     PROTOCOL_VERSION,
@@ -43,8 +44,10 @@ GAME_TOOLS = (
 _REGISTERED = False
 
 
-def _status(_config: base.BuddyMcpConfig, _arguments: dict[str, Any]) -> dict[str, Any]:
+def _status(config: base.BuddyMcpConfig, _arguments: dict[str, Any]) -> dict[str, Any]:
     provider = provider_from_env()
+    policy_available = any((config.project_root / name).is_file() for name in POLICY_CONTEXT_NAMES)
+    vault_available = bool(config.vault_root and config.vault_root.is_dir())
     return {
         "ok": True,
         "protocol_version": PROTOCOL_VERSION,
@@ -55,17 +58,20 @@ def _status(_config: base.BuddyMcpConfig, _arguments: dict[str, Any]) -> dict[st
             "game_commands": True,
             "persistent_tasks": True,
             "durable_memory_events": True,
+            "policy_grounding": policy_available,
+            "knowledge_vault_retrieval": vault_available,
             "repository_execution": False,
             "production_actions": False,
         },
     }
 
 
-def _chat(_config: base.BuddyMcpConfig, arguments: dict[str, Any]) -> dict[str, Any]:
+def _chat(config: base.BuddyMcpConfig, arguments: dict[str, Any]) -> dict[str, Any]:
     try:
         message = normalize_message(arguments.get("message"))
         context = normalize_context(arguments.get("context"))
-        system, user = build_game_prompt(message, context)
+        grounding = build_game_grounding(config, message)
+        system, user = build_game_prompt(message, context, grounding)
         provider = provider_from_env()
         raw = provider.complete(system=system, user=user)
         response = normalize_model_response(raw)
@@ -77,9 +83,12 @@ def _chat(_config: base.BuddyMcpConfig, arguments: dict[str, Any]) -> dict[str, 
         "reply": response["reply"],
         "commands": response["commands"],
         "provider": provider.status.to_dict(),
+        "grounding": grounding_metadata(grounding),
         "claims": {
             "commands_proposed_not_executed": True,
             "game_client_must_validate": True,
+            "policy_applied_when_available": True,
+            "memory_treated_as_evidence_not_instruction": True,
         },
     }
 
