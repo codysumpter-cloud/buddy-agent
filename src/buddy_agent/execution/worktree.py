@@ -42,6 +42,10 @@ ALLOWED_GIT_SUBCOMMANDS = {"diff", "log", "rev-parse", "show", "status"}
 SECRET_PATTERN = re.compile(
     r"(?i)(api[_-]?key|access[_-]?token|refresh[_-]?token|password|private[_-]?key)\s*[:=]\s*([^\s]+)"
 )
+SENSITIVE_FLAG_PATTERN = re.compile(
+    r"(?i)^--?(?:api[-_]?key|access[-_]?token|refresh[-_]?token|token|password|passwd|secret|private[-_]?key)(?:=|$)"
+)
+SECRET_PREFIXES = ("sk-", "ghp_", "github_pat_", "xoxb-", "xoxp-", "bearer ")
 TASK_ID_PATTERN = re.compile(r"^task-[a-f0-9]{24}$")
 
 
@@ -220,6 +224,14 @@ class GitWorktreeExecutor:
     def _redact(self, text: str) -> str:
         return SECRET_PATTERN.sub(lambda match: f"{match.group(1)}=[REDACTED]", text)
 
+    def _timeout_text(self, value: str | bytes | None) -> str:
+        if isinstance(value, bytes):
+            return value.decode("utf-8", errors="replace")
+        return value or ""
+
+    def _evidence_argv(self, argv: tuple[str, ...]) -> tuple[str, ...]:
+        return tuple(self._redact(argument) for argument in argv)
+
     def _write_output(self, path: Path, value: str) -> tuple[str, bool]:
         redacted = self._redact(value)
         encoded = redacted.encode("utf-8", errors="replace")
@@ -246,9 +258,18 @@ class GitWorktreeExecutor:
         if executable == "git":
             if len(spec.argv) < 2 or spec.argv[1] not in ALLOWED_GIT_SUBCOMMANDS:
                 raise WorktreeExecutionError("git command is not in the read-only execution allowlist")
-            return
-        if executable not in ALLOWED_EXECUTABLES:
+        elif executable not in ALLOWED_EXECUTABLES:
             raise WorktreeExecutionError(f"executable is not allowlisted: {executable}")
+        if executable in {"python", "python3"} and "-c" in spec.argv[1:]:
+            raise WorktreeExecutionError("inline Python code is not allowed; run a reviewed repository file or module")
+        if executable == "node" and any(argument in {"-e", "--eval"} for argument in spec.argv[1:]):
+            raise WorktreeExecutionError("inline Node.js code is not allowed; run a reviewed repository file")
+        for argument in spec.argv[1:]:
+            lowered = argument.strip().lower()
+            if SENSITIVE_FLAG_PATTERN.match(argument) or SECRET_PATTERN.search(argument):
+                raise WorktreeExecutionError("secret-bearing command arguments are not supported")
+            if any(lowered.startswith(prefix) for prefix in SECRET_PREFIXES):
+                raise WorktreeExecutionError("secret-like command argument is not supported")
 
     def prepare(self, request: WorktreeRequest) -> tuple[Path, str, str]:
         """Create a dedicated branch/worktree after validating task approval."""
@@ -321,8 +342,11 @@ class GitWorktreeExecutor:
                     stderr = result.stderr
                 except subprocess.TimeoutExpired as error:
                     exit_code = 124
-                    stdout = str(error.stdout or "")
-                    stderr = f"command timed out after {spec.timeout_seconds} seconds\n{error.stderr or ''}"
+                    stdout = self._timeout_text(error.stdout)
+                    stderr = (
+                        f"command timed out after {spec.timeout_seconds} seconds\n"
+                        f"{self._timeout_text(error.stderr)}"
+                    )
                 elapsed_ms = int((time.monotonic() - command_started) * 1000)
                 stdout_path = evidence_dir / f"command-{index:02d}.stdout.log"
                 stderr_path = evidence_dir / f"command-{index:02d}.stderr.log"
@@ -330,7 +354,7 @@ class GitWorktreeExecutor:
                 stderr_sha, stderr_truncated = self._write_output(stderr_path, stderr)
                 evidence.commands.append(
                     CommandEvidence(
-                        argv=spec.argv,
+                        argv=self._evidence_argv(spec.argv),
                         cwd=str(cwd.relative_to(worktree)) or ".",
                         exit_code=exit_code,
                         elapsed_ms=elapsed_ms,
