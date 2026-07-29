@@ -41,7 +41,8 @@ class KnowledgeVaultTaskEventSink:
     """Emit sanitized lifecycle transitions into a configured Vegapunk inbox."""
 
     def __init__(self, inbox_path: Path) -> None:
-        self.emitter = KnowledgeVaultEmitter(inbox_path)
+        self.inbox_path = inbox_path
+        self.emitter = KnowledgeVaultEmitter(source="buddy-agent")
 
     def emit(
         self,
@@ -54,7 +55,6 @@ class KnowledgeVaultTaskEventSink:
         event_type = ACTION_EVENT_TYPES.get(action, "task_state_changed")
         counts = Counter(step.status for step in task.plan)
         payload: dict[str, Any] = {
-            "class": "task",
             "task_id": task.id,
             "previous_status": previous_status,
             "status": task.status,
@@ -72,17 +72,20 @@ class KnowledgeVaultTaskEventSink:
                 "skipped": counts.get("skipped", 0),
             },
             "receipt_count": len(task.receipts),
-            "summary": summary,
             "action": action,
+            "source_ref": f"buddy-agent://tasks/{task.id}",
         }
+        event_id = f"evt-buddy-agent-{task.id}-r{task.revision}"
         try:
             event = self.emitter.build_event(
+                event_class="task",
+                title="Buddy task lifecycle transition",
+                summary=summary,
                 event_type=event_type,
-                object_id=f"{task.id}-r{task.revision}",
+                event_id=event_id,
                 payload=payload,
-                source_ref=f"buddy-agent://tasks/{task.id}",
             )
-            self.emitter.write(event)
+            self.emitter.write_event(event, self.inbox_path)
         except (OSError, ValueError):
             return TaskEventResult(
                 configured=True,
@@ -93,6 +96,6 @@ class KnowledgeVaultTaskEventSink:
         return TaskEventResult(
             configured=True,
             emitted=True,
-            event_type=event.event_type,
-            event_id=event.event_id,
+            event_type=str(event["event_type"]),
+            event_id=str(event["event_id"]),
         )
