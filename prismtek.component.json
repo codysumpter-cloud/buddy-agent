@@ -1,0 +1,70 @@
+{
+  "$schema": "https://raw.githubusercontent.com/codysumpter-cloud/buddy-universal-agent-profile/main/schemas/prismtek-component.schema.json",
+  "schema_version": "1.0",
+  "component": "buddy-agent",
+  "repository": "codysumpter-cloud/buddy-agent",
+  "role": "guarded execution boundary, evidence normalization, admissibility policy, verification, receipts, and runtime actions",
+  "owns": [
+    "guarded-execution",
+    "evidence-normalization",
+    "admissibility-policy",
+    "verification",
+    "receipts",
+    "sandbox-contracts"
+  ],
+  "provides": [
+    {
+      "contract": "buddy.evidence-bundle.v1",
+      "path": "schemas/trust-fabric-evidence.schema.json"
+    },
+    {
+      "contract": "buddy.evidence-evaluated.v1",
+      "path": "src/buddy_agent/trust_fabric/pipeline.py"
+    },
+    {
+      "contract": "buddy.policy-decision.v1",
+      "path": "schemas/trust-fabric-policy-decision.schema.json"
+    },
+    {
+      "contract": "buddy.execution-receipt.v1",
+      "path": "schemas/trust-fabric-execution-receipt.schema.json"
+    },
+    {
+      "contract": "buddy.execution-verified.v1",
+      "path": "src/buddy_agent/trust_fabric/pipeline.py"
+    },
+    {
+      "contract": "buddy.task-economics.v1",
+      "path": "schemas/task-economics.schema.json"
+    }
+  ],
+  "consumes": [
+    {
+      "contract": "buap.policy-profile.v1",
+      "from": "buddy-universal-agent-profile"
+    },
+    {
+      "contract": "retrieval.evidence.v1",
+      "from": "external-retrieval-provider"
+    },
+    {
+      "contract": "knowledge.graph.v1",
+      "from": "knowledge-vault"
+    }
+  ],
+  "events": {
+    "emits": [
+      "evidence_evaluated",
+      "execution_verified"
+    ],
+    "receives": [
+      "policy_compiled",
+      "human_approval"
+    ]
+  },
+  "health_checks": [
+    "pytest -q tests/test_trust_fabric.py",
+    "python -m py_compile src/buddy_agent/trust_fabric/*.py"
+  ],
+  "stack_map": "https://github.com/codysumpter-cloud/buddy-universal-agent-profile/blob/main/linked-repos/prismtek-stack.manifest.json"
+}

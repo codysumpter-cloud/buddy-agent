@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prismtek.dev/schemas/trust-fabric-evidence.schema.json",
+  "title": "Prismtek Trust Fabric evidence bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "provider",
+    "agent_id",
+    "retrieved_at",
+    "query_digest",
+    "sources"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "task_id": { "type": "string", "minLength": 1 },
+    "provider": { "type": "string", "minLength": 1 },
+    "agent_id": { "type": "string", "minLength": 1 },
+    "retrieved_at": { "type": "string" },
+    "query_digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "source_type",
+          "observed_at",
+          "valid_until",
+          "confidence",
+          "trust_tier",
+          "content_hash",
+          "supports",
+          "contradicts",
+          "metadata"
+        ],
+        "properties": {
+          "source_id": { "type": "string" },
+          "source_type": { "type": "string" },
+          "observed_at": { "type": ["string", "null"] },
+          "valid_until": { "type": ["string", "null"] },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "trust_tier": {
+            "enum": ["authoritative", "verified", "supporting", "untrusted"]
+          },
+          "content_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "supports": { "type": "array", "items": { "type": "string" } },
+          "contradicts": { "type": "array", "items": { "type": "string" } },
+          "metadata": { "type": "object" }
+        }
+      }
+    }
+  }
+}
