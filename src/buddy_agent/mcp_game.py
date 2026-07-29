@@ -15,7 +15,7 @@ from .game_protocol import (
     normalize_message,
     normalize_model_response,
 )
-from .providers import ProviderError, provider_from_env
+from .game_providers import ProviderError, provider_from_env
 
 GameHandler = Callable[[base.BuddyMcpConfig, dict[str, Any]], dict[str, Any]]
 
@@ -53,7 +53,7 @@ def _status(_config: base.BuddyMcpConfig, _arguments: dict[str, Any]) -> dict[st
         "capabilities": {
             "chat": provider.status.configured,
             "game_commands": True,
-            "persistent_tasks": "buddy.task.*",
+            "persistent_tasks": True,
             "durable_memory_events": True,
             "repository_execution": False,
             "production_actions": False,
@@ -97,7 +97,11 @@ def register_game_tools() -> None:
         return
     additions = tuple(tool for tool in GAME_TOOLS if tool.name not in base.TOOL_BY_NAME)
     if additions:
-        base.TOOLS = tuple((*base.TOOLS, *additions))
+        # mcp_server.TOOLS was inferred as a fixed-length tuple from its literals.
+        # Runtime composition intentionally extends it, so mutate through the module
+        # object rather than weakening every ToolDefinition call site to Any.
+        base_module = cast(Any, base)
+        base_module.TOOLS = (*base.TOOLS, *additions)
         base.TOOL_BY_NAME.update({tool.name: tool for tool in additions})
         handlers = cast(dict[str, GameHandler], base.TOOL_HANDLERS)
         handlers.update(GAME_HANDLERS)
