@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from .models import EvidenceSource, RetrievalEnvelope
@@ -25,7 +25,7 @@ def _digest(value: str) -> str:
 
 
 def _iso_now() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def normalize_retrieval(payload: dict[str, Any]) -> RetrievalEnvelope:
