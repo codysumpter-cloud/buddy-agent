@@ -91,9 +91,10 @@ def register_task_event_hooks() -> None:
     global _WRAPPED
     if _WRAPPED:
         return
+    handlers = cast(dict[str, MutationHandler], base.TOOL_HANDLERS)
     for name in TOOL_ACTIONS:
-        handler = base.TOOL_HANDLERS.get(name)
+        handler = handlers.get(name)
         if handler is None:
             raise RuntimeError(f"task MCP tool is not registered: {name}")
-        base.TOOL_HANDLERS[name] = _wrap(name, handler)
+        handlers[name] = _wrap(name, handler)
     _WRAPPED = True
