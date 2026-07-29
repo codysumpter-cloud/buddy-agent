@@ -9,9 +9,9 @@ from __future__ import annotations
 
 import uuid
 from pathlib import Path
-from typing import cast
 
 from buddy_agent.receipts import ReceiptRecord, ReceiptWriter
+from buddy_agent.receipts.record import ReceiptStatus
 
 from .models import (
     APPROVAL_REQUIRED_RISKS,
@@ -34,7 +34,7 @@ def _task_id() -> str:
     return f"task-{uuid.uuid4().hex[:24]}"
 
 
-def _receipt_status(status: TaskStatus) -> str:
+def _receipt_status(status: TaskStatus) -> ReceiptStatus:
     if status == "completed":
         return "ok"
     if status == "awaiting_approval":
@@ -61,7 +61,7 @@ class TaskRuntime:
         if self.receipt_writer is not None:
             receipt = ReceiptRecord(
                 action=action,
-                status=cast("Literal['ok', 'error', 'review', 'deny']", _receipt_status(task.status)),
+                status=_receipt_status(task.status),
                 summary=summary,
                 metadata={
                     "task_id": task.id,
