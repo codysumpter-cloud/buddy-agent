@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -123,18 +122,12 @@ def test_refuses_shells_write_git_commands_and_cwd_escape(tmp_path: Path) -> Non
         (CommandSpec(("git", "push", "origin", "HEAD")), "read-only execution allowlist"),
         (CommandSpec(("git", "status"), cwd="../"), "escapes the worktree"),
     ):
-        request = WorktreeRequest(task_id=task_id, repository=root, commands=(spec,))
-        if spec.cwd == "../":
-            worktree, _, _ = selected.prepare(request)
-            assert worktree.is_dir()
-            with pytest.raises(WorktreeExecutionError, match=message):
-                selected.execute(request)
-            selected.cleanup(root, task_id)
-        else:
-            evidence = selected.execute(request)
-            assert evidence.status == "failed"
-            assert evidence.error is not None and message in evidence.error
-            selected.cleanup(root, task_id)
+        evidence = selected.execute(
+            WorktreeRequest(task_id=task_id, repository=root, commands=(spec,))
+        )
+        assert evidence.status == "failed"
+        assert evidence.error is not None and message in evidence.error
+        selected.cleanup(root, task_id, delete_branch=True)
 
 
 def test_cleanup_removes_worktree_but_keeps_branch_by_default(tmp_path: Path) -> None:
