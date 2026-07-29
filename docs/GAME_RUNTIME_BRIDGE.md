@@ -41,6 +41,27 @@ Example call:
 
 The response contains player-facing text and zero or more proposed commands from the fixed game allowlist. Commands are **not executed by the server**. The game must validate current state, item identity, mode, coordinates, and user intent before executing them.
 
+## Cross-stack context
+
+Local `buddy.game.chat` now assembles bounded context from the stack before calling the selected model:
+
+- **BUAP:** allowlisted `AGENTS.md`, `REVIEW.md`, `SYSTEMMAP.md`, and `TASK_STATE.md`, with secret-like values redacted and a 12,000-character total cap;
+- **KnowledgeVault:** up to four public-safe Markdown search results based on the player message;
+- **Buddy Brain:** an optional aggregated `buddy.policy-report.v1` JSON file configured through `BUDDY_BRAIN_REPORT_PATH`;
+- **Omni Buddy:** the `prismtek.buddy-game.v1` transport contract plus optional endpoint presence from `BUDDY_OMNI_ENDPOINT`.
+
+Example optional governance setup:
+
+```bash
+BUDDY_PROJECT_ROOT=/path/to/prismtek-apps \
+BUDDY_VAULT_PATH=/path/to/knowledge-vault \
+BUDDY_BRAIN_REPORT_PATH=/path/to/buddy-trust-fabric-report.json \
+BUDDY_OMNI_ENDPOINT=http://127.0.0.1:8799/api/omni \
+buddy-serve
+```
+
+The response returns only a public-safe stack receipt: policy filenames and hashes, vault result count, governance-report status, and Omni transport status. It does not return the policy text, memory snippets, report body, or private paths to the game client.
+
 ## Browser and remote safety
 
 Loopback is the default and requires no token. Browser origins are limited to Prismtek domains and local development origins.
@@ -68,7 +89,9 @@ Provider output is treated as untrusted. Invalid commands are dropped, secret-li
 
 The HTTP bridge registers the same runtime used by `buddy-mcp`:
 
-- project and KnowledgeVault context tools;
+- BUAP project policy and KnowledgeVault context;
+- optional Buddy Brain verified-outcome governance reports;
+- the Omni Buddy transport contract;
 - persistent task lifecycle and human approvals;
 - public-safe Vegapunk lifecycle events;
 - game status/chat tools.
