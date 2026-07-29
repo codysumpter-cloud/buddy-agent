@@ -71,14 +71,14 @@ def evaluate_retrieval(
     out = Path(output_dir)
     envelope = normalize_retrieval(payload)
     decision_obj = evaluate_policy(envelope, as_of=as_of)
-    decision = {
+    decision: dict[str, Any] = {
         "schema_version": "1.0",
         "task_id": envelope.task_id,
         "evaluated_at": _now(),
         "risk_level": envelope.risk_level,
         **decision_obj.as_dict(),
     }
-    evidence = {
+    evidence: dict[str, Any] = {
         "schema_version": "1.0",
         "task_id": envelope.task_id,
         "provider": envelope.provider,
@@ -87,7 +87,7 @@ def evaluate_retrieval(
         "query_digest": envelope.query_digest,
         "sources": _source_summary(envelope),
     }
-    receipt = {
+    receipt: dict[str, Any] = {
         "schema_version": "1.0",
         "task_id": envelope.task_id,
         "claim": "Retrieved evidence is admissible for guarded execution.",
@@ -96,10 +96,10 @@ def evaluate_retrieval(
         "verified": False,
         "artifact_accepted": False,
         "security_gate": "not-run",
-        "evidence_refs": [source["content_hash"] for source in evidence["sources"]],
+        "evidence_refs": [source.content_hash for source in envelope.sources],
         "checked_at": decision["evaluated_at"],
     }
-    event = {
+    event: dict[str, Any] = {
         "event_id": f"evt-trust-{envelope.task_id}",
         "event_type": "evidence_evaluated",
         "source": "buddy-agent",
