@@ -3,14 +3,16 @@
   "schema_version": "1.0",
   "component": "buddy-agent",
   "repository": "codysumpter-cloud/buddy-agent",
-  "role": "guarded execution boundary, evidence normalization, admissibility policy, verification, receipts, and runtime actions",
+  "role": "guarded execution boundary, evidence normalization, admissibility policy, verification, receipts, runtime actions, and canonical game runtime",
   "owns": [
     "guarded-execution",
     "evidence-normalization",
     "admissibility-policy",
     "verification",
     "receipts",
-    "sandbox-contracts"
+    "sandbox-contracts",
+    "game-runtime",
+    "game-runtime-transport"
   ],
   "provides": [
     {
@@ -36,6 +38,10 @@
     {
       "contract": "buddy.task-economics.v1",
       "path": "schemas/task-economics.schema.json"
+    },
+    {
+      "contract": "prismtek.buddy-game.v1",
+      "path": "src/buddy_agent/game_protocol.py"
     }
   ],
   "consumes": [
@@ -50,12 +56,19 @@
     {
       "contract": "knowledge.graph.v1",
       "from": "knowledge-vault"
+    },
+    {
+      "contract": "prismtek.buddy-game-schema.v1",
+      "from": "buddy-universal-agent-profile"
     }
   ],
   "events": {
     "emits": [
       "evidence_evaluated",
-      "execution_verified"
+      "execution_verified",
+      "task_created",
+      "task_state_changed",
+      "task_completed"
     ],
     "receives": [
       "policy_compiled",
@@ -64,6 +77,8 @@
   },
   "health_checks": [
     "pytest -q tests/test_trust_fabric.py",
+    "pytest -q tests/test_game_protocol.py tests/test_http_server.py",
+    "buddy-serve --self-test",
     "python -m py_compile src/buddy_agent/trust_fabric/*.py"
   ],
   "stack_map": "https://github.com/codysumpter-cloud/buddy-universal-agent-profile/blob/main/linked-repos/prismtek-stack.manifest.json"
