@@ -6,7 +6,7 @@ import json
 import os
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, cast
+from typing import cast
 
 from . import mcp_server as base
 from .game_protocol import JSONValue, normalize_context
