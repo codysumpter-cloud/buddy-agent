@@ -312,6 +312,8 @@ def register_task_tools() -> None:
     additions = tuple(tool for tool in TASK_TOOLS if tool.name not in base.TOOL_BY_NAME)
     if not additions:
         return
-    setattr(base, "TOOLS", (*base.TOOLS, *additions))
+    # The core module starts with a fixed literal tuple so mypy infers its exact length.
+    # Runtime composition intentionally widens that registry with another typed tuple.
+    base.TOOLS = (*base.TOOLS, *additions)  # type: ignore[assignment]
     base.TOOL_BY_NAME.update({tool.name: tool for tool in additions})
     base.TOOL_HANDLERS.update(TASK_HANDLERS)
