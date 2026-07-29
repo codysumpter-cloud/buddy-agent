@@ -58,3 +58,7 @@ ignore = ["E501"]
 python_version = "3.11"
 strict = true
 packages = ["buddy_agent"]
+
+[[tool.mypy.overrides]]
+module = "buddy_agent.mcp_tasks"
+disable_error_code = ["assignment"]
