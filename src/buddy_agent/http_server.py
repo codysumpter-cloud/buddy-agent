@@ -38,7 +38,7 @@ class BridgeSettings:
     max_request_bytes: int = MAX_REQUEST_BYTES
 
     @classmethod
-    def from_env(cls, *, host: str | None = None, port: int | None = None) -> "BridgeSettings":
+    def from_env(cls, *, host: str | None = None, port: int | None = None) -> BridgeSettings:
         raw_origins = os.getenv("BUDDY_HTTP_ALLOWED_ORIGINS", "").strip()
         origins = (
             tuple(item.strip() for item in raw_origins.split(",") if item.strip())
