@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import json
 import os
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from pathlib import Path
-from typing import cast
 
 from . import mcp_server as base
 from .game_protocol import JSONValue, normalize_context
@@ -32,7 +31,17 @@ class GameStackReceipt:
     omni_buddy_endpoint_configured: bool
 
     def to_dict(self) -> dict[str, object]:
-        return cast(dict[str, object], asdict(self))
+        """Return an explicitly JSON-native receipt for MCP and HTTP clients."""
+        return {
+            "buap_policy_files": list(self.buap_policy_files),
+            "buap_policy_hashes": dict(self.buap_policy_hashes),
+            "knowledge_vault_configured": self.knowledge_vault_configured,
+            "knowledge_vault_result_count": self.knowledge_vault_result_count,
+            "buddy_brain_report_configured": self.buddy_brain_report_configured,
+            "buddy_brain_report_loaded": self.buddy_brain_report_loaded,
+            "omni_buddy_transport_contract": self.omni_buddy_transport_contract,
+            "omni_buddy_endpoint_configured": self.omni_buddy_endpoint_configured,
+        }
 
 
 def _policy_context(config: base.BuddyMcpConfig) -> tuple[list[JSONValue], dict[str, str]]:
