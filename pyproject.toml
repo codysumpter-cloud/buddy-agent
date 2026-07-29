@@ -37,6 +37,7 @@ buddy-trust = "buddy_agent.trust_fabric.cli:main"
 buddy-mcp = "buddy_agent.mcp_runtime:main"
 buddy-task = "buddy_agent.tasks.cli:main"
 buddy-exec = "buddy_agent.execution.cli:main"
+buddy-serve = "buddy_agent.http_server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
