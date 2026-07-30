@@ -7,7 +7,7 @@ import json
 import os
 import tempfile
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 from .runtime import AgentLifeError, STATE_SCHEMA
 
@@ -35,7 +35,7 @@ class AgentLifeStore:
             raise AgentLifeError("Agent Life runtime state is missing or unsupported")
         if not isinstance(pending, dict):
             raise AgentLifeError("Agent Life pending event state is invalid")
-        return cast(dict[str, Any], parsed)
+        return parsed
 
     def save(self, state: dict[str, Any], pending: dict[str, dict[str, Any]]) -> Path:
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -100,7 +100,9 @@ class AgentLifeOutbox:
                 os.link(temporary, target)
             except FileExistsError:
                 if target.read_text(encoding="utf-8") != content:
-                    raise AgentLifeError("Agent Life outbox event ID collided with different content")
+                    raise AgentLifeError(
+                        "Agent Life outbox event ID collided with different content"
+                    ) from None
         finally:
             temporary.unlink(missing_ok=True)
         return target
