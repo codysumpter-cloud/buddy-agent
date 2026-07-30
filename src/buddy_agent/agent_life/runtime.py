@@ -70,8 +70,8 @@ def _dimension(raw: Any, fallback_initial: float = 0.5) -> dict[str, float]:
 def _decay_toward(value: float, target: float, half_life: float, elapsed: float) -> float:
     if elapsed <= 0.0 or half_life <= 0.0:
         return value
-    remaining = 0.5 ** (elapsed / half_life)
-    return target + (value - target) * remaining
+    remaining = float(0.5 ** (elapsed / half_life))
+    return float(target + (value - target) * remaining)
 
 
 def _effect_map(*values: Any) -> dict[str, float]:
@@ -134,7 +134,9 @@ class AgentLifeRuntime:
     @property
     def constitution(self) -> dict[str, Any]:
         """Return a defensive copy of immutable constitutional policy."""
-        return _clone(self._profile["constitution"])
+        constitution = self._profile["constitution"]
+        assert isinstance(constitution, dict)
+        return copy.deepcopy(constitution)
 
     def _initial_state(self) -> dict[str, Any]:
         development = self._profile.get("development", {})
@@ -156,7 +158,7 @@ class AgentLifeRuntime:
         }
 
     def snapshot(self) -> dict[str, Any]:
-        return _clone(self._state)
+        return copy.deepcopy(self._state)
 
     def restore(self, snapshot: Mapping[str, Any]) -> dict[str, Any]:
         if snapshot.get("schema") != STATE_SCHEMA:
@@ -280,7 +282,7 @@ class AgentLifeRuntime:
             existing = relation_store.get(relationship_id, {})
             if not isinstance(existing, Mapping):
                 existing = {}
-            old_relation = {
+            old_relation: dict[str, Any] = {
                 "trust": _number(existing.get("trust"), default_trust),
                 "familiarity": _number(existing.get("familiarity"), 0.0),
                 "respect": _number(existing.get("respect"), default_trust),
@@ -289,7 +291,7 @@ class AgentLifeRuntime:
             relation_effects = _effect_map(event_effect_map.get("relationships"), requested_map.get("relationships"))
             if not relation_effects:
                 relation_effects["trust"] = weighted_reward
-            new_relation = dict(old_relation)
+            new_relation: dict[str, Any] = dict(old_relation)
             for dimension in ("trust", "familiarity", "respect"):
                 if dimension not in relation_effects:
                     continue
