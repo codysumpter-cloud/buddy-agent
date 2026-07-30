@@ -11,6 +11,7 @@ from typing import Any
 
 from buddy_agent.tasks.store import TaskStore
 
+from .arena import run_agent_life_arena
 from .runtime import AgentLifeError
 from .service import AgentLifeService
 
@@ -28,6 +29,16 @@ def _evidence(value: str) -> dict[str, str]:
     if not separator or not evidence_type.strip() or not reference.strip():
         raise argparse.ArgumentTypeError("evidence must use type=reference")
     return {"type": evidence_type.strip(), "ref": reference.strip()}
+
+
+def _load_profile(path: Path) -> dict[str, Any]:
+    try:
+        parsed = json.loads(path.expanduser().read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as error:
+        raise AgentLifeError("compiled Agent Life profile is unreadable") from error
+    if not isinstance(parsed, dict):
+        raise AgentLifeError("compiled Agent Life profile must be a JSON object")
+    return parsed
 
 
 def _service(args: argparse.Namespace) -> AgentLifeService:
@@ -80,6 +91,12 @@ def build_parser() -> argparse.ArgumentParser:
     advance.add_argument("hours", type=float)
     advance.add_argument("--now", default=None)
 
+    arena = commands.add_parser(
+        "arena",
+        help="Run deterministic cortex-off acquisition, reversal, retention, and safety scenarios",
+    )
+    arena.add_argument("--out", type=Path, default=None, help="Optional JSON receipt output path")
+
     commands.add_parser("flush", help="Publish interrupted pending memory events")
     return parser
 
@@ -88,6 +105,17 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     try:
+        if args.command == "arena":
+            receipt = run_agent_life_arena(_load_profile(args.profile))
+            if args.out is not None:
+                args.out.expanduser().parent.mkdir(parents=True, exist_ok=True)
+                args.out.expanduser().write_text(
+                    json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+            _print(receipt)
+            return 0 if receipt["passed"] else 1
+
         service = _service(args)
         if args.command == "status":
             _print(service.status())
