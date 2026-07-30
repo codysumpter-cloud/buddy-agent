@@ -7,6 +7,8 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
+from buddy_agent.tasks.models import TERMINAL_STATUSES, TaskRecord
+
 from .runtime import AgentLifeError, AgentLifeRuntime
 from .store import AgentLifeOutbox, AgentLifeStore
 
@@ -64,6 +66,39 @@ class AgentLifeService:
             raise
         result["outbox_path"] = str(outbox_path)
         return result
+
+    def apply_task_outcome(
+        self,
+        task: TaskRecord,
+        *,
+        authority_kind: str,
+        authority_id: str,
+        evidence: list[Mapping[str, str]],
+        subject_id: str | None = None,
+    ) -> dict[str, Any]:
+        """Admit a terminal task only after an external authority cites evidence."""
+        if task.status not in TERMINAL_STATUSES or task.status == "cancelled":
+            raise AgentLifeError("Agent Life can learn only from completed or failed tasks")
+        if not evidence:
+            raise AgentLifeError("task outcome requires at least one sanitized evidence reference")
+        outcome_kind = "task_succeeded" if task.status == "completed" else "task_failed"
+        reward = 1.0 if task.status == "completed" else -1.0
+        workflow_id = subject_id.strip() if subject_id else f"buddy-task:{task.risk}"
+        if not workflow_id:
+            raise AgentLifeError("task outcome subject_id cannot be empty")
+        return self.apply_outcome(
+            {
+                "id": f"{task.id}:{task.revision}:{task.status}",
+                "kind": outcome_kind,
+                "occurred_at": task.updated_at,
+                "subject": {"type": "workflow", "id": workflow_id},
+                "reward": reward,
+                "confidence": 1.0,
+                "significance": max(1.0, len(task.plan) / 2.0),
+                "authority": {"kind": authority_kind, "actor_id": authority_id},
+                "evidence": [dict(item) for item in evidence],
+            }
+        )
 
     def flush_pending(self) -> list[Path]:
         published: list[Path] = []
