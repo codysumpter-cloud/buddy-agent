@@ -9,6 +9,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from buddy_agent.tasks.store import TaskStore
+
 from .runtime import AgentLifeError
 from .service import AgentLifeService
 
@@ -63,6 +65,17 @@ def build_parser() -> argparse.ArgumentParser:
     outcome.add_argument("--evidence", type=_evidence, action="append", required=True)
     outcome.add_argument("--relationship-id", default=None)
 
+    task_outcome = commands.add_parser(
+        "task-outcome",
+        help="Teach from a terminal Buddy task after an external verifier admits its receipts",
+    )
+    task_outcome.add_argument("task_id")
+    task_outcome.add_argument("--tasks-dir", type=Path, default=None)
+    task_outcome.add_argument("--authority-kind", choices=("human", "host", "verifier"), required=True)
+    task_outcome.add_argument("--authority-id", required=True)
+    task_outcome.add_argument("--evidence", type=_evidence, action="append", required=True)
+    task_outcome.add_argument("--subject-id", default=None)
+
     advance = commands.add_parser("advance", help="Apply time decay and persist state")
     advance.add_argument("hours", type=float)
     advance.add_argument("--now", default=None)
@@ -96,6 +109,17 @@ def main(argv: list[str] | None = None) -> int:
             if args.relationship_id:
                 event["relationship_id"] = args.relationship_id
             _print(service.apply_outcome(event))
+        elif args.command == "task-outcome":
+            task = TaskStore(args.tasks_dir).load(args.task_id)
+            _print(
+                service.apply_task_outcome(
+                    task,
+                    authority_kind=args.authority_kind,
+                    authority_id=args.authority_id,
+                    evidence=args.evidence,
+                    subject_id=args.subject_id,
+                )
+            )
         elif args.command == "advance":
             now = args.now or datetime.now(UTC).isoformat()
             _print(service.advance(args.hours, now))
