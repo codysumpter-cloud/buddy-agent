@@ -9,7 +9,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from .runtime import AgentLifeError, STATE_SCHEMA
+from .runtime import STATE_SCHEMA, AgentLifeError
 
 HOST_SCHEMA = "buddy.agent-life-host.v1"
 
