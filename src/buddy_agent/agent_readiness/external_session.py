@@ -97,7 +97,7 @@ class AgentSpan:
     tool_call_count: int
 
     @classmethod
-    def from_dict(cls, payload: Mapping[str, Any]) -> "AgentSpan":
+    def from_dict(cls, payload: Mapping[str, Any]) -> AgentSpan:
         status = str(payload.get("status", "completed"))
         if status not in {"completed", "failed", "cancelled", "timed_out", "running"}:
             raise ExternalSessionError(f"unsupported agent span status: {status}")
@@ -130,7 +130,7 @@ class ExternalToolReceipt:
     result_sha256: str | None = None
 
     @classmethod
-    def from_dict(cls, payload: Mapping[str, Any]) -> "ExternalToolReceipt":
+    def from_dict(cls, payload: Mapping[str, Any]) -> ExternalToolReceipt:
         status = str(payload.get("status", "completed"))
         if status not in {"completed", "failed", "cancelled", "timed_out", "rejected"}:
             raise ExternalSessionError(f"unsupported tool call status: {status}")
@@ -178,7 +178,7 @@ class VerificationEvidence:
     observed_at: str | None = None
 
     @classmethod
-    def from_dict(cls, payload: Mapping[str, Any]) -> "VerificationEvidence":
+    def from_dict(cls, payload: Mapping[str, Any]) -> VerificationEvidence:
         status = str(payload.get("status", "not_run"))
         if status not in {"passed", "failed", "pending", "not_run"}:
             raise ExternalSessionError(f"unsupported verification status: {status}")
@@ -217,7 +217,7 @@ class ExternalAgentSession:
     source_receipt_sha256: str
 
     @classmethod
-    def from_dict(cls, payload: Mapping[str, Any]) -> "ExternalAgentSession":
+    def from_dict(cls, payload: Mapping[str, Any]) -> ExternalAgentSession:
         _assert_no_raw_payloads(payload)
         schema = str(payload.get("schema", "buddy.external-agent-session.v1"))
         if schema != "buddy.external-agent-session.v1":
