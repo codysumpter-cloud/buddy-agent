@@ -9,6 +9,19 @@ from .local_container import (
     SandboxSelfTestCheck,
     SandboxSelfTestResult,
 )
+from .programmatic import (
+    InvocationMode,
+    OpenAIProgrammaticAdapter,
+    ProgrammaticApprovalRequest,
+    ProgrammaticExecutionContext,
+    ProgrammaticRunError,
+    ProgrammaticRunReceipt,
+    ProgrammaticRunResult,
+    ProgrammaticToolCallReceipt,
+    ProgrammaticToolDefinition,
+    ProgrammaticToolPolicy,
+    validate_json_schema,
+)
 from .sandbox import PROFILES, SandboxCapabilities, SandboxPlan, SandboxRequest, profile
 from .security import (
     SecurityFinding,
@@ -19,9 +32,19 @@ from .security import (
 
 __all__ = [
     "CheckpointSmokeResult",
+    "InvocationMode",
     "LocalContainerSandbox",
     "LocalContainerSandboxProvider",
+    "OpenAIProgrammaticAdapter",
     "PROFILES",
+    "ProgrammaticApprovalRequest",
+    "ProgrammaticExecutionContext",
+    "ProgrammaticRunError",
+    "ProgrammaticRunReceipt",
+    "ProgrammaticRunResult",
+    "ProgrammaticToolCallReceipt",
+    "ProgrammaticToolDefinition",
+    "ProgrammaticToolPolicy",
     "RunCheckpoint",
     "SandboxCapabilities",
     "SandboxPlan",
@@ -38,4 +61,5 @@ __all__ = [
     "evaluate_security_gate",
     "profile",
     "run_checkpoint_smoke",
+    "validate_json_schema",
 ]
