@@ -173,6 +173,7 @@ class ProgrammaticRunReceipt:
 
     def to_dict(self) -> dict[str, object]:
         value = cast(dict[str, object], asdict(self))
+        value["tool_calls"] = [call.to_dict() for call in self.tool_calls]
         value["trace_complete"] = self.trace_complete
         return value
 
@@ -228,6 +229,7 @@ def validate_json_schema(value: Any, schema: Mapping[str, Any], path: str = "$")
         if value not in enum:
             raise ProgrammaticExecutionError(f"schema validation failed at {path}: not in enum")
 
+    expected_types: tuple[str, ...]
     raw_type = schema.get("type")
     if isinstance(raw_type, str):
         expected_types = (raw_type,)
@@ -499,17 +501,16 @@ class OpenAIProgrammaticAdapter:
                 arguments_json: str,
                 *,
                 selected: ProgrammaticToolDefinition = definition,
-            ) -> str:
+            ) -> Any:
                 raw = json.loads(arguments_json)
                 if not isinstance(raw, Mapping):
                     raise ProgrammaticExecutionError("tool arguments must be a JSON object")
                 call_id = str(getattr(tool_context, "tool_call_id", "") or uuid.uuid4().hex)
-                output = await context.invoke(
+                return await context.invoke(
                     selected.name,
                     cast(Mapping[str, Any], raw),
                     call_id,
                 )
-                return _stable_json(output)
 
             sdk_tools.append(
                 sdk.FunctionTool(
@@ -588,40 +589,16 @@ class OpenAIProgrammaticAdapter:
             status = "completed"
         except ProgrammaticCancelled as error:
             status = "cancelled"
-            receipt = self._receipt(
-                context,
-                status,
-                started_epoch,
-                started,
-                final_hash,
-            )
+            receipt = self._receipt(context, status, started_epoch, started, final_hash)
             raise ProgrammaticRunError(str(error), receipt) from error
         except TimeoutError as error:
             status = "timed_out"
-            receipt = self._receipt(
-                context,
-                status,
-                started_epoch,
-                started,
-                final_hash,
-            )
+            receipt = self._receipt(context, status, started_epoch, started, final_hash)
             raise ProgrammaticRunError(str(error), receipt) from error
         except Exception as error:
-            receipt = self._receipt(
-                context,
-                status,
-                started_epoch,
-                started,
-                final_hash,
-            )
+            receipt = self._receipt(context, status, started_epoch, started, final_hash)
             raise ProgrammaticRunError(error.__class__.__name__, receipt) from error
-        receipt = self._receipt(
-            context,
-            status,
-            started_epoch,
-            started,
-            final_hash,
-        )
+        receipt = self._receipt(context, status, started_epoch, started, final_hash)
         return ProgrammaticRunResult(output=output, receipt=receipt)
 
     def _receipt(
