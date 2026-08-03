@@ -27,6 +27,9 @@ dev = [
 mythos = [
   "torch>=2.3",
 ]
+programmatic = [
+  "openai-agents>=0.19.0,<0.20.0",
+]
 
 [project.scripts]
 buddy = "buddy_agent.cli:main"
