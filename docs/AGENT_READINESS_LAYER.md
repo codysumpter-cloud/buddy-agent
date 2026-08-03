@@ -39,6 +39,55 @@ buddy-readiness sandbox self-test local-container /path/to/workspace
 
 The live self-test uses a temporary child workspace and checks command execution, network isolation, host-secret non-inheritance, scoped workspace writes, checkpoint restoration, container cleanup, and process-tree termination on timeout. It requires a healthy Docker or Podman daemon and the default Python container image unless the adapter is configured programmatically with another compatible image.
 
+## Experimental Programmatic Tool Calling
+
+`OpenAIProgrammaticAdapter` treats hosted generated-JavaScript coordination as a distinct `programmatic_tool_call` invocation mode. It is disabled by default and requires the optional Agents SDK extra:
+
+```bash
+python -m pip install -e ".[programmatic]"
+```
+
+Activation is explicit in application code. The adapter never discovers or exposes tools implicitly:
+
+```python
+adapter = OpenAIProgrammaticAdapter(
+    policy=ProgrammaticToolPolicy(
+        eligible_tools=("read_status",),
+        max_calls=4,
+        max_runtime_ms=30_000,
+        network="none",
+        secrets="none",
+        approval="required",
+        output_schema={
+            "type": "object",
+            "properties": {"summary": {"type": "string"}},
+            "required": ["summary"],
+            "additionalProperties": False,
+        },
+    ),
+    tools=(read_status_tool,),
+    enabled=True,
+    approval_handler=recorded_operator_approval,
+)
+```
+
+Buddy enforces the following outside the model-generated coordinator:
+
+- exact eligible-tool registration;
+- `allowed_callers=["programmatic"]` on every SDK function tool;
+- one hosted `ProgrammaticToolCallingTool` coordinator;
+- total tool-call and wall-clock budgets;
+- per-tool and policy-wide approvals;
+- operator cancellation;
+- network-host declarations against `none` or an allowlist;
+- secret-like argument rejection when `secrets=none`;
+- input, tool-output, and final-output JSON Schema validation;
+- sanitized receipts containing hashes and attribution rather than raw prompts, arguments, outputs, or generated code.
+
+The adapter sets the Responses tool choice to `programmatic_tool_calling`, disables parallel tool calls, passes `max_tool_calls`, and disables server-side response storage. Buddy still treats the OpenAI-side generated code as hosted execution: it is neither a replacement for the local-container sandbox nor evidence that local filesystem or process isolation exists.
+
+The current contract deliberately does not auto-resume SDK `RunState` approval interruptions. Buddy performs attributable approval before each registered handler invocation. A future stateful adapter may map the same approval evidence into SDK-native interruption restoration after checkpoint compatibility is proven.
+
 ## Security evidence
 
 Security gates retain check name, rule, severity, confidence, resolution, and evidence reference. Unresolved high-severity/high-confidence findings block. Unresolved medium-severity/high-confidence findings require review. Missing required checks also require review.
