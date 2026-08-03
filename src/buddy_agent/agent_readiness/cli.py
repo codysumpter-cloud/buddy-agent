@@ -8,15 +8,23 @@ from dataclasses import asdict
 from pathlib import Path
 
 from .checkpoint import InMemoryCheckpointAdapter, run_checkpoint_smoke
-from .sandbox import PROFILES, PolicyOnlySandboxProvider, SandboxCapabilities, profile
+from .local_container import LocalContainerSandboxProvider
+from .sandbox import (
+    PROFILES,
+    PolicyOnlySandboxProvider,
+    SandboxCapabilities,
+    SandboxProvider,
+    profile,
+)
 from .security import SecurityFinding, evaluate_security_gate
 
 
-def provider(name: str) -> PolicyOnlySandboxProvider:
+def provider(name: str, workspace: Path | None = None) -> SandboxProvider:
+    if name == "local-container":
+        return LocalContainerSandboxProvider(workspace or Path.cwd())
     capabilities = {
         "codex": SandboxCapabilities(name, True, True, True, True, False, True, True),
         "github-runner": SandboxCapabilities(name, True, True, True, True, True, False, True),
-        "local-container": SandboxCapabilities(name, True, True, True, True, True, True, True),
         "local-process": SandboxCapabilities(name, False, False, False, True, False, False, True),
     }
     try:
@@ -37,7 +45,18 @@ def run_sandbox(parts: list[str]) -> int:
         result = provider(parts[1]).plan(profile(parts[2]))
         print(json.dumps(result.to_dict(), indent=2))
         return 0 if result.executable else 1
-    print("Usage: buddy-readiness sandbox [profiles|plan <provider> <profile>]")
+    if action == "self-test":
+        if len(parts) < 2 or parts[1] != "local-container":
+            print("Usage: buddy-readiness sandbox self-test local-container [workspace]")
+            return 2
+        workspace = Path(parts[2]) if len(parts) > 2 else Path.cwd()
+        result = LocalContainerSandboxProvider(workspace).self_test()
+        print(json.dumps(result.to_dict(), indent=2))
+        return 0 if result.ok else 1
+    print(
+        "Usage: buddy-readiness sandbox "
+        "[profiles|plan <provider> <profile>|self-test local-container [workspace]]"
+    )
     return 2
 
 
@@ -62,7 +81,9 @@ def run_checkpoint(parts: list[str]) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="buddy-readiness", description="Buddy Agent Readiness Layer contracts.")
+    parser = argparse.ArgumentParser(
+        prog="buddy-readiness", description="Buddy Agent Readiness Layer contracts."
+    )
     parser.add_argument("command", choices=("sandbox", "security", "checkpoint"))
     parser.add_argument("args", nargs="*")
     selected = parser.parse_args(argv)
