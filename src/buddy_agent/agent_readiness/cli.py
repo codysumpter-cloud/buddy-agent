@@ -42,17 +42,17 @@ def run_sandbox(parts: list[str]) -> int:
         if len(parts) < 3:
             print("Usage: buddy-readiness sandbox plan <provider> <profile>")
             return 2
-        result = provider(parts[1]).plan(profile(parts[2]))
-        print(json.dumps(result.to_dict(), indent=2))
-        return 0 if result.executable else 1
+        plan_result = provider(parts[1]).plan(profile(parts[2]))
+        print(json.dumps(plan_result.to_dict(), indent=2))
+        return 0 if plan_result.executable else 1
     if action == "self-test":
         if len(parts) < 2 or parts[1] != "local-container":
             print("Usage: buddy-readiness sandbox self-test local-container [workspace]")
             return 2
         workspace = Path(parts[2]) if len(parts) > 2 else Path.cwd()
-        result = LocalContainerSandboxProvider(workspace).self_test()
-        print(json.dumps(result.to_dict(), indent=2))
-        return 0 if result.ok else 1
+        self_test_result = LocalContainerSandboxProvider(workspace).self_test()
+        print(json.dumps(self_test_result.to_dict(), indent=2))
+        return 0 if self_test_result.ok else 1
     print(
         "Usage: buddy-readiness sandbox "
         "[profiles|plan <provider> <profile>|self-test local-container [workspace]]"
