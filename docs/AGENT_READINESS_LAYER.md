@@ -14,12 +14,30 @@ secrets: none
 
 Repository profiles may expand permissions only through explicit policy. `coding`, `review`, and `release` are separate profiles. Release requires human approval and scoped secrets.
 
-A provider must declare what it actually enforces. Prompt instructions and environment flags are not accepted as proof of network or filesystem isolation. `PolicyOnlySandboxProvider` deliberately refuses live creation until a real provider adapter is implemented and audited.
+A provider must declare what it actually enforces. Prompt instructions and environment flags are not accepted as proof of network or filesystem isolation. `PolicyOnlySandboxProvider` deliberately refuses live creation.
+
+`LocalContainerSandboxProvider` is the first executable adapter. It uses Docker or Podman with:
+
+- one explicit bind-mounted workspace;
+- a read-only container root filesystem;
+- `network=none` enforcement when requested;
+- all Linux capabilities dropped and `no-new-privileges` enabled;
+- bounded CPU, memory, process count, and command duration;
+- no engine socket mount and no implicit host environment inheritance;
+- explicit scoped-secret injection through a temporary mode-`0600` environment file;
+- host-side workspace snapshots and restoration;
+- whole-container destruction when a command times out.
+
+The first adapter intentionally reports hostname allowlists as unsupported. `coding` and `release` remain non-executable with this provider until an audited proxy or equivalent enforcement layer exists. The network-free `review` profile is executable.
 
 ```bash
 buddy-readiness sandbox profiles
 buddy-readiness sandbox plan local-container review
+buddy-readiness sandbox plan local-container coding  # expected to refuse network:allowlist
+buddy-readiness sandbox self-test local-container /path/to/workspace
 ```
+
+The live self-test uses a temporary child workspace and checks command execution, network isolation, host-secret non-inheritance, scoped workspace writes, checkpoint restoration, container cleanup, and process-tree termination on timeout. It requires a healthy Docker or Podman daemon and the default Python container image unless the adapter is configured programmatically with another compatible image.
 
 ## Security evidence
 
