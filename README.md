@@ -1,3 +1,19 @@
+> # ⚠️ This repository is archived and superseded
+>
+> **buddy-agent has been consolidated into [codysumpter-cloud/prismtek-apps](https://github.com/codysumpter-cloud/prismtek-apps).**
+>
+> Canonical location: **`services/buddy-agent`**
+>
+> - Migration record: [`docs/migrations/buddy-agent.yaml`](https://github.com/codysumpter-cloud/prismtek-apps/blob/main/docs/migrations/buddy-agent.yaml)
+> - Consolidation tracker: [prismtek-apps#359](https://github.com/codysumpter-cloud/prismtek-apps/issues/359)
+> - prismtek-apps revision at archive time: `f47023186c67e649378734ee80a158a022dbb941`
+>
+> This repository is kept read-only for history, provenance, issues, and
+> releases. Its full commit history was imported into prismtek-apps with
+> original authorship preserved, so the commits below also exist there.
+> **Do not open new work here.** The tag `pre-archive-final` marks the exact
+> final state of the default branch.
+
 <p align="center">
   <img src="assets/buddy-agent-mascot.svg" alt="Buddy Agent animated ASCII mascot" width="280">
 </p>
