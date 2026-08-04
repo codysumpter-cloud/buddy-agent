@@ -11,6 +11,12 @@ from .external_session import (
     VerificationEvidence,
     parse_external_session_json,
 )
+from .local_container import (
+    LocalContainerSandbox,
+    LocalContainerSandboxProvider,
+    SandboxSelfTestCheck,
+    SandboxSelfTestResult,
+)
 from .sandbox import PROFILES, SandboxCapabilities, SandboxPlan, SandboxRequest, profile
 from .security import (
     SecurityFinding,
@@ -25,11 +31,15 @@ __all__ = [
     "ExternalAgentSession",
     "ExternalSessionError",
     "ExternalToolReceipt",
+    "LocalContainerSandbox",
+    "LocalContainerSandboxProvider",
     "PROFILES",
     "RunCheckpoint",
     "SandboxCapabilities",
     "SandboxPlan",
     "SandboxRequest",
+    "SandboxSelfTestCheck",
+    "SandboxSelfTestResult",
     "SecurityFinding",
     "SecurityGatePolicy",
     "SecurityGateResult",
