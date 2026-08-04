@@ -3,6 +3,14 @@
 from .checkpoint import CheckpointSmokeResult, RunCheckpoint, UsageTotals, run_checkpoint_smoke
 from .economics import TaskEconomics, TaskEconomicsWriter
 from .evidence import TaskEvidenceBundle
+from .external_session import (
+    AgentSpan,
+    ExternalAgentSession,
+    ExternalSessionError,
+    ExternalToolReceipt,
+    VerificationEvidence,
+    parse_external_session_json,
+)
 from .local_container import (
     LocalContainerSandbox,
     LocalContainerSandboxProvider,
@@ -18,7 +26,11 @@ from .security import (
 )
 
 __all__ = [
+    "AgentSpan",
     "CheckpointSmokeResult",
+    "ExternalAgentSession",
+    "ExternalSessionError",
+    "ExternalToolReceipt",
     "LocalContainerSandbox",
     "LocalContainerSandboxProvider",
     "PROFILES",
@@ -35,7 +47,9 @@ __all__ = [
     "TaskEconomicsWriter",
     "TaskEvidenceBundle",
     "UsageTotals",
+    "VerificationEvidence",
     "evaluate_security_gate",
+    "parse_external_session_json",
     "profile",
     "run_checkpoint_smoke",
 ]

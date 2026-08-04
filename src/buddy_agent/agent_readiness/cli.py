@@ -8,6 +8,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from .checkpoint import InMemoryCheckpointAdapter, run_checkpoint_smoke
+from .external_session import parse_external_session_json
 from .local_container import LocalContainerSandboxProvider
 from .sandbox import (
     PROFILES,
@@ -80,17 +81,31 @@ def run_checkpoint(parts: list[str]) -> int:
     return 0 if result.ok else 1
 
 
+def run_external_session(parts: list[str]) -> int:
+    if len(parts) != 1:
+        print("Usage: buddy-readiness external-session <session.json>")
+        return 2
+    session = parse_external_session_json(Path(parts[0]).read_text(encoding="utf-8"))
+    receipt = session.to_receipt()
+    print(json.dumps(receipt.to_dict(), indent=2))
+    return {"ok": 0, "review": 1, "error": 2, "deny": 2}[receipt.status]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="buddy-readiness", description="Buddy Agent Readiness Layer contracts."
     )
-    parser.add_argument("command", choices=("sandbox", "security", "checkpoint"))
+    parser.add_argument(
+        "command", choices=("sandbox", "security", "checkpoint", "external-session")
+    )
     parser.add_argument("args", nargs="*")
     selected = parser.parse_args(argv)
     if selected.command == "sandbox":
         return run_sandbox(selected.args)
     if selected.command == "security":
         return run_security(selected.args)
+    if selected.command == "external-session":
+        return run_external_session(selected.args)
     return run_checkpoint(selected.args)
 
 

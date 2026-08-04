@@ -53,6 +53,28 @@ This complements CodeQL, dependency scanning, language static analysis, tests, a
 
 `TaskEconomics` records attempts, model/tool cost, elapsed time, human review time, verification, artifact acceptance, rollback, and security gate without recording prompts, secrets, or browser state. Buddy Brain can aggregate these JSONL records by provider and model.
 
+## External agent session receipts
+
+Codex, Copilot, VS Code, and other execution hosts may export a sanitized `buddy.external-agent-session.v1` document. Buddy validates the document and converts it into its normal receipt stream:
+
+```bash
+buddy-readiness external-session external-session.json
+```
+
+The import preserves:
+
+- provider, harness, model, and external session identity;
+- logical repository, branch, and worktree references;
+- visible subagent spans;
+- tool names, call IDs, statuses, resource references, timing, and optional argument/result hashes;
+- commit SHAs and pull-request reference;
+- named verification evidence and observation timestamps;
+- a deterministic hash of the sanitized source receipt.
+
+The import rejects raw prompts, conversation messages, raw tool inputs or outputs, browser state, credentials, secret-like fields, absolute host paths, escaping references, duplicate call/span IDs, and invalid commit or SHA-256 values. A completed external session receives `ok` only when it includes verification evidence and every verification record passed. Missing or pending verification remains `review`; failed verification becomes `error`.
+
+A worktree reference is evidence of Git-state isolation only. It is not recorded or described as a security sandbox.
+
 ## Checkpoint and edge-runtime contract
 
 ```bash
