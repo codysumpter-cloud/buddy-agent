@@ -9,15 +9,23 @@ from pathlib import Path
 
 from .checkpoint import InMemoryCheckpointAdapter, run_checkpoint_smoke
 from .external_session import parse_external_session_json
-from .sandbox import PROFILES, PolicyOnlySandboxProvider, SandboxCapabilities, profile
+from .local_container import LocalContainerSandboxProvider
+from .sandbox import (
+    PROFILES,
+    PolicyOnlySandboxProvider,
+    SandboxCapabilities,
+    SandboxProvider,
+    profile,
+)
 from .security import SecurityFinding, evaluate_security_gate
 
 
-def provider(name: str) -> PolicyOnlySandboxProvider:
+def provider(name: str, workspace: Path | None = None) -> SandboxProvider:
+    if name == "local-container":
+        return LocalContainerSandboxProvider(workspace or Path.cwd())
     capabilities = {
         "codex": SandboxCapabilities(name, True, True, True, True, False, True, True),
         "github-runner": SandboxCapabilities(name, True, True, True, True, True, False, True),
-        "local-container": SandboxCapabilities(name, True, True, True, True, True, True, True),
         "local-process": SandboxCapabilities(name, False, False, False, True, False, False, True),
     }
     try:
@@ -35,10 +43,21 @@ def run_sandbox(parts: list[str]) -> int:
         if len(parts) < 3:
             print("Usage: buddy-readiness sandbox plan <provider> <profile>")
             return 2
-        result = provider(parts[1]).plan(profile(parts[2]))
-        print(json.dumps(result.to_dict(), indent=2))
-        return 0 if result.executable else 1
-    print("Usage: buddy-readiness sandbox [profiles|plan <provider> <profile>]")
+        plan_result = provider(parts[1]).plan(profile(parts[2]))
+        print(json.dumps(plan_result.to_dict(), indent=2))
+        return 0 if plan_result.executable else 1
+    if action == "self-test":
+        if len(parts) < 2 or parts[1] != "local-container":
+            print("Usage: buddy-readiness sandbox self-test local-container [workspace]")
+            return 2
+        workspace = Path(parts[2]) if len(parts) > 2 else Path.cwd()
+        self_test_result = LocalContainerSandboxProvider(workspace).self_test()
+        print(json.dumps(self_test_result.to_dict(), indent=2))
+        return 0 if self_test_result.ok else 1
+    print(
+        "Usage: buddy-readiness sandbox "
+        "[profiles|plan <provider> <profile>|self-test local-container [workspace]]"
+    )
     return 2
 
 
